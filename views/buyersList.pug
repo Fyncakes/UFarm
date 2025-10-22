@@ -1,0 +1,78 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title Buyers List - Ufarm
+  body
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      .container-fluid
+        a.navbar-brand(href='/')
+          strong U
+          | farm
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href='/OA') Dashboard
+            li.nav-item
+              a.nav-link(href='/OA/farmers') Farmers
+            li.nav-item
+              a.nav-link.active(href='/OA/buyers') Buyers
+            li.nav-item
+              a.nav-link(href='/OA/products') Products
+            li.nav-item
+              form(action='/logout' method='post' style='display: inline;')
+                button.btn.btn-link.nav-link(type='submit') Logout
+
+    .container.my-4
+      h2.mb-4 Registered Buyers
+
+      if success_msg
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+
+      .card.shadow-sm
+        .card-body
+          if buyers && buyers.length
+            .table-responsive
+              table.table.table-hover
+                thead.table-light
+                  tr
+                    th Name
+                    th Phone
+                    th Location
+                    th Total Orders
+                    th Status
+                    th Joined
+                    th Actions
+                tbody
+                  each buyer in buyers
+                    tr
+                      td
+                        strong #{buyer.Name1}
+                      td #{buyer.phonenumber}
+                      td #{buyer.Ward1 || 'N/A'}
+                      td #{buyer.totalOrders || 0}
+                      td
+                        if buyer.active
+                          span.badge.bg-success Active
+                        else
+                          span.badge.bg-secondary Inactive
+                      td #{new Date(buyer.createdAt).toLocaleDateString()}
+                      td
+                        form(action=`/OA/user/${buyer._id}/deactivate` method='post' style='display: inline;')
+                          button.btn.btn-sm.btn-outline-secondary(type='submit')
+                            i.fas.fa-ban
+          else
+            .text-center.py-5
+              i.fas.fa-users.fa-4x.text-muted.mb-3
+              p.text-muted No buyers registered yet
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

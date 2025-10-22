@@ -1,0 +1,113 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title Add Product - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      include includes/back-button.pug
+      include includes/flash-messages.pug
+
+      .row.justify-content-center
+        .col-lg-8
+          .card.shadow-sm.border-0
+            .card-header.bg-success.text-white
+              h4.mb-0
+                i.fas.fa-plus-circle.me-2
+                | Add New Product
+            .card-body.p-4
+              p.text-muted.mb-4 Fill in the details below to add a new product to your inventory. Products will be reviewed before appearing on the marketplace.
+              
+              form(action='/uploads' method='post' enctype='multipart/form-data')
+                .row.g-3
+                  .col-md-6
+                    label.form-label(for='productName')
+                      i.fas.fa-tag.me-1
+                      | Product Name *
+                    input.form-control(type='text' id='productName' name='productName' placeholder='e.g., Organic Tomatoes' required)
+                    small.form-text.text-muted Enter a clear, descriptive name
+                  
+                  .col-md-6
+                    label.form-label(for='price')
+                      i.fas.fa-money-bill-wave.me-1
+                      | Price (UGX) *
+                    input.form-control(type='number' id='price' name='price' min='0' step='100' placeholder='e.g., 25000' required)
+                    small.form-text.text-muted Price per unit in Uganda Shillings
+                  
+                  .col-md-6
+                    label.form-label(for='quantity')
+                      i.fas.fa-boxes.me-1
+                      | Quantity *
+                    input.form-control(type='number' id='quantity' name='quantity' min='1' placeholder='e.g., 100' required)
+                    small.form-text.text-muted Available quantity in stock
+                  
+                  .col-md-6
+                    label.form-label(for='direction')
+                      i.fas.fa-map-marker-alt.me-1
+                      | Location/Direction
+                    input.form-control(type='text' id='direction' name='direction' placeholder='e.g., Kampala District, Uganda')
+                    small.form-text.text-muted Where is the product located?
+                  
+                  .col-12
+                    label.form-label(for='description')
+                      i.fas.fa-align-left.me-1
+                      | Description
+                    textarea.form-control(id='description' name='description' rows='4' placeholder='Describe your product, its features, quality, and benefits...')
+                    small.form-text.text-muted Provide detailed information to help buyers
+                  
+                  .col-12
+                    label.form-label(for='image')
+                      i.fas.fa-camera.me-1
+                      | Product Image *
+                    input.form-control(type='file' id='image' name='image' accept='image/*' required)
+                    small.form-text.text-muted Upload a clear, high-quality image (JPG, PNG)
+                    
+                    // Image Preview
+                    #imagePreview.mt-3(style='display: none;')
+                      img#preview(src='' alt='Preview' style='max-width: 300px; max-height: 300px; border-radius: 8px; border: 2px solid #e0e0e0;')
+                  
+                  .col-12
+                    hr.my-4
+                    .d-flex.gap-3
+                      button.btn.btn-success.btn-lg.px-5(type='submit')
+                        i.fas.fa-upload.me-2
+                        | Upload Product
+                      a.btn.btn-outline-secondary.btn-lg(href='/UB')
+                        i.fas.fa-times.me-2
+                        | Cancel
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      // Image Preview
+      const imageInput = document.getElementById('image');
+      const imagePreview = document.getElementById('imagePreview');
+      const preview = document.getElementById('preview');
+      
+      imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+            imagePreview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Form validation
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(e) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Uploading...';
+      });
+

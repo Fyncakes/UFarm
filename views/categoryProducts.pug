@@ -1,0 +1,55 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title #{category.name} - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      nav(aria-label='breadcrumb')
+        ol.breadcrumb
+          li.breadcrumb-item
+            a(href='/') Home
+          li.breadcrumb-item
+            a(href='/categories') Categories
+          li.breadcrumb-item.active(aria-current='page') #{category.name}
+
+      h1.mb-4 #{category.name}
+      if category.description
+        p.lead.text-muted #{category.description}
+
+      .row
+        if products && products.length
+          each product in products
+            .col-lg-3.col-md-4.col-sm-6.mb-4
+              .card.h-100.shadow-sm
+                img.card-img-top(src='/' + product.image alt=product.productName style='height: 200px; object-fit: cover;')
+                .card-body.d-flex.flex-column
+                  h5.card-title #{product.productName}
+                  p.text-muted.small #{product.owner_name}
+                  p.fw-bold.text-success UGX #{product.price.toLocaleString()}
+                  .mt-auto
+                    if user
+                      form(action='/cart/add' method='post')
+                        input(type='hidden' name='productId' value=product._id)
+                        input(type='hidden' name='quantity' value='1')
+                        button.btn.btn-success.w-100(type='submit')
+                          i.fas.fa-cart-plus.me-1
+                          | Add to Cart
+                    else
+                      a.btn.btn-success.w-100(href='/login') Login to Buy
+        else
+          .col-12
+            .text-center.py-5
+              i.fas.fa-box-open.fa-5x.text-muted.mb-3
+              h3 No products in this category yet
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

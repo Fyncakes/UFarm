@@ -1,0 +1,94 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title Farmers List - Ufarm
+  body
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      .container-fluid
+        a.navbar-brand(href='/')
+          strong U
+          | farm
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href='/OA') Dashboard
+            li.nav-item
+              a.nav-link.active(href='/OA/farmers') Farmers
+            li.nav-item
+              a.nav-link(href='/OA/buyers') Buyers
+            li.nav-item
+              a.nav-link(href='/OA/products') Products
+            li.nav-item
+              form(action='/logout' method='post' style='display: inline;')
+                button.btn.btn-link.nav-link(type='submit') Logout
+
+    .container.my-4
+      h2.mb-4 Registered Farmers
+
+      if success_msg
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+
+      .card.shadow-sm
+        .card-body
+          if farmers && farmers.length
+            .table-responsive
+              table.table.table-hover
+                thead.table-light
+                  tr
+                    th Name
+                    th Role
+                    th Phone
+                    th Location
+                    th Verified
+                    th Status
+                    th Joined
+                    th Actions
+                tbody
+                  each farmer in farmers
+                    tr
+                      td
+                        strong #{farmer.Name1}
+                      td
+                        span.badge.bg-info #{farmer.role}
+                      td #{farmer.phonenumber}
+                      td #{farmer.Ward1 || 'N/A'}
+                      td
+                        if farmer.verified
+                          span.badge.bg-success
+                            i.fas.fa-check.me-1
+                            | Verified
+                        else
+                          span.badge.bg-warning
+                            i.fas.fa-clock.me-1
+                            | Pending
+                      td
+                        if farmer.active
+                          span.badge.bg-success Active
+                        else
+                          span.badge.bg-secondary Inactive
+                      td #{new Date(farmer.createdAt).toLocaleDateString()}
+                      td
+                        .btn-group(role='group')
+                          if !farmer.verified
+                            form(action=`/OA/farmer/${farmer._id}/verify` method='post' style='display: inline;')
+                              button.btn.btn-sm.btn-success(type='submit')
+                                i.fas.fa-check-circle
+                          form(action=`/OA/user/${farmer._id}/deactivate` method='post' style='display: inline;')
+                            button.btn.btn-sm.btn-outline-secondary(type='submit')
+                              i.fas.fa-ban
+          else
+            .text-center.py-5
+              i.fas.fa-users.fa-4x.text-muted.mb-3
+              p.text-muted No farmers registered yet
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

@@ -1,0 +1,179 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    link(rel='stylesheet' href='/css/products.css')
+    title Shop Fresh Products - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.mt-3
+      include includes/back-button.pug
+
+    // Hero Banner for Products
+    .products-hero.bg-success.text-white.py-4
+      .container
+        .row.align-items-center
+          .col-md-8
+            h1.display-5.fw-bold
+              i.fas.fa-shopping-basket.me-3
+              | Shop Fresh Farm Products
+            p.lead.mb-0 Direct from farmers to your doorstep
+          .col-md-4.text-end
+            .stats.d-inline-flex.gap-3
+              .stat-item
+                h3.mb-0 #{listProducts ? listProducts.filter(p => p.status === 'approved').length : 0}
+                small Products Available
+
+    .container.my-4
+      // Filters and Search Section
+      .row.mb-4
+        .col-12
+          .filter-bar.bg-light.p-3.rounded.shadow-sm
+            .row.g-3.align-items-center
+              .col-lg-5.col-md-6
+                .input-group.input-group-lg
+                  span.input-group-text.bg-white.border-end-0
+                    i.fas.fa-search
+                  input#searchInput.form-control.border-start-0(type='search' placeholder='Search products...')
+              
+              .col-lg-3.col-md-6
+                select#categoryFilter.form-select.form-select-lg
+                  option(value='all') All Categories
+                  option(value='seeds') Seeds
+                  option(value='fertilizers') Fertilizers
+                  option(value='equipment') Equipment
+                  option(value='pesticides') Pesticides
+                  option(value='tools') Tools
+              
+              .col-lg-2.col-md-6
+                select#sortSelect.form-select.form-select-lg
+                  option(value='newest') Newest
+                  option(value='price-low') Price: Low to High
+                  option(value='price-high') Price: High to Low
+                  option(value='popular') Most Popular
+              
+              .col-lg-2.col-md-6
+                .btn-group.w-100(role='group')
+                  button#gridView.btn.btn-outline-success.active(type='button')
+                    i.fas.fa-th
+                  button#listView.btn.btn-outline-success(type='button')
+                    i.fas.fa-list
+
+      include includes/flash-messages.pug
+
+      // Products Count
+      .d-flex.justify-content-between.align-items-center.mb-3
+        h5#productCount.mb-0 
+          span.badge.bg-success Loading products...
+        button#clearFilters.btn.btn-sm.btn-outline-secondary(style='display: none;')
+          i.fas.fa-times.me-1
+          | Clear Filters
+
+      // Products Grid
+      #productsContainer.row.g-4
+        if listProducts && listProducts.length
+          each listProduct, index in listProducts 
+            if listProduct.status === 'approved'
+              .col-lg-3.col-md-4.col-sm-6.col-12.product-item(data-index=index)
+                .card.h-100.shadow-hover.border-0.product-card
+                  .position-relative
+                    if listProduct.organic
+                      .badge.bg-success.position-absolute.top-0.start-0.m-2(style='z-index: 2;') 
+                        i.fas.fa-leaf.me-1
+                        | Organic
+                    if user
+                      button.btn.btn-light.btn-sm.position-absolute.top-0.end-0.m-2.rounded-circle.wishlist-btn(style='z-index: 2; width: 40px; height: 40px;' title='Add to Wishlist')
+                        i.far.fa-heart
+                    
+                    .product-image-container
+                      img.card-img-top.product-image(src='/' + listProduct.image alt=listProduct.productName loading='lazy')
+                      .product-overlay
+                        a.btn.btn-light.btn-sm(href=`/product-detail/${listProduct._id}`)
+                          i.fas.fa-eye.me-1
+                          | Quick View
+                  
+                  .card-body.d-flex.flex-column
+                    a.text-decoration-none(href=`/product-detail/${listProduct._id}`)
+                      h5.card-title.text-dark.mb-2 #{listProduct.productName}
+                    
+                    p.text-muted.small.mb-2
+                      i.fas.fa-store.me-1
+                      | #{listProduct.owner_name}
+                    
+                    if listProduct.rating > 0
+                      .mb-2
+                        each star in [1,2,3,4,5]
+                          if star <= listProduct.rating
+                            i.fas.fa-star.text-warning.small
+                          else
+                            i.far.fa-star.text-warning.small
+                        span.small.text-muted.ms-2 (#{listProduct.numReviews})
+                    
+                    .price-section.mb-3
+                      .d-flex.align-items-center.justify-content-between
+                        div
+                          h4.text-success.mb-0.fw-bold UGX #{listProduct.price.toLocaleString()}
+                        div
+                          span.badge.bg-light.text-dark
+                            i.fas.fa-box.me-1
+                            | #{listProduct.quantity}
+                    
+                    if listProduct.direction
+                      p.text-muted.small.mb-3
+                        i.fas.fa-map-marker-alt.me-1
+                        | #{listProduct.direction}
+                    
+                    .mt-auto
+                      if user
+                        form.add-to-cart-form(action='/cart/add' method='post')
+                          input(type='hidden' name='productId' value=listProduct._id)
+                          .d-flex.gap-2.mb-2
+                            input.form-control.qty-input(type='number' name='quantity' value='1' min='1' max=listProduct.quantity style='max-width: 80px;')
+                            button.btn.btn-success.flex-grow-1(type='submit')
+                              i.fas.fa-cart-plus.me-1
+                              | Add to Cart
+                      else
+                        a.btn.btn-success.w-100.btn-lg(href='/login')
+                          i.fas.fa-sign-in-alt.me-2
+                          | Login to Purchase
+        else
+          .col-12
+            .text-center.py-5
+              i.fas.fa-box-open.fa-5x.text-muted.mb-4
+              h3 No products available yet
+              p.text-muted Check back later for fresh products from our farmers
+              a.btn.btn-success.btn-lg(href='/') 
+                i.fas.fa-home.me-2
+                | Go to Homepage
+
+      // Load More Button
+      if listProducts && listProducts.filter(p => p.status === 'approved').length > 8
+        .text-center.mt-5
+          button#loadMoreBtn.btn.btn-outline-success.btn-lg.px-5(data-loaded='8')
+            i.fas.fa-sync-alt.me-2
+            | Load More Products
+            span.badge.bg-success.ms-2 #{listProducts.filter(p => p.status === 'approved').length - 8} more
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script(src='/js/products.js')
+    script.
+      // Initialize products count
+      document.addEventListener('DOMContentLoaded', function() {
+        updateProductCount();
+      });
+      
+      function updateProductCount() {
+        const visibleProducts = document.querySelectorAll('.product-item:not([style*="display: none"])').length;
+        const countBadge = document.getElementById('productCount');
+        if (countBadge) {
+          countBadge.innerHTML = `<span class="badge bg-success">${visibleProducts} Products</span>`;
+        }
+      }

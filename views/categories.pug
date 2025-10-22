@@ -1,0 +1,87 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title Categories - Ufarm
+    style.
+      .category-card {
+        transition: all 0.3s ease;
+        border: none;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f8fcf5 0%, #ffffff 100%);
+      }
+      .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(126, 217, 87, 0.3) !important;
+      }
+      .category-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #7ed957, #5cb32d);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+      .category-card:hover .category-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+      .category-card .card-title {
+        color: #2d3748;
+        font-weight: 600;
+      }
+      .category-card:hover .card-title {
+        color: #5cb32d;
+      }
+      .category-card .card-text {
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      include includes/back-button.pug
+      include includes/flash-messages.pug
+      
+      .text-center.mb-5
+        h1.display-4.fw-bold.mb-3
+          i.fas.fa-th-large.me-3.text-success
+          | Product Categories
+        p.lead.text-muted Browse our wide range of farming products organized by category
+
+      .row.g-4
+        if categories && categories.length
+          each category in categories
+            .col-lg-3.col-md-4.col-sm-6
+              a.text-decoration-none(href=`/category/${category.slug}`)
+                .card.h-100.shadow-sm.category-card
+                  .card-body.text-center.p-4
+                    .category-icon
+                      i(class=`fas ${category.icon || 'fa-box'} fa-2x text-white`)
+                    h5.card-title.mb-3 #{category.name}
+                    if category.description
+                      p.card-text.text-muted #{category.description.substring(0, 100)}#{category.description.length > 100 ? '...' : ''}
+                    .mt-3
+                      span.badge.bg-success.bg-opacity-10.text-success View Products →
+        else
+          .col-12
+            .text-center.py-5
+              .mb-4
+                i.fas.fa-folder-open.fa-5x.text-muted
+              h3.text-muted No categories available yet
+              p.text-muted.mt-3 Categories will appear here once they are created
+              a.btn.btn-success.mt-3(href='/') 
+                i.fas.fa-home.me-2
+                | Go to Home
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

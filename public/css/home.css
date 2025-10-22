@@ -1,0 +1,351 @@
+/* Home Page Specific Styles */
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.video-background video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
+
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(126, 217, 87, 0.75), rgba(92, 179, 45, 0.75));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-section .container {
+  z-index: 2;
+  position: relative;
+}
+
+.min-vh-70 {
+  min-height: 70vh;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero-section h2 {
+  animation: fadeInUp 1.2s ease-out;
+}
+
+.hero-section p.lead {
+  font-size: 1.25rem;
+  animation: fadeInUp 1.4s ease-out;
+}
+
+.hero-section .d-flex {
+  animation: fadeInUp 1.6s ease-out;
+}
+
+.hero-section .btn {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-section .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+#muteToggle {
+  animation: fadeInUp 1.8s ease-out;
+}
+
+/* Features Section */
+.features-section {
+  background-color: #ffffff;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+}
+
+.feature-card {
+  border: none;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.feature-icon i {
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon i {
+  transform: scale(1.1);
+}
+
+.hover-card {
+  cursor: pointer;
+  border: 2px solid transparent !important;
+}
+
+.hover-card:hover {
+  border-color: #198754 !important;
+  box-shadow: 0 12px 28px rgba(25, 135, 84, 0.2) !important;
+}
+
+.hover-card small {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hover-card:hover small {
+  opacity: 1;
+}
+
+/* Categories Section */
+.categories-section {
+  padding: 80px 0;
+  background-color: white;
+  position: relative;
+  z-index: 3;
+}
+
+.categories-scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #198754 #f8f9fa;
+}
+
+.categories-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.categories-scroll-container::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.categories-scroll-container::-webkit-scrollbar-thumb {
+  background: #198754;
+  border-radius: 10px;
+}
+
+.categories-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #146c43;
+}
+
+.category-card-horizontal {
+  flex: 0 0 auto;
+  width: 220px;
+  transition: all 0.3s ease;
+}
+
+.category-card-horizontal .card {
+  border: 2px solid transparent;
+  cursor: pointer;
+  height: 100%;
+}
+
+.category-card-horizontal:hover .card {
+  border-color: #198754;
+  box-shadow: 0 8px 16px rgba(25, 135, 84, 0.2);
+  transform: translateY(-5px);
+}
+
+.category-card-horizontal:hover i {
+  transform: rotate(360deg) scale(1.1);
+  transition: transform 0.5s ease;
+}
+
+.category-card {
+  transition: all 0.3s ease;
+}
+
+.category-card .card {
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.category-card:hover .card {
+  border-color: #198754;
+  box-shadow: 0 8px 16px rgba(25, 135, 84, 0.2);
+}
+
+.category-card:hover i {
+  transform: rotate(360deg);
+  transition: transform 0.5s ease;
+}
+
+/* How It Works Section */
+.how-it-works {
+  background-color: #f8f9fa;
+  padding: 80px 0;
+  position: relative;
+  z-index: 3;
+}
+
+.step-number {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #198754, #146c43);
+  color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, #7ed957, #5cb32d);
+  padding: 80px 0;
+  position: relative;
+  z-index: 3;
+}
+
+.cta-section .btn-light {
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.cta-section .btn-light:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* Footer Enhancements */
+.footer {
+  background: linear-gradient(to bottom, #212529, #343a40);
+  position: relative;
+  z-index: 3;
+}
+
+.social-icons a {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  background-color: #198754;
+  transform: translateY(-5px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-section {
+    padding: 80px 0 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 0 40px;
+    background-attachment: scroll;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-section .lead {
+    font-size: 1rem;
+  }
+  
+  .step-number {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section h1 {
+    font-size: 1.75rem;
+  }
+  
+  .feature-card {
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn-lg {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-section > * {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.feature-icon {
+  animation: pulse 2s infinite;
+}
+

@@ -1,0 +1,97 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title Products Management - Ufarm
+  body
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      .container-fluid
+        a.navbar-brand(href='/')
+          strong U
+          | farm
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href='/OA') Dashboard
+            li.nav-item
+              a.nav-link(href='/OA/farmers') Farmers
+            li.nav-item
+              a.nav-link(href='/OA/buyers') Buyers
+            li.nav-item
+              a.nav-link.active(href='/OA/products') Products
+            li.nav-item
+              form(action='/logout' method='post' style='display: inline;')
+                button.btn.btn-link.nav-link(type='submit') Logout
+
+    .container.my-4
+      h2.mb-4 Products Management
+
+      if success_msg
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+
+      .card.shadow-sm
+        .card-body
+          if products && products.length
+            .table-responsive
+              table.table.table-hover
+                thead.table-light
+                  tr
+                    th Image
+                    th Product
+                    th Farmer
+                    th Category
+                    th Price
+                    th Quantity
+                    th Status
+                    th Actions
+                tbody
+                  each product in products
+                    tr
+                      td
+                        img.rounded(src='/' + product.image alt=product.productName style='width: 50px; height: 50px; object-fit: cover;')
+                      td #{product.productName}
+                      td #{product.owner_name}
+                      td #{product.category ? product.category.name : 'N/A'}
+                      td.fw-bold.text-success UGX #{product.price.toLocaleString()}
+                      td #{product.quantity}
+                      td
+                        case product.status
+                          when 'approved'
+                            span.badge.bg-success Approved
+                          when 'pending'
+                            span.badge.bg-warning Pending
+                          when 'rejected'
+                            span.badge.bg-danger Rejected
+                      td
+                        .btn-group(role='group')
+                          a.btn.btn-sm.btn-outline-primary(href=`/product-detail/${product._id}`)
+                            i.fas.fa-eye
+                          if product.status === 'pending'
+                            button.btn.btn-sm.btn-success(onclick=`approveProduct('${product._id}')`)
+                              i.fas.fa-check
+          else
+            .text-center.py-5
+              i.fas.fa-box-open.fa-4x.text-muted.mb-3
+              p.text-muted No products found
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      function approveProduct(productId) {
+        if (confirm('Approve this product?')) {
+          fetch(`/product/${productId}/approve`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(() => window.location.reload());
+        }
+      }
+

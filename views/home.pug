@@ -1,0 +1,254 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/home.css')
+    title Ufarm - Connecting Farmers to Markets
+  body
+    // Navigation
+    nav.navbar.navbar-expand-lg.navbar-light.bg-white.shadow-sm.fixed-top
+      .container
+        a.navbar-brand(href='/')
+          strong.text-success U
+          | farm
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto
+            li.nav-item
+              a.nav-link(href='/product') 
+                i.fas.fa-shopping-basket.me-1
+                | Products
+            li.nav-item
+              a.nav-link(href='/categories') 
+                i.fas.fa-list.me-1
+                | Categories
+            li.nav-item
+              a.nav-link(href='/about') 
+                i.fas.fa-info-circle.me-1
+                | About Us
+            if user
+              li.nav-item
+                a.nav-link(href='/cart') 
+                  i.fas.fa-shopping-cart.me-1
+                  | Cart
+              li.nav-item
+                a.nav-link(href='/orders') 
+                  i.fas.fa-box.me-1
+                  | My Orders
+              li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href='#' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                  i.fas.fa-user.me-1
+                  | #{user.Name1}
+                ul.dropdown-menu(aria-labelledby='navbarDropdown')
+                  li
+                    a.dropdown-item(href='/profile') Profile
+                  li
+                    hr.dropdown-divider
+                  li
+                    form(action='/logout' method='post')
+                      button.dropdown-item(type='submit') Logout
+            else
+              li.nav-item
+                a.nav-link(href='/Register')
+                  i.fas.fa-user-plus.me-1
+                  | Sign Up
+              li.nav-item
+                a.btn.btn-success.ms-2(href='/login')
+                  i.fas.fa-sign-in-alt.me-1
+                  | Login
+
+    // Hero Section with Video
+    section.hero-section.position-relative
+      .video-background
+        video#heroVideo(autoplay muted loop playsinline preload='auto' style='width: 100%; height: 100%; object-fit: cover; filter: brightness(1.1) contrast(1.1);')
+          source(src='/image/Ufarmvideo.mp4' type='video/mp4')
+          | Your browser does not support the video tag.
+        .video-overlay(style='background: linear-gradient(135deg, rgba(126, 217, 87, 0.5), rgba(92, 179, 45, 0.5));')
+      
+      .container.position-relative(style='z-index: 2;')
+        .row.align-items-center.min-vh-70
+          .col-lg-8.mx-auto.text-center.text-white
+            h1.display-3.fw-bold.mb-3(style='text-shadow: 2px 2px 8px rgba(0,0,0,0.7);') 
+              | Welcome to 
+              span.text-success Ufarm
+            h2.h3.mb-4(style='text-shadow: 2px 2px 6px rgba(0,0,0,0.7);') Connecting Farmers, Markets, and Communities
+            p.lead.mb-5(style='text-shadow: 1px 1px 4px rgba(0,0,0,0.7);') Empowering urban farmers across Uganda with a platform to showcase and sell their quality agricultural products directly to buyers. Join our trusted network today!
+            .d-flex.gap-3.justify-content-center.flex-wrap
+              a.btn.btn-success.btn-lg.px-5(href='/product')
+                i.fas.fa-shopping-basket.me-2
+                | Browse Products
+              a.btn.btn-light.btn-lg.px-5(href='/Register')
+                i.fas.fa-user-plus.me-2
+                | Join as Farmer
+
+    // Stats Section
+    section.stats-section.py-4.bg-success.text-white
+      .container
+        .row.text-center
+          .col-md-4.mb-3.mb-md-0
+            h2.display-4.fw-bold #{stats ? stats.totalProducts : 0}+
+            p.lead Products Available
+          .col-md-4.mb-3.mb-md-0
+            h2.display-4.fw-bold #{stats ? stats.totalFarmers : 0}+
+            p.lead Registered Farmers
+          .col-md-4
+            h2.display-4.fw-bold #{stats ? stats.totalUsers : 0}+
+            p.lead Happy Customers
+
+    // Features Section
+    section.features-section.py-5.bg-light
+      .container
+        h2.text-center.mb-5 Why Choose Ufarm?
+        p.text-center.text-muted.mb-5 Connecting trustworthy farmers with buyers and sellers across Uganda
+        .row.g-4
+          .col-md-4
+            a.text-decoration-none(href='/fresh-organic')
+              .feature-card.text-center.p-4.bg-white.rounded.shadow-sm.h-100.hover-card
+                .feature-icon.mb-3
+                  i.fas.fa-leaf.fa-3x.text-success
+                h4.text-dark Fresh & Organic
+                p.text-muted Get farm-fresh organic products directly from verified farmers
+                small.text-success.fw-bold Learn More →
+          .col-md-4
+            a.text-decoration-none(href='/direct-connection')
+              .feature-card.text-center.p-4.bg-white.rounded.shadow-sm.h-100.hover-card
+                .feature-icon.mb-3
+                  i.fas.fa-handshake.fa-3x.text-success
+                h4.text-dark Direct Connection
+                p.text-muted Connect directly with farmers, ensuring fair prices for both parties
+                small.text-success.fw-bold Learn More →
+          .col-md-4
+            a.text-decoration-none(href='/trusted-verified')
+              .feature-card.text-center.p-4.bg-white.rounded.shadow-sm.h-100.hover-card
+                .feature-icon.mb-3
+                  i.fas.fa-shield-alt.fa-3x.text-success
+                h4.text-dark Trusted & Verified
+                p.text-muted All farmers and products are verified by agricultural officers
+                small.text-success.fw-bold Learn More →
+
+    // Featured Products Section
+    section.featured-products.py-5
+      .container
+        .d-flex.justify-content-between.align-items-center.mb-4
+          h2 Featured Products
+          a.btn.btn-outline-success(href='/product') View All →
+        
+        if featuredProducts && featuredProducts.length
+          .row.g-4
+            each product in featuredProducts
+              .col-lg-3.col-md-4.col-sm-6
+                a.text-decoration-none(href=`/product-detail/${product._id}`)
+                  .card.h-100.shadow-sm.product-card
+                    img.card-img-top(src='/' + product.image alt=product.productName style='height: 200px; object-fit: cover;')
+                    .card-body
+                      h6.card-title.text-dark #{product.productName}
+                      p.text-muted.small.mb-1
+                        i.fas.fa-user.me-1
+                        | #{product.owner_name}
+                      h5.text-success.mb-2 UGX #{product.price.toLocaleString()}
+                      .d-flex.justify-content-between.align-items-center
+                        small.text-muted #{product.quantity} available
+                        span.badge.bg-success #{product.status}
+        else
+          .alert.alert-info.text-center
+            i.fas.fa-info-circle.me-2
+            | No products available yet
+
+    // Categories Section
+    section.categories-section.py-5.bg-light
+      .container
+        .d-flex.justify-content-between.align-items-center.mb-4
+          h2 Popular Categories
+          a.btn.btn-outline-success(href='/categories')
+            | View All
+            i.fas.fa-arrow-right.ms-2
+        
+        if categories && categories.length
+          .categories-scroll-container
+            each category in categories
+              a.category-card-horizontal.text-decoration-none(href=`/category/${category.slug}`)
+                .card.text-center.border-0.shadow-sm
+                  .card-body.p-4
+                    i(class=`fas ${category.icon || 'fa-box'} fa-3x text-success mb-3`)
+                    h6.card-title.mb-0 #{category.name}
+        else
+          .alert.alert-info.text-center
+            i.fas.fa-info-circle.me-2
+            | Loading categories...
+
+    // Testimonials Section
+    if testimonials && testimonials.length
+      section.testimonials-section.py-5.bg-light
+        .container
+          h2.text-center.mb-5 What Our Customers Say
+          .row.g-4
+            each testimonial in testimonials
+              .col-md-4
+                .card.h-100.shadow-sm.border-0
+                  .card-body.text-center
+                    .rating.mb-3
+                      each star in [1, 2, 3, 4, 5]
+                        if star <= testimonial.rating
+                          i.fas.fa-star.text-warning
+                        else
+                          i.far.fa-star.text-warning
+                    p.card-text.mb-3.fst-italic "#{testimonial.comment}"
+                    .d-flex.align-items-center.justify-content-center
+                      .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-2(style='width: 40px; height: 40px;')
+                        strong #{testimonial.userName ? testimonial.userName.charAt(0).toUpperCase() : 'U'}
+                      strong #{testimonial.userName}
+          .text-center.mt-4
+            a.btn.btn-outline-success.btn-lg(href='/about')
+              i.fas.fa-comments.me-2
+              | Read More Reviews
+
+    // CTA Section
+    section.cta-section.py-5.bg-success.text-white
+      .container.text-center
+        h2.mb-4 Ready to Get Started?
+        p.lead.mb-4 Join thousands of satisfied customers enjoying fresh farm produce
+        a.btn.btn-light.btn-lg(href='/Register')
+          i.fas.fa-user-plus.me-2
+          | Create Account
+
+    // Footer
+    footer.footer.bg-dark.text-white.py-4
+      .container
+        .row
+          .col-md-4.mb-3.mb-md-0
+            h5 
+              strong.text-success U
+              | farm
+            p.small Connecting farmers, buyers, and sellers for a sustainable agricultural marketplace.
+          .col-md-4.mb-3.mb-md-0
+            h6 Quick Links
+            ul.list-unstyled
+              li
+                a.text-white-50.text-decoration-none(href='/product') Products
+              li
+                a.text-white-50.text-decoration-none(href='/categories') Categories
+              li
+                a.text-white-50.text-decoration-none(href='/about') About Us
+              li
+                a.text-white-50.text-decoration-none(href='/Register') Sign Up
+          .col-md-4
+            h6 Follow Us
+            .social-icons
+              a.text-white.me-3(href='#')
+                i.fab.fa-whatsapp.fa-2x
+              a.text-white.me-3(href='#')
+                i.fab.fa-facebook.fa-2x
+              a.text-white.me-3(href='#')
+                i.fab.fa-youtube.fa-2x
+              a.text-white(href='#')
+                i.fab.fa-instagram.fa-2x
+        hr.bg-secondary
+        .text-center.small
+          p &copy; 2024 Ufarm. All rights reserved.
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')

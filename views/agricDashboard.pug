@@ -1,0 +1,341 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title Agriculture Officer Dashboard - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container-fluid.my-4
+      .row
+        .col-md-3
+          .card.bg-light.shadow-sm.border-0.h-100
+            .card-body
+              h5.card-title.text-primary.mb-3
+                i.fas.fa-user-tie.me-2
+                | #{user.Name1}
+              p.text-muted.mb-4 Agriculture Officer
+              hr.mb-3
+              ul.list-unstyled.dashboard-nav
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/OA')
+                    i.fas.fa-home.me-2.text-primary
+                    | Dashboard
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/OA/farmers')
+                    i.fas.fa-tractor.me-2.text-success
+                    | Farmers
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/OA/buyers')
+                    i.fas.fa-users.me-2.text-info
+                    | Buyers
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/OA/products')
+                    i.fas.fa-box.me-2.text-warning
+                    | Products
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/categories')
+                    i.fas.fa-th-large.me-2.text-success
+                    | Categories
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='#registerAgentSection' onclick='showSection("registerAgentSection")')
+                    i.fas.fa-user-plus.me-2.text-primary
+                    | Register Agent
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/profile')
+                    i.fas.fa-user.me-2.text-secondary
+                    | Profile
+
+        .col-md-9
+          h2.mb-4
+            i.fas.fa-chart-line.me-2.text-success
+            | Agriculture Officer Dashboard
+
+          include includes/flash-messages.pug
+
+          // Statistics Cards
+          .row.mb-4
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-tractor.fa-3x.text-primary.mb-3
+                  h3.fw-bold #{stats ? stats.totalFarmers : 0}
+                  p.text-muted.mb-0 Total Farmers
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-users.fa-3x.text-success.mb-3
+                  h3.fw-bold #{stats ? stats.totalBuyers : 0}
+                  p.text-muted.mb-0 Total Buyers
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-box.fa-3x.text-info.mb-3
+                  h3.fw-bold #{stats ? stats.totalProducts : 0}
+                  p.text-muted.mb-0 Total Products
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-clock.fa-3x.text-warning.mb-3
+                  h3.fw-bold #{stats ? stats.pendingProducts : 0}
+                  p.text-muted.mb-0 Pending Review
+
+          .row.mb-4
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-check-circle.fa-3x.text-success.mb-3
+                  h3.fw-bold #{stats ? stats.approvedProducts : 0}
+                  p.text-muted.mb-0 Approved
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-shopping-bag.fa-3x.text-primary.mb-3
+                  h3.fw-bold #{stats ? stats.totalOrders : 0}
+                  p.text-muted.mb-0 Total Orders
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-th-large.fa-3x.text-info.mb-3
+                  h3.fw-bold #{stats ? stats.totalCategories : 0}
+                  p.text-muted.mb-0 Categories
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-user-tie.fa-3x.text-success.mb-3
+                  h3.fw-bold #{stats ? stats.totalAgents : 0}
+                  p.text-muted.mb-0 Farmer One Agents
+
+          // Register Farmer One Agent Form
+          #registerAgentSection.card.shadow-sm.mb-4(style='display: none;')
+            .card-header.bg-primary.text-white
+              h5.mb-0
+                i.fas.fa-user-plus.me-2
+                | Register New Farmer One Agent
+            .card-body
+              form(action='/OA/register-agent' method='post')
+                .row
+                  .col-md-6.mb-3
+                    label.form-label(for='Name1')
+                      i.fas.fa-user.me-1
+                      | Full Name *
+                    input.form-control(type='text' id='Name1' name='Name1' placeholder='Enter full name' required)
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='Gender1')
+                      i.fas.fa-venus-mars.me-1
+                      | Gender *
+                    select.form-select(id='Gender1' name='Gender1' required)
+                      option(value='') Select Gender
+                      option(value='Male') Male
+                      option(value='Female') Female
+                      option(value='Other') Other
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='phonenumber')
+                      i.fas.fa-phone.me-1
+                      | Phone Number *
+                    input.form-control(type='tel' id='phonenumber' name='phonenumber' placeholder='0700000000' required)
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='Ward1')
+                      i.fas.fa-map-marker-alt.me-1
+                      | District *
+                    input.form-control(type='text' id='Ward1' name='Ward1' placeholder='Enter district' required)
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='Nin1')
+                      i.fas.fa-id-card.me-1
+                      | National ID (NIN)
+                    input.form-control(type='text' id='Nin1' name='Nin1' placeholder='Enter NIN')
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='password')
+                      i.fas.fa-lock.me-1
+                      | Password *
+                    .input-group
+                      input.form-control(type='password' id='agent-password' name='password' placeholder='Minimum 6 characters' required minlength='6')
+                      button.btn.btn-outline-secondary(type='button' onclick='togglePassword("agent-password")' style='border-color: #dee2e6;')
+                        i#agent-password-icon.fas.fa-eye
+                  
+                  input(type='hidden' name='role' value='Farmer one')
+                  
+                  .col-12
+                    button.btn.btn-success.me-2(type='submit')
+                      i.fas.fa-user-plus.me-2
+                      | Register Agent
+                    button.btn.btn-secondary(type='button' onclick='hideSection("registerAgentSection")')
+                      i.fas.fa-times.me-2
+                      | Cancel
+
+          // Farmer One Agent Performance
+          if agentPerformance && agentPerformance.length
+            .card.shadow-sm.mb-4
+              .card-header.bg-success.text-white
+                h5.mb-0
+                  i.fas.fa-chart-bar.me-2
+                  | Farmer One Agent Performance
+              .card-body
+                .table-responsive
+                  table.table.table-hover.table-striped
+                    thead
+                      tr
+                        th Agent Name
+                        th District
+                        th Farmers
+                        th Active
+                        th Products
+                        th Pending
+                        th Approved
+                        th Rejected
+                    tbody
+                      each agent in agentPerformance
+                        tr
+                          td
+                            strong #{agent.agent}
+                          td #{agent.district}
+                          td
+                            span.badge.bg-primary #{agent.totalFarmers}
+                          td
+                            span.badge.bg-success #{agent.activeFarmers}
+                          td
+                            span.badge.bg-info #{agent.totalProducts}
+                          td
+                            span.badge.bg-warning #{agent.pendingProducts}
+                          td
+                            span.badge.bg-success #{agent.approvedProducts}
+                          td
+                            span.badge.bg-danger #{agent.rejectedProducts}
+          else
+            .alert.alert-info.mb-4
+              i.fas.fa-info-circle.me-2
+              | No Farmer One agents registered yet
+
+          .row
+            // Pending Products
+            .col-lg-6.mb-4
+              .card.shadow-sm
+                .card-header.bg-warning.text-dark
+                  h5.mb-0
+                    i.fas.fa-clock.me-2
+                    | Pending Products
+                .card-body(style='max-height: 400px; overflow-y: auto;')
+                  if pendingProductsList && pendingProductsList.length
+                    .list-group.list-group-flush
+                      each product in pendingProductsList
+                        .list-group-item.d-flex.justify-content-between.align-items-start
+                          .me-auto
+                            strong #{product.productName}
+                            br
+                            small.text-muted 
+                              i.fas.fa-user.me-1
+                              | #{product.owner_name}
+                            br
+                            small.text-success.fw-bold UGX #{product.price ? product.price.toLocaleString() : 'N/A'}
+                          div
+                            form(action=`/update_urbanfarmer` method='post' style='display: inline;')
+                              input(type='hidden' name='urbanfarmerID' value=product._id)
+                              button.btn.btn-sm.btn-success(type='submit' title='Approve')
+                                i.fas.fa-check
+                  else
+                    .text-center.py-5
+                      i.fas.fa-check-circle.fa-4x.text-success.mb-3
+                      p.text-muted No pending products - all reviewed!
+
+            // Recent Farmers
+            .col-lg-6.mb-4
+              .card.shadow-sm
+                .card-header.bg-primary.text-white
+                  h5.mb-0
+                    i.fas.fa-tractor.me-2
+                    | Recent Farmers
+                .card-body(style='max-height: 400px; overflow-y: auto;')
+                  if recentFarmers && recentFarmers.length
+                    .list-group.list-group-flush
+                      each farmer in recentFarmers
+                        .list-group-item
+                          .d-flex.justify-content-between.align-items-center
+                            div
+                              strong #{farmer.Name1}
+                              br
+                              small.text-muted
+                                i.fas.fa-phone.me-1
+                                | #{farmer.phonenumber}
+                              br
+                              small 
+                                span.badge(class=farmer.role === 'Urban farmer' ? 'bg-success' : 'bg-info') #{farmer.role}
+                              if farmer.registeredBy
+                                br
+                                small.text-success
+                                  i.fas.fa-user-tie.me-1
+                                  | Agent: #{farmer.registeredBy.Name1}
+                            div
+                              if farmer.verified
+                                span.badge.bg-success
+                                  i.fas.fa-check-circle.me-1
+                                  | Verified
+                              else
+                                span.badge.bg-warning
+                                  i.fas.fa-clock.me-1
+                                  | Unverified
+                  else
+                    .text-center.py-5
+                      i.fas.fa-user-plus.fa-4x.text-muted.mb-3
+                      p.text-muted No farmers registered yet
+
+          // Categories
+          .row
+            .col-12.mb-4
+              .card.shadow-sm
+                .card-header.bg-success.text-white
+                  h5.mb-0
+                    i.fas.fa-th-large.me-2
+                    | Product Categories
+                .card-body
+                  if categories && categories.length
+                    .row.g-3
+                      each category in categories
+                        .col-lg-2.col-md-3.col-sm-4.col-6
+                          .text-center
+                            .p-3.rounded.bg-light
+                              i(class=`fas ${category.icon || 'fa-box'} fa-2x text-success mb-2`)
+                              br
+                              small.fw-bold #{category.name}
+                    .text-center.mt-3
+                      a.btn.btn-outline-success(href='/categories')
+                        i.fas.fa-eye.me-2
+                        | View All Categories
+                  else
+                    .text-center.py-4
+                      i.fas.fa-folder-open.fa-3x.text-muted.mb-3
+                      p.text-muted No categories created yet
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      function showSection(sectionId) {
+        document.getElementById(sectionId).style.display = 'block';
+        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      function hideSection(sectionId) {
+        document.getElementById(sectionId).style.display = 'none';
+      }
+      
+      function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const icon = document.getElementById(fieldId + '-icon');
+        
+        if (passwordField.type === 'password') {
+          passwordField.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          passwordField.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }

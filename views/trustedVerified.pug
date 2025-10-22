@@ -1,0 +1,292 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css')
+    title Trusted & Verified - Ufarm
+    style.
+      .hero-banner {
+        background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%);
+        padding: 100px 0 60px;
+        color: white;
+      }
+      .verification-step {
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        position: relative;
+        height: 100%;
+        transition: all 0.3s ease;
+      }
+      .verification-step:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      }
+      .step-badge {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #198754, #146c43);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+      }
+      .trust-badge {
+        padding: 40px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 15px;
+        text-align: center;
+        height: 100%;
+        border: 3px solid #198754;
+      }
+      .officer-role {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        border-left: 5px solid #198754;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+
+  body
+    include includes/navbar.pug
+
+    // Hero Banner
+    section.hero-banner.text-center
+      .container
+        i.fas.fa-shield-alt.fa-5x.mb-4
+        h1.display-4.fw-bold Trusted & Verified Platform
+        p.lead All farmers and products are verified by agricultural officers
+        .mt-4
+          a.btn.btn-light.btn-lg.me-3(href='/product')
+            i.fas.fa-check-circle.me-2
+            | Browse Verified Products
+          a.btn.btn-outline-light.btn-lg(href='/about')
+            i.fas.fa-info-circle.me-2
+            | Learn More
+
+    // Trust & Safety Overview
+    section.py-5
+      .container
+        .row.align-items-center.mb-5
+          .col-lg-6
+            h2.mb-4
+              i.fas.fa-certificate.text-success.me-2
+              | Your Trust is Our Priority
+            p.lead.text-muted At Ufarm, every farmer, product, and transaction is verified for your safety and peace of mind.
+            p We understand that trust is the foundation of any marketplace. That's why we've implemented a comprehensive three-tier verification system managed by certified Agricultural Officers.
+            
+            .mt-4
+              .d-flex.align-items-center.mb-3
+                .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3(style='width: 50px; height: 50px;')
+                  i.fas.fa-user-check.fa-2x
+                .flex-grow-1
+                  h5.mb-0 Verified Farmers Only
+                  small.text-muted Every farmer undergoes strict verification
+              
+              .d-flex.align-items-center.mb-3
+                .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3(style='width: 50px; height: 50px;')
+                  i.fas.fa-clipboard-check.fa-2x
+                .flex-grow-1
+                  h5.mb-0 Product Approval Process
+                  small.text-muted All products reviewed before listing
+              
+              .d-flex.align-items-center
+                .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center.me-3(style='width: 50px; height: 50px;')
+                  i.fas.fa-shield-virus.fa-2x
+                .flex-grow-1
+                  h5.mb-0 Quality Assurance
+                  small.text-muted Continuous monitoring and feedback
+
+          .col-lg-6
+            img(src='https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600' alt='Trust & Verification' class='img-fluid rounded shadow')
+
+    // Three-Tier Verification System
+    section.py-5.bg-light
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-layer-group.text-success.me-2
+          | Our Three-Tier Verification System
+        
+        .row.g-4.mb-5
+          .col-md-4
+            .verification-step.text-center
+              .step-badge 1
+              i.fas.fa-building.fa-3x.text-success.mb-3
+              h4 Agriculture Officer
+              p Government-certified officers oversee the entire platform
+              ul.list-unstyled.text-start.mt-3
+                li ✓ Verify and approve all agents
+                li ✓ Final product approval
+                li ✓ Handle disputes and complaints
+                li ✓ Monitor platform quality
+          
+          .col-md-4
+            .verification-step.text-center
+              .step-badge 2
+              i.fas.fa-user-tie.fa-3x.text-success.mb-3
+              h4 Farmer One Agent
+              p Trained agents register and support farmers
+              ul.list-unstyled.text-start.mt-3
+                li ✓ Register new urban farmers
+                li ✓ Initial product review
+                li ✓ Provide farming guidance
+                li ✓ Ensure quality standards
+          
+          .col-md-4
+            .verification-step.text-center
+              .step-badge 3
+              i.fas.fa-tractor.fa-3x.text-success.mb-3
+              h4 Urban Farmer
+              p Verified farmers sell quality products
+              ul.list-unstyled.text-start.mt-3
+                li ✓ Registered by certified agents
+                li ✓ Products reviewed and approved
+                li ✓ Maintain quality standards
+                li ✓ Receive ratings from buyers
+
+    // Verification Process
+    section.py-5
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-tasks.text-success.me-2
+          | How We Verify Farmers & Products
+        
+        .row.g-4
+          .col-md-6.col-lg-3
+            .card.border-success.h-100
+              .card-body.text-center
+                .bg-success.text-white.rounded-circle.mx-auto.mb-3(style='width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;')
+                  strong Step 1
+                h5.card-title Farmer Registration
+                p.card-text Farmer One agent visits the farm, verifies location, and checks credentials (NIN, phone, address)
+          
+          .col-md-6.col-lg-3
+            .card.border-success.h-100
+              .card-body.text-center
+                .bg-success.text-white.rounded-circle.mx-auto.mb-3(style='width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;')
+                  strong Step 2
+                h5.card-title Farm Inspection
+                p.card-text Agent inspects farming practices, soil quality, water sources, and sustainability methods
+          
+          .col-md-6.col-lg-3
+            .card.border-success.h-100
+              .card-body.text-center
+                .bg-success.text-white.rounded-circle.mx-auto.mb-3(style='width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;')
+                  strong Step 3
+                h5.card-title Product Review
+                p.card-text When farmer uploads products, agent reviews photos, descriptions, pricing, and quality claims
+          
+          .col-md-6.col-lg-3
+            .card.border-success.h-100
+              .card-body.text-center
+                .bg-success.text-white.rounded-circle.mx-auto.mb-3(style='width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;')
+                  strong Step 4
+                h5.card-title Final Approval
+                p.card-text Agriculture Officer conducts final review and approves product for public listing
+
+    // Agricultural Officer Responsibilities
+    section.py-5.bg-light
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-user-shield.text-success.me-2
+          | Role of Agriculture Officers
+        
+        .row
+          .col-lg-8.mx-auto
+            .officer-role
+              h4
+                i.fas.fa-check-circle.text-success.me-2
+                | Platform Oversight
+              p Monitor all activities, ensure compliance with agricultural standards, and maintain platform integrity.
+            
+            .officer-role
+              h4
+                i.fas.fa-check-circle.text-success.me-2
+                | Agent Management
+              p Register, train, and oversee Farmer One agents across different districts.
+            
+            .officer-role
+              h4
+                i.fas.fa-check-circle.text-success.me-2
+                | Quality Control
+              p Conduct random farm inspections, product quality checks, and enforce organic certification standards.
+            
+            .officer-role
+              h4
+                i.fas.fa-check-circle.text-success.me-2
+                | Dispute Resolution
+              p Handle customer complaints, resolve conflicts between farmers and buyers, and ensure fair practices.
+
+    // Trust Badges
+    section.py-5
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-award.text-warning.me-2
+          | What You Get with Ufarm
+        
+        .row.g-4
+          .col-md-6.col-lg-3
+            .trust-badge
+              i.fas.fa-shield-alt.fa-4x.text-success.mb-3
+              h5 100% Verified
+              p Every farmer passes our strict verification process
+          
+          .col-md-6.col-lg-3
+            .trust-badge
+              i.fas.fa-handshake.fa-4x.text-success.mb-3
+              h5 Secure Transactions
+              p Safe and secure payment processing
+          
+          .col-md-6.col-lg-3
+            .trust-badge
+              i.fas.fa-headset.fa-4x.text-success.mb-3
+              h5 24/7 Support
+              p Dedicated customer support team
+          
+          .col-md-6.col-lg-3
+            .trust-badge
+              i.fas.fa-undo.fa-4x.text-success.mb-3
+              h5 Satisfaction Guaranteed
+              p Quality guaranteed or money back
+
+    // Statistics
+    section.py-5.bg-success.text-white
+      .container
+        .row.text-center.g-4
+          .col-md-3
+            h2.display-4.fw-bold 500+
+            p.lead Verified Farmers
+          .col-md-3
+            h2.display-4.fw-bold 98%
+            p.lead Customer Satisfaction
+          .col-md-3
+            h2.display-4.fw-bold 1000+
+            p.lead Products Approved
+          .col-md-3
+            h2.display-4.fw-bold 50+
+            p.lead Districts Covered
+
+    // Call to Action
+    section.py-5.text-center
+      .container
+        h2.mb-4 Shop with Confidence on Ufarm!
+        p.lead.mb-4 Join thousands of satisfied customers enjoying verified products
+        a.btn.btn-success.btn-lg(href='/product')
+          i.fas.fa-shopping-basket.me-2
+          | Browse Verified Products
+
+    include includes/back-button.pug
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

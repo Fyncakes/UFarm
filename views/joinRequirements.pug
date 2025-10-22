@@ -1,0 +1,340 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title Join Ufarm - Registration Requirements
+    style.
+      .hero-section {
+        background: linear-gradient(135deg, rgba(126, 217, 87, 0.75), rgba(92, 179, 45, 0.75)), 
+                    url('/image/farmers-working together.jpg') center/cover no-repeat;
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 2rem;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        background-blend-mode: multiply;
+      }
+      .nav-pills .nav-link {
+        border-radius: 50px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .nav-pills .nav-link.active {
+        background: linear-gradient(135deg, #7ed957, #5cb32d);
+      }
+      .requirement-item {
+        padding: 1rem;
+        border-left: 3px solid #7ed957;
+        background: #f8f9fa;
+        margin-bottom: 0.5rem;
+        border-radius: 0 8px 8px 0;
+        transition: all 0.3s;
+      }
+      .requirement-item:hover {
+        transform: translateX(5px);
+        background: #e3f2fd;
+      }
+      .step-number {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #7ed957, #5cb32d);
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 1rem;
+      }
+      .contact-card {
+        background: linear-gradient(135deg, #2196F3, #1976D2);
+        color: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+      }
+      .contact-item {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s;
+      }
+      .contact-item:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-5px);
+      }
+      .contact-item i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .contact-item a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+      }
+  body
+    include includes/navbar.pug
+
+    // Hero Section
+    .hero-section
+      .container.text-center
+        i.fas.fa-users.fa-4x.mb-3(style='text-shadow: 3px 3px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);')
+        h1.display-4.fw-bold(style='text-shadow: 3px 3px 15px rgba(0,0,0,0.8), 0 0 25px rgba(0,0,0,0.6);') Join the Ufarm Network
+        p.lead(style='text-shadow: 2px 2px 10px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5); font-size: 1.5rem;') Become a verified Urban Farmer or Farmer One Agent
+        a.btn.btn-light.btn-lg.mt-3.shadow-lg(href='/Register' style='font-weight: 600; border: 3px solid white;')
+          i.fas.fa-user-plus.me-2
+          | Register as Buyer
+
+    .container.my-5
+      include includes/back-button.pug
+      include includes/flash-messages.pug
+      
+      // Role Selection Tabs
+      ul.nav.nav-pills.nav-fill.mb-4#roleTabs(role='tablist')
+        li.nav-item(role='presentation')
+          button.nav-link.active#farmer-tab(data-bs-toggle='pill' data-bs-target='#farmer' type='button' role='tab')
+            i.fas.fa-tractor.me-2
+            | Urban Farmer
+        li.nav-item(role='presentation')
+          button.nav-link#agent-tab(data-bs-toggle='pill' data-bs-target='#agent' type='button' role='tab')
+            i.fas.fa-user-tie.me-2
+            | Farmer One Agent
+      
+      // Tab Content
+      .tab-content#roleTabContent
+        // Urban Farmer Tab
+        .tab-pane.fade.show.active#farmer(role='tabpanel')
+          .row
+            .col-lg-6.mb-4
+              .card.shadow-sm.h-100
+                .card-header.bg-success.text-white
+                  h4.mb-0
+                    i.fas.fa-clipboard-list.me-2
+                    | Required Documents
+                .card-body
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Full Name 
+                    span.text-muted (as on National ID)
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong National ID (NIN) 
+                    span.text-muted Valid Uganda ID
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Phone Number 
+                    span.text-muted Active mobile
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Location Details 
+                    span.text-muted District, Village
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Farm Information 
+                    span.text-muted Size, type, location
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Passport Photo 
+                    span.text-muted Recent clear photo
+                  .requirement-item
+                    i.fas.fa-info-circle.text-info.me-2
+                    strong Land Proof 
+                    span.text-muted (Recommended)
+            
+            .col-lg-6.mb-4
+              .card.shadow-sm.h-100
+                .card-header.bg-primary.text-white
+                  h4.mb-0
+                    i.fas.fa-route.me-2
+                    | How to Register
+                .card-body
+                  .d-flex.align-items-start.mb-3
+                    .step-number 1
+                    .flex-grow-1
+                      h6.mb-1 Find Farmer One Agent
+                      p.text-muted.mb-0.small Contact an agent in your district
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 2
+                    .flex-grow-1
+                      h6.mb-1 Prepare Documents
+                      p.text-muted.mb-0.small Gather all required documents
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 3
+                    .flex-grow-1
+                      h6.mb-1 Farm Verification
+                      p.text-muted.mb-0.small Agent visits and verifies your farm
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 4
+                    .flex-grow-1
+                      h6.mb-1 Account Creation
+                      p.text-muted.mb-0.small Agent registers you in the system
+                  
+                  .d-flex.align-items-start
+                    .step-number 5
+                    .flex-grow-1
+                      h6.mb-1 Start Selling!
+                      p.text-muted.mb-0.small Upload products and earn money
+                  
+                  .alert.alert-warning.mt-4.mb-0
+                    i.fas.fa-exclamation-triangle.me-2
+                    small All information verified. False info = account suspension.
+        
+        // Farmer One Agent Tab
+        .tab-pane.fade#agent(role='tabpanel')
+          .row
+            .col-lg-6.mb-4
+              .card.shadow-sm.h-100
+                .card-header.bg-primary.text-white
+                  h4.mb-0
+                    i.fas.fa-clipboard-list.me-2
+                    | Required Documents
+                .card-body
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Full Name 
+                    span.text-muted (as on National ID)
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong National ID (NIN) 
+                    span.text-muted Valid Uganda ID
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Phone & Email 
+                    span.text-muted Active contacts
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Location 
+                    span.text-muted District/Region
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Qualifications 
+                    span.text-muted Agriculture cert (preferred)
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Experience Letter 
+                    span.text-muted Previous work
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Passport Photo 
+                    span.text-muted Recent photo
+                  .requirement-item
+                    i.fas.fa-check-circle.text-success.me-2
+                    strong Recommendation 
+                    span.text-muted From local council
+            
+            .col-lg-6.mb-4
+              .card.shadow-sm.h-100
+                .card-header.bg-success.text-white
+                  h4.mb-0
+                    i.fas.fa-route.me-2
+                    | How to Register
+                .card-body
+                  .d-flex.align-items-start.mb-3
+                    .step-number 1
+                    .flex-grow-1
+                      h6.mb-1 Contact Agriculture Officer
+                      p.text-muted.mb-0.small Use contact details below
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 2
+                    .flex-grow-1
+                      h6.mb-1 Submit Application
+                      p.text-muted.mb-0.small Provide all required documents
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 3
+                    .flex-grow-1
+                      h6.mb-1 Background Check
+                      p.text-muted.mb-0.small Officer verifies your credentials
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 4
+                    .flex-grow-1
+                      h6.mb-1 Training Program
+                      p.text-muted.mb-0.small Complete mandatory training (10 hours)
+                  
+                  .d-flex.align-items-start.mb-3
+                    .step-number 5
+                    .flex-grow-1
+                      h6.mb-1 Account Creation
+                      p.text-muted.mb-0.small Officer registers you in system
+                  
+                  .d-flex.align-items-start
+                    .step-number 6
+                    .flex-grow-1
+                      h6.mb-1 Start Working!
+                      p.text-muted.mb-0.small Register and support farmers
+                  
+                  .alert.alert-info.mt-4.mb-0
+                    i.fas.fa-info-circle.me-2
+                    small You'll support farmers in your region and earn commission.
+      
+      // Contact Section
+      .contact-card.shadow-lg
+        .text-center.mb-4
+          h2.fw-bold
+            i.fas.fa-phone-alt.me-2
+            | Contact Agriculture Officers
+          p.mb-0 Ready to join? Get in touch today!
+        
+        .row.g-3
+          .col-md-4
+            .contact-item
+              i.fas.fa-phone
+              h5.mt-2 Phone
+              a(href='tel:+256788578208') +256 788 578 208
+              br
+              a(href='tel:+256700000000') +256 700 000 000
+          
+          .col-md-4
+            .contact-item
+              i.fas.fa-envelope
+              h5.mt-2 Email
+              a(href='mailto:info@ufarm.ug') info@ufarm.ug
+              br
+              a(href='mailto:agriculture@ufarm.ug') agriculture@ufarm.ug
+          
+          .col-md-4
+            .contact-item
+              i.fas.fa-map-marker-alt
+              h5.mt-2 Office
+              p.mb-0
+                | Ministry of Agriculture
+                br
+                | Entebbe Road, Kampala
+      
+      // Quick Benefits
+      .row.mt-5.g-4
+        .col-md-4
+          .card.border-0.shadow-sm.text-center.h-100
+            .card-body.p-4
+              i.fas.fa-chart-line.fa-3x.text-success.mb-3
+              h5 Grow Your Business
+              p.text-muted.small Access to thousands of buyers and fair market prices
+        
+        .col-md-4
+          .card.border-0.shadow-sm.text-center.h-100
+            .card-body.p-4
+              i.fas.fa-shield-alt.fa-3x.text-primary.mb-3
+              h5 Verified & Trusted
+              p.text-muted.small Complete verification ensures trust and credibility
+        
+        .col-md-4
+          .card.border-0.shadow-sm.text-center.h-100
+            .card-body.p-4
+              i.fas.fa-hands-helping.fa-3x.text-info.mb-3
+              h5 Professional Support
+              p.text-muted.small Ongoing training and guidance from experts
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')

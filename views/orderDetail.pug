@@ -1,0 +1,143 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title Order Details - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      a.btn.btn-outline-secondary.mb-4(href='/orders')
+        i.fas.fa-arrow-left.me-2
+        | Back to Orders
+
+      if success_msg
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+
+      .row
+        .col-lg-8
+          .card.shadow-sm.mb-4
+            .card-body
+              h3.card-title.mb-4 Order ##{order.orderNumber}
+              
+              .row.mb-4
+                .col-md-6
+                  h6 Order Status
+                  case order.orderStatus
+                    when 'pending'
+                      span.badge.bg-warning.text-dark.fs-6 Pending
+                    when 'confirmed'
+                      span.badge.bg-info.fs-6 Confirmed
+                    when 'processing'
+                      span.badge.bg-primary.fs-6 Processing
+                    when 'ready'
+                      span.badge.bg-success.fs-6 Ready
+                    when 'in_transit'
+                      span.badge.bg-primary.fs-6 In Transit
+                    when 'delivered'
+                      span.badge.bg-success.fs-6 Delivered
+                    when 'cancelled'
+                      span.badge.bg-danger.fs-6 Cancelled
+                
+                .col-md-6.mt-3.mt-md-0
+                  h6 Payment Status
+                  case order.paymentStatus
+                    when 'pending'
+                      span.badge.bg-warning.text-dark.fs-6 Pending
+                    when 'paid'
+                      span.badge.bg-success.fs-6 Paid
+                    when 'failed'
+                      span.badge.bg-danger.fs-6 Failed
+              
+              hr
+              
+              h5.mb-3 Order Items
+              each item in order.items
+                .row.mb-3.pb-3.border-bottom
+                  .col-md-2.col-3
+                    img.img-fluid.rounded(src='/' + item.image alt=item.productName)
+                  .col-md-6.col-9
+                    h6 #{item.productName}
+                    p.text-muted.small.mb-1 Seller: #{item.seller_name}
+                    p.text-muted.small.mb-0 Quantity: #{item.quantity}
+                  .col-md-4.text-end
+                    p.fw-bold.text-success UGX #{(item.price * item.quantity).toLocaleString()}
+
+        .col-lg-4
+          .card.shadow-sm.mb-4
+            .card-body
+              h5.card-title Customer Information
+              hr
+              p.mb-2
+                strong Name: 
+                br
+                | #{order.buyer_name}
+              p.mb-2
+                strong Phone: 
+                br
+                | #{order.buyer_phone}
+              p.mb-2
+                strong Delivery Address: 
+                br
+                | #{order.deliveryAddress}
+              if order.deliveryLocation
+                p.mb-2
+                  strong Location: 
+                  br
+                  | #{order.deliveryLocation}
+              p.mb-2
+                strong Payment Method: 
+                br
+                | #{order.paymentMethod.replace(/_/g, ' ').toUpperCase()}
+              if order.notes
+                p.mb-0
+                  strong Notes: 
+                  br
+                  | #{order.notes}
+          
+          .card.shadow-sm.mb-4
+            .card-body
+              h5.card-title Order Summary
+              hr
+              .d-flex.justify-content-between.mb-2
+                span Total Items:
+                strong #{order.items.length}
+              .d-flex.justify-content-between.mb-3
+                h6 Total:
+                h6.text-success UGX #{order.totalPrice.toLocaleString()}
+              
+              if user.role === 'Farmer one' || user.role === 'Urban farmer' || user.role === 'Agriculture Officer'
+                hr
+                h6 Update Order
+                form(action=`/order/${order._id}/update` method='post')
+                  .mb-3
+                    label.form-label Order Status
+                    select.form-select(name='orderStatus')
+                      option(value='pending' selected=order.orderStatus === 'pending') Pending
+                      option(value='confirmed' selected=order.orderStatus === 'confirmed') Confirmed
+                      option(value='processing' selected=order.orderStatus === 'processing') Processing
+                      option(value='ready' selected=order.orderStatus === 'ready') Ready
+                      option(value='in_transit' selected=order.orderStatus === 'in_transit') In Transit
+                      option(value='delivered' selected=order.orderStatus === 'delivered') Delivered
+                  
+                  .mb-3
+                    label.form-label Payment Status
+                    select.form-select(name='paymentStatus')
+                      option(value='pending' selected=order.paymentStatus === 'pending') Pending
+                      option(value='paid' selected=order.paymentStatus === 'paid') Paid
+                      option(value='failed' selected=order.paymentStatus === 'failed') Failed
+                  
+                  button.btn.btn-primary.w-100(type='submit')
+                    i.fas.fa-save.me-2
+                    | Update Order
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

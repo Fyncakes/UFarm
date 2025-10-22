@@ -1,0 +1,264 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title Farmer One Agent Dashboard - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container-fluid.my-4
+      .row
+        .col-md-3
+          .card.bg-light.shadow-sm.border-0.h-100
+            .card-body
+              h5.card-title.text-primary.mb-3
+                i.fas.fa-users-cog.me-2
+                | #{user.Name1}
+              p.text-muted.mb-4 Farmer One Agent
+              if agentName
+                small.d-block.text-success.mb-2
+                  i.fas.fa-check-circle.me-1
+                  | Verified Agent
+              hr.mb-3
+              ul.list-unstyled.dashboard-nav
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='#register-farmer' onclick='document.getElementById("register-farmer").scrollIntoView({ behavior: "smooth" })')
+                    i.fas.fa-user-plus.me-2.text-success
+                    | Register Farmer
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='#products' onclick='document.getElementById("products").scrollIntoView({ behavior: "smooth" })')
+                    i.fas.fa-box.me-2.text-primary
+                    | Review Products
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='#farmers' onclick='document.getElementById("farmers").scrollIntoView({ behavior: "smooth" })')
+                    i.fas.fa-users.me-2.text-info
+                    | My Farmers
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/orders')
+                    i.fas.fa-shopping-bag.me-2.text-warning
+                    | Orders
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/profile')
+                    i.fas.fa-user.me-2.text-secondary
+                    | Profile
+
+        .col-md-9
+          h2.mb-4
+            i.fas.fa-users-cog.me-2.text-success
+            | Farmer One Agent Dashboard
+          
+          if agentName
+            p.text-muted.mb-4
+              strong Agent: 
+              | #{agentName}
+              |  • 
+              | You see only YOUR registered farmers and their products
+
+          include includes/flash-messages.pug
+
+          // Statistics Cards
+          .row.mb-4
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-box.fa-3x.text-primary.mb-3
+                  h3.fw-bold #{stats ? stats.totalProducts : 0}
+                  p.text-muted.mb-0 Total Products
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-clock.fa-3x.text-warning.mb-3
+                  h3.fw-bold #{stats ? stats.pendingProducts : 0}
+                  p.text-muted.mb-0 Pending Review
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-check-circle.fa-3x.text-success.mb-3
+                  h3.fw-bold #{stats ? stats.approvedProducts : 0}
+                  p.text-muted.mb-0 Approved
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-users.fa-3x.text-info.mb-3
+                  h3.fw-bold #{stats ? stats.totalFarmers : 0}
+                  p.text-muted.mb-0 Registered Farmers
+
+          // Register Farmer Form
+          #register-farmer.card.shadow-sm.mb-4
+            .card-header.bg-success.text-white
+              h5.mb-0
+                i.fas.fa-user-plus.me-2
+                | Register New Urban Farmer
+            .card-body
+              form(action='/FO' method='post')
+                .row
+                  .col-md-6.mb-3
+                    label.form-label(for='Name1')
+                      i.fas.fa-user.me-1
+                      | Full Name *
+                    input.form-control(type='text' id='Name1' name='Name1' placeholder='Enter full name' required)
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='Gender1')
+                      i.fas.fa-venus-mars.me-1
+                      | Gender
+                    select.form-select(id='Gender1' name='Gender1')
+                      option(value='') Select Gender
+                      option(value='Male') Male
+                      option(value='Female') Female
+                      option(value='Other') Other
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='phonenumber')
+                      i.fas.fa-phone.me-1
+                      | Phone Number *
+                    input.form-control(type='tel' id='phonenumber' name='phonenumber' required placeholder='0700000000')
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='email')
+                      i.fas.fa-envelope.me-1
+                      | Email
+                    input.form-control(type='email' id='email' name='email' placeholder='farmer@example.com')
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='Nin1')
+                      i.fas.fa-id-card.me-1
+                      | National ID (NIN)
+                    input.form-control(type='text' id='Nin1' name='Nin1' placeholder='Enter NIN')
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='Ward1')
+                      i.fas.fa-map-marker-alt.me-1
+                      | Ward/District
+                    input.form-control(type='text' id='Ward1' name='Ward1' placeholder='Enter district')
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='role')
+                      i.fas.fa-user-tag.me-1
+                      | Role *
+                    select.form-select(id='role' name='role' required readonly)
+                      option(value='Urban farmer' selected) Urban Farmer
+                  
+                  .col-md-6.mb-3
+                    label.form-label(for='password')
+                      i.fas.fa-lock.me-1
+                      | Password *
+                    .input-group
+                      input.form-control(type='password' id='password' name='password' required minlength='6' placeholder='Minimum 6 characters')
+                      button.btn.btn-outline-secondary(type='button' onclick='togglePassword()' style='border-color: #dee2e6;')
+                        i#passwordIcon.fas.fa-eye
+                    small.form-text.text-muted Username will be the full name entered above
+                  
+                  .col-12
+                    button.btn.btn-success.me-2(type='submit')
+                      i.fas.fa-user-plus.me-2
+                      | Register Farmer
+
+          // Products Review Section
+          #products.card.shadow-sm.mb-4
+            .card-header.bg-warning.text-dark
+              h5.mb-0
+                i.fas.fa-box.me-2
+                | Products for Review
+            .card-body(style='max-height: 600px; overflow-y: auto;')
+              if products && products.length
+                .table-responsive
+                  table.table.table-hover.table-striped
+                    thead
+                      tr
+                        th Image
+                        th Product
+                        th Price
+                        th Stock
+                        th Farmer
+                        th Status
+                        th Actions
+                    tbody
+                      each product in products
+                        tr
+                          td
+                            img.rounded.shadow-sm(src='/' + product.image alt=product.productName style='width: 60px; height: 60px; object-fit: cover;')
+                          td
+                            strong #{product.productName}
+                            br
+                            small.text-muted #{product.description ? product.description.substring(0, 50) + '...' : ''}
+                          td
+                            span.badge.bg-success.fs-6 UGX #{product.price.toLocaleString()}
+                          td #{product.quantity}
+                          td
+                            i.fas.fa-user.me-1
+                            | #{product.owner_name}
+                          td
+                            case product.status
+                              when 'approved'
+                                span.badge.bg-success
+                                  i.fas.fa-check-circle.me-1
+                                  | Approved
+                              when 'pending'
+                                span.badge.bg-warning.text-dark
+                                  i.fas.fa-clock.me-1
+                                  | Pending
+                              when 'rejected'
+                                span.badge.bg-danger
+                                  i.fas.fa-times-circle.me-1
+                                  | Rejected
+                          td
+                            if product.status === 'pending'
+                              form(action='/approve' method='post' style='display: inline;')
+                                input(type='hidden' name='id' value=product._id)
+                                button.btn.btn-success.btn-sm.me-1(type='submit' title='Approve')
+                                  i.fas.fa-check
+                              form(action='/FO/reject/' + product._id method='post' style='display: inline;')
+                                button.btn.btn-danger.btn-sm(type='submit' title='Reject')
+                                  i.fas.fa-times
+                            else
+                              small.text-muted -
+              else
+                .text-center.py-5
+                  i.fas.fa-box-open.fa-4x.text-muted.mb-3
+                  p.text-muted No products to review
+
+          // Recent Farmers Section
+          if recentFarmers && recentFarmers.length
+            #farmers.card.shadow-sm.mb-4
+              .card-header.bg-primary.text-white
+                h5.mb-0
+                  i.fas.fa-users.me-2
+                  | My Registered Farmers
+              .card-body(style='max-height: 400px; overflow-y: auto;')
+                .list-group.list-group-flush
+                  each farmer in recentFarmers
+                    .list-group-item
+                      .d-flex.justify-content-between.align-items-center
+                        div
+                          strong #{farmer.Name1}
+                          br
+                          small.text-muted
+                            i.fas.fa-phone.me-1
+                            | #{farmer.phonenumber || 'No phone'}
+                          br
+                          small.text-muted
+                            i.fas.fa-calendar-alt.me-1
+                            | Registered #{new Date(farmer.createdAt).toLocaleDateString()}
+                        div
+                          span.badge.bg-success #{farmer.role}
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const passwordIcon = document.getElementById('passwordIcon');
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          passwordIcon.classList.remove('fa-eye');
+          passwordIcon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          passwordIcon.classList.remove('fa-eye-slash');
+          passwordIcon.classList.add('fa-eye');
+        }
+      }

@@ -1,0 +1,97 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+  link(rel='stylesheet' href='css/customer.css')
+  title Booking and Ordering Page
+section
+  .navbar-dark
+    nav.navbar.navbar-expand-lg.navbar-light.text-bg-light
+      .container-fluid
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarTogglerDemo01' aria-controls='navbarTogglerDemo01' aria-expanded='false' aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarTogglerDemo01.collapse.navbar-collapse
+          a.navbar(href='/Sign')
+            b U
+          | farm
+          ul.navbar-nav.me-auto.mb-2.mb-lg-0
+            li.nav-item
+              a.nav-link.active(aria-current='page' href='/product') Products
+            li.nav-item
+              a.nav-link(href='/about') About us
+            li.nav-item
+              a.nav-link(href='/Register' tabindex='-1' aria-disabled='true') Sign Up
+            form.d-flex(action='/logout' method='post')
+                button.btn.btn-outline-success(type='submit') Back
+          form.d-flex
+            .right-container
+              img.filter(src='/public/image/8679934_filter_2_line_icon.png' alt='')
+              img.cart(src='/public/image/326700_cart_shopping_icon.png' alt='')
+              img.help(src='/public/image/9044505_help_desk_icon.png' alt='')
+section.main-container
+  .sidebar
+    form(action='')
+      .sidebar-group
+        h3.sg-title  Categories
+        input#Horticulture(type='checkbox' name='Horticulture' value='Horticulture')
+        label(for='Horticulture') Horticulture
+        br
+        input#Poultry(type='checkbox' name='Poultry' value='Poultry')
+        label(for='Poultry') Poultry
+        br
+        input#Dairy(type='checkbox' name='Dairy' value='Dairy')
+        label(for='Dairy') Dairy
+        br
+  .row
+    .col-4
+      .products-container
+        .upcoming-image-box
+          img(src='image/eggs.jpg' style='border-radius: 2rem;' alt='')
+          p.approved-products Ready to Buy
+          .button
+            a.btn(href='#') Order
+            a.btn(href='#') Booking
+    .col-4
+      .products-container
+        .upcoming-image-box
+          img(src='image/gettyimages-1407691874-612x612.jpg' style='border-radius: 2rem;' alt='')
+          p.approved-products Ready to Buy
+          .button
+            a.btn(href='#') Order
+            a.btn(href='#') Booking
+    .col-4
+      .products-container
+        .upcoming-image-box
+          img(src='image/gettyimages-1059690868-612x612.jpg' style='border-radius: 2rem;' alt='')
+          p.approved-products Ready to Buy
+          .button
+            a.btn(href='#') Order
+            a.btn(href='#') Booking
+  .row
+    .col-4
+      .products-container
+        .upcoming-image-box
+          img(src='image/gettyimages-1202320565-612x612.jpg' style='border-radius: 2rem;' alt='')
+          p.approved-products Ready to Buy
+          .button
+            a.btn(href='#') Order
+            a.btn(href='#') Booking
+    .col-4
+      .products-container
+        .upcoming-image-box
+          img(src='image/gettyimages-520670124-612x612.jpg' style='border-radius: 2rem;' alt='')
+          p.approved-products Ready to Buy
+          .button
+            a.btn(href='#') Order
+            a.btn(href='#') Booking
+    .col-4
+      .products-container
+        .upcoming-image-box
+          img(src='image/gettyimages-1407691874-612x612.jpg' style='border-radius: 2rem;' alt='')
+          p.approved-products Ready to Buy
+          .button
+            a.btn(href='#') Order
+            a.btn(href='#') Booking
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')

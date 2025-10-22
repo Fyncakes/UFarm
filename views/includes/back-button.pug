@@ -1,0 +1,24 @@
+// Back Button Component
+.back-button-container.mb-3
+  button.btn.btn-outline-secondary.btn-sm(onclick='history.back()')
+    i.fas.fa-arrow-left.me-2
+    | Back
+  
+style.
+  .back-button-container {
+    position: sticky;
+    top: 70px;
+    z-index: 100;
+  }
+  .back-button-container .btn {
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .back-button-container .btn:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+

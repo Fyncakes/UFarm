@@ -1,0 +1,182 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title Urban Farmer Dashboard - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container-fluid.my-4
+      .row
+        .col-md-3
+          .card.bg-light.shadow-sm.border-0.h-100
+            .card-body
+              h5.card-title.text-primary.mb-3
+                i.fas.fa-seedling.me-2
+                | #{user.Name1}
+              p.text-muted.mb-4 Urban Farmer
+              if agentInfo
+                small.d-block.text-success.mb-2
+                  i.fas.fa-user-tie.me-1
+                  | Registered by: #{agentInfo}
+              hr.mb-3
+              ul.list-unstyled.dashboard-nav
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/my-products')
+                    i.fas.fa-box.me-2.text-primary
+                    | My Products
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/add-product')
+                    i.fas.fa-plus-circle.me-2.text-success
+                    | Add New Product
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/farmer-orders')
+                    i.fas.fa-shopping-bag.me-2.text-info
+                    | My Orders
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/profile')
+                    i.fas.fa-user-edit.me-2.text-warning
+                    | Edit Profile
+
+        .col-md-9
+          h2.mb-4
+            i.fas.fa-seedling.me-2.text-success
+            | Urban Farmer Dashboard
+          
+          p.text-muted.mb-4 Welcome back! Manage your products and orders here.
+
+          include includes/flash-messages.pug
+
+          // Statistics Cards
+          .row.mb-4
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-box.fa-3x.text-primary.mb-3
+                  h3.fw-bold #{stats ? stats.totalProducts : 0}
+                  p.text-muted.mb-0 Total Products
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-check-circle.fa-3x.text-success.mb-3
+                  h3.fw-bold #{stats ? stats.approvedProducts : 0}
+                  p.text-muted.mb-0 Approved
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-clock.fa-3x.text-warning.mb-3
+                  h3.fw-bold #{stats ? stats.pendingProducts : 0}
+                  p.text-muted.mb-0 Pending Review
+            .col-lg-3.col-md-6.col-sm-6.mb-3
+              .card.text-center.shadow-sm.border-0.hover-lift
+                .card-body
+                  i.fas.fa-times-circle.fa-3x.text-danger.mb-3
+                  h3.fw-bold #{stats ? stats.rejectedProducts : 0}
+                  p.text-muted.mb-0 Rejected
+
+          // Quick Actions
+          .row.mb-4
+            .col-md-6.mb-3
+              .card.shadow-sm.border-0
+                .card-body.text-center.py-4
+                  i.fas.fa-plus-circle.fa-4x.text-success.mb-3
+                  h5 Add New Product
+                  p.text-muted Upload your farm produce to reach buyers
+                  a.btn.btn-success(href='/add-product')
+                    i.fas.fa-upload.me-2
+                    | Upload Product
+            .col-md-6.mb-3
+              .card.shadow-sm.border-0
+                .card-body.text-center.py-4
+                  i.fas.fa-shopping-bag.fa-4x.text-info.mb-3
+                  h5 View Orders
+                  p.text-muted Check orders from your customers
+                  a.btn.btn-info.text-white(href='/farmer-orders')
+                    i.fas.fa-eye.me-2
+                    | View Orders
+
+          // Tips & Help Section
+          .card.shadow-sm.mb-4
+            .card-header.bg-success.text-white
+              h5.mb-0
+                i.fas.fa-lightbulb.me-2
+                | Tips for Success
+            .card-body
+              .row
+                .col-md-6
+                  ul.list-unstyled
+                    li.mb-2
+                      i.fas.fa-check.text-success.me-2
+                      strong Upload Quality Photos: 
+                      | Use clear, well-lit images of your products
+                    li.mb-2
+                      i.fas.fa-check.text-success.me-2
+                      strong Set Fair Prices: 
+                      | Research market rates for competitive pricing
+                    li.mb-2
+                      i.fas.fa-check.text-success.me-2
+                      strong Update Stock: 
+                      | Keep your inventory quantities accurate
+                .col-md-6
+                  ul.list-unstyled
+                    li.mb-2
+                      i.fas.fa-check.text-success.me-2
+                      strong Respond Quickly: 
+                      | Fast responses lead to more sales
+                    li.mb-2
+                      i.fas.fa-check.text-success.me-2
+                      strong Be Honest: 
+                      | Accurate descriptions build trust
+                    li.mb-2
+                      i.fas.fa-check.text-success.me-2
+                      strong Stay Active: 
+                      | Regular updates attract more buyers
+
+          // Recent Products Section
+          .card.shadow-sm.mb-4
+            .card-header.bg-primary.text-white
+              .d-flex.justify-content-between.align-items-center
+                h5.mb-0
+                  i.fas.fa-box.me-2
+                  | Your Recent Products
+                a.btn.btn-light.btn-sm(href='/my-products')
+                  i.fas.fa-eye.me-1
+                  | View All
+            .card-body
+              .alert.alert-info
+                i.fas.fa-info-circle.me-2
+                | Your products will appear here once you upload them. 
+                a.alert-link(href='/add-product') Click here to add your first product!
+
+          // Getting Started Guide
+          .card.shadow-sm.mb-4
+            .card-header.bg-warning.text-dark
+              h5.mb-0
+                i.fas.fa-question-circle.me-2
+                | Need Help Getting Started?
+            .card-body
+              .row.g-3
+                .col-md-4
+                  .text-center
+                    .bg-success.text-white.rounded-circle.d-inline-flex.align-items-center.justify-content-center.mb-3(style='width: 60px; height: 60px;')
+                      h4.mb-0 1
+                    h6 Upload Products
+                    p.text-muted.small Add your farm produce with photos and details
+                .col-md-4
+                  .text-center
+                    .bg-info.text-white.rounded-circle.d-inline-flex.align-items-center.justify-content-center.mb-3(style='width: 60px; height: 60px;')
+                      h4.mb-0 2
+                    h6 Wait for Approval
+                    p.text-muted.small Your agent will review and approve products
+                .col-md-4
+                  .text-center
+                    .bg-warning.text-white.rounded-circle.d-inline-flex.align-items-center.justify-content-center.mb-3(style='width: 60px; height: 60px;')
+                      h4.mb-0 3
+                    h6 Receive Orders
+                    p.text-muted.small Buyers can purchase your approved products
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')

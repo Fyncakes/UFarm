@@ -1,0 +1,225 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css')
+    title Fresh & Organic - Ufarm
+    style.
+      .hero-banner {
+        background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%);
+        padding: 100px 0 60px;
+        color: white;
+      }
+      .icon-box {
+        transition: all 0.3s ease;
+        padding: 30px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      .icon-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      }
+      .process-step {
+        position: relative;
+        padding: 30px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      .process-number {
+        width: 50px;
+        height: 50px;
+        background: #198754;
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+      .benefit-card {
+        border-left: 4px solid #198754;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+
+  body
+    include includes/navbar.pug
+
+    // Hero Banner
+    section.hero-banner.text-center
+      .container
+        i.fas.fa-leaf.fa-5x.mb-4
+        h1.display-4.fw-bold Fresh & Organic Products
+        p.lead Get farm-fresh organic products directly from verified farmers
+        .mt-4
+          a.btn.btn-light.btn-lg.me-3(href='/product')
+            i.fas.fa-shopping-basket.me-2
+            | Browse Organic Products
+          a.btn.btn-outline-light.btn-lg(href='/Register')
+            i.fas.fa-user-plus.me-2
+            | Join as Farmer
+
+    // What Makes Us Organic
+    section.py-5
+      .container
+        .row.align-items-center.mb-5
+          .col-lg-6
+            h2.mb-4
+              i.fas.fa-certificate.text-success.me-2
+              | What Makes Us Organic?
+            p.lead.text-muted At Ufarm, we ensure every product meets the highest organic standards.
+            p Our farmers follow sustainable farming practices without harmful chemicals, pesticides, or GMOs. Every product is verified by agricultural officers before reaching your table.
+            
+            .benefit-card
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | 100% Chemical-Free
+              p No synthetic pesticides, herbicides, or fertilizers used in cultivation.
+            
+            .benefit-card
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | Non-GMO Products
+              p All products are grown from natural, non-genetically modified seeds.
+            
+            .benefit-card
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | Sustainable Farming
+              p Farmers use eco-friendly methods that preserve soil health and biodiversity.
+          
+          .col-lg-6
+            img(src='https://images.unsplash.com/photo-1595855759920-86582396756a?w=600' alt='Fresh Organic Vegetables' class='img-fluid rounded shadow')
+
+    // Quality Assurance Process
+    section.py-5.bg-light
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-clipboard-check.text-success.me-2
+          | Our Quality Assurance Process
+        
+        .row.g-4
+          .col-md-6.col-lg-3
+            .process-step.text-center.h-100
+              .process-number 1
+              h5 Farm Inspection
+              p Agricultural officers inspect farming practices and soil quality
+          
+          .col-md-6.col-lg-3
+            .process-step.text-center.h-100
+              .process-number 2
+              h5 Product Testing
+              p All products undergo quality and organic certification tests
+          
+          .col-md-6.col-lg-3
+            .process-step.text-center.h-100
+              .process-number 3
+              h5 Farmer Verification
+              p Only certified organic farmers can sell on Ufarm platform
+          
+          .col-md-6.col-lg-3
+            .process-step.text-center.h-100
+              .process-number 4
+              h5 Fresh Delivery
+              p Products are delivered fresh from farm to your doorstep
+
+    // Benefits for Customers
+    section.py-5
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-heart.text-success.me-2
+          | Benefits of Organic Products
+        
+        .row.g-4
+          .col-md-4
+            .icon-box.text-center
+              i.fas.fa-heartbeat.fa-3x.text-success.mb-3
+              h4 Healthier Living
+              p Organic foods are rich in nutrients and free from harmful chemicals
+          
+          .col-md-4
+            .icon-box.text-center
+              i.fas.fa-seedling.fa-3x.text-success.mb-3
+              h4 Better Taste
+              p Naturally grown products have superior flavor and freshness
+          
+          .col-md-4
+            .icon-box.text-center
+              i.fas.fa-globe-africa.fa-3x.text-success.mb-3
+              h4 Eco-Friendly
+              p Support sustainable farming that protects our environment
+
+          .col-md-4
+            .icon-box.text-center
+              i.fas.fa-shield-virus.fa-3x.text-success.mb-3
+              h4 Pesticide-Free
+              p No toxic chemicals that harm your health and immune system
+          
+          .col-md-4
+            .icon-box.text-center
+              i.fas.fa-baby.fa-3x.text-success.mb-3
+              h4 Safe for Kids
+              p Healthier food choices for growing children and families
+          
+          .col-md-4
+            .icon-box.text-center
+              i.fas.fa-hands-helping.fa-3x.text-success.mb-3
+              h4 Support Farmers
+              p Your purchase directly supports local organic farmers
+
+    // Available Organic Categories
+    section.py-5.bg-light
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-th-large.text-success.me-2
+          | Available Organic Categories
+        
+        .row.g-4.text-center
+          .col-md-3
+            .p-4.bg-white.rounded.shadow-sm
+              i.fas.fa-carrot.fa-3x.text-success.mb-3
+              h5 Fresh Vegetables
+              p Tomatoes, leafy greens, peppers, and more
+          
+          .col-md-3
+            .p-4.bg-white.rounded.shadow-sm
+              i.fas.fa-apple-alt.fa-3x.text-success.mb-3
+              h5 Fresh Fruits
+              p Bananas, mangoes, pineapples, avocados
+          
+          .col-md-3
+            .p-4.bg-white.rounded.shadow-sm
+              i.fas.fa-bread-slice.fa-3x.text-success.mb-3
+              h5 Grains & Cereals
+              p Rice, maize, millet, sorghum
+          
+          .col-md-3
+            .p-4.bg-white.rounded.shadow-sm
+              i.fas.fa-egg.fa-3x.text-success.mb-3
+              h5 Dairy & Eggs
+              p Fresh eggs, milk, and dairy products
+
+    // Call to Action
+    section.py-5.bg-success.text-white.text-center
+      .container
+        h2.mb-4 Start Your Organic Journey Today!
+        p.lead.mb-4 Browse our wide selection of certified organic products
+        a.btn.btn-light.btn-lg(href='/product')
+          i.fas.fa-shopping-basket.me-2
+          | Shop Organic Products
+
+    include includes/back-button.pug
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

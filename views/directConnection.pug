@@ -1,0 +1,277 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css')
+    title Direct Connection - Ufarm
+    style.
+      .hero-banner {
+        background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%);
+        padding: 100px 0 60px;
+        color: white;
+      }
+      .feature-box {
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        height: 100%;
+        transition: all 0.3s ease;
+      }
+      .feature-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      }
+      .comparison-table {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      .comparison-row {
+        border-bottom: 1px solid #dee2e6;
+        padding: 20px;
+      }
+      .comparison-row:last-child {
+        border-bottom: none;
+      }
+      .benefit-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #198754, #146c43);
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+  body
+    include includes/navbar.pug
+
+    // Hero Banner
+    section.hero-banner.text-center
+      .container
+        i.fas.fa-handshake.fa-5x.mb-4
+        h1.display-4.fw-bold Direct Connection with Farmers
+        p.lead Connect directly with farmers, ensuring fair prices for both parties
+        .mt-4
+          a.btn.btn-light.btn-lg.me-3(href='/product')
+            i.fas.fa-shopping-basket.me-2
+            | Meet Our Farmers
+          a.btn.btn-outline-light.btn-lg(href='/join-requirements')
+            i.fas.fa-tractor.me-2
+            | Become a Farmer
+
+    // How It Works
+    section.py-5
+      .container
+        .row.align-items-center.mb-5
+          .col-lg-6.order-lg-2
+            img(src='https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=600' alt='Farmer Connection' class='img-fluid rounded shadow')
+          
+          .col-lg-6.order-lg-1
+            h2.mb-4
+              i.fas.fa-link.text-success.me-2
+              | No Middlemen, No Markup
+            p.lead.text-muted Ufarm connects you directly with farmers, cutting out unnecessary intermediaries.
+            p When you buy from Ufarm, you're buying straight from the source. This means:
+            
+            ul.list-unstyled.mt-4
+              li.mb-3
+                i.fas.fa-check-circle.text-success.me-2
+                strong Lower Prices for Buyers:
+                |  Save 20-40% compared to traditional markets
+              li.mb-3
+                i.fas.fa-check-circle.text-success.me-2
+                strong Higher Income for Farmers:
+                |  Farmers earn 30-50% more by selling directly
+              li.mb-3
+                i.fas.fa-check-circle.text-success.me-2
+                strong Fresh Products:
+                |  From farm to your table in record time
+              li.mb-3
+                i.fas.fa-check-circle.text-success.me-2
+                strong Transparent Pricing:
+                |  Know exactly where your money goes
+
+    // Traditional vs Ufarm Comparison
+    section.py-5.bg-light
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-balance-scale.text-success.me-2
+          | Traditional Market vs Ufarm
+        
+        .row.g-4
+          .col-lg-6
+            .comparison-table
+              .text-center.bg-danger.text-white.p-3
+                h4 ❌ Traditional Market
+              .comparison-row
+                h5 Multiple Middlemen
+                p Farmers → Brokers → Wholesalers → Retailers → You
+                small.text-muted Each layer adds 15-20% markup
+              .comparison-row
+                h5 Lower Farmer Income
+                p Farmers receive only 30-40% of final price
+              .comparison-row
+                h5 Higher Customer Prices
+                p Customers pay 200-300% markup
+              .comparison-row
+                h5 No Direct Communication
+                p No relationship between farmer and customer
+              .comparison-row
+                h5 Delayed Freshness
+                p Products take 5-7 days to reach customers
+          
+          .col-lg-6
+            .comparison-table
+              .text-center.bg-success.text-white.p-3
+                h4 ✅ Ufarm Platform
+              .comparison-row
+                h5 Direct Connection
+                p Farmers → Ufarm → You
+                small.text-success Only platform fee (5-10%)
+              .comparison-row
+                h5 Higher Farmer Income
+                p Farmers receive 70-80% of final price
+              .comparison-row
+                h5 Lower Customer Prices
+                p Customers save 20-40% on average
+              .comparison-row
+                h5 Direct Dialogue
+                p Chat with farmers, ask questions, build trust
+              .comparison-row
+                h5 Maximum Freshness
+                p Products delivered within 24-48 hours
+
+    // Benefits for Farmers
+    section.py-5
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-tractor.text-success.me-2
+          | Benefits for Farmers
+        
+        .row.g-4
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              .benefit-number 1
+              h5 Fair Prices
+              p Sell directly and earn 50% more than traditional markets
+          
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              .benefit-number 2
+              h5 No Exploitation
+              p No middlemen taking unfair cuts from your hard work
+          
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              .benefit-number 3
+              h5 Wider Market
+              p Reach customers across Uganda from one platform
+          
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              .benefit-number 4
+              h5 Quick Payments
+              p Receive payments directly to your mobile money account
+
+    // Benefits for Customers
+    section.py-5.bg-light
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-users.text-success.me-2
+          | Benefits for Customers
+        
+        .row.g-4
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              i.fas.fa-tags.fa-3x.text-success.mb-3
+              h5 Best Prices
+              p Save money by buying directly from farmers
+          
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              i.fas.fa-truck.fa-3x.text-success.mb-3
+              h5 Fresh Delivery
+              p Get the freshest products delivered to your door
+          
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              i.fas.fa-comments.fa-3x.text-success.mb-3
+              h5 Know Your Farmer
+              p Build relationships and trust with food producers
+          
+          .col-md-6.col-lg-3
+            .feature-box.text-center
+              i.fas.fa-certificate.fa-3x.text-success.mb-3
+              h5 Quality Assured
+              p All farmers and products are verified
+
+    // Success Stories
+    section.py-5
+      .container
+        h2.text-center.mb-5
+          i.fas.fa-star.text-warning.me-2
+          | Success Stories
+        
+        .row.g-4
+          .col-md-6
+            .card.border-0.shadow-sm
+              .card-body.p-4
+                .d-flex.align-items-center.mb-3
+                  .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center(style='width: 60px; height: 60px;')
+                    i.fas.fa-user.fa-2x
+                  .ms-3
+                    h5.mb-0 John Mukasa
+                    small.text-muted Urban Farmer, Kampala
+                .mb-3
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                p.mb-0 "Before Ufarm, I was selling my vegetables to middlemen for 5000 UGX per kg. Now I sell directly to customers for 8000 UGX and they still save money! My income has doubled in 6 months."
+          
+          .col-md-6
+            .card.border-0.shadow-sm
+              .card-body.p-4
+                .d-flex.align-items-center.mb-3
+                  .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center(style='width: 60px; height: 60px;')
+                    i.fas.fa-user.fa-2x
+                  .ms-3
+                    h5.mb-0 Sarah Namuli
+                    small.text-muted Customer, Entebbe
+                .mb-3
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                  i.fas.fa-star.text-warning
+                p.mb-0 "I love knowing where my food comes from! I chat with farmers, ask about their growing methods, and the products are so fresh. Plus, I'm saving 30% on my monthly grocery bill!"
+
+    // Call to Action
+    section.py-5.bg-success.text-white.text-center
+      .container
+        h2.mb-4 Join the Direct Connection Revolution!
+        p.lead.mb-4 Whether you're a farmer or a buyer, Ufarm connects you directly
+        .d-flex.gap-3.justify-content-center.flex-wrap
+          a.btn.btn-light.btn-lg(href='/product')
+            i.fas.fa-shopping-cart.me-2
+            | Start Shopping
+          a.btn.btn-outline-light.btn-lg(href='/join-requirements')
+            i.fas.fa-seedling.me-2
+            | Sell Your Products
+
+    include includes/back-button.pug
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

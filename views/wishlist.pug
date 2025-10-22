@@ -1,0 +1,98 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title My Wishlist - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      include includes/back-button.pug
+      .d-flex.justify-content-between.align-items-center.mb-4
+        h1
+          i.fas.fa-heart.text-danger.me-2
+          | My Wishlist
+        a.btn.btn-success(href='/product')
+          i.fas.fa-shopping-basket.me-2
+          | Continue Shopping
+
+      include includes/flash-messages.pug
+
+      // Wishlist Items
+      if wishlist && wishlist.length
+        .row.g-4
+          each item in wishlist
+            if item.product
+              .col-lg-3.col-md-4.col-sm-6.col-12
+                .card.h-100.shadow-sm.border-0.wishlist-card
+                  .position-relative
+                    form(action=`/wishlist/remove/${item.product._id}` method='post' style='display: inline;')
+                      button.btn.btn-danger.btn-sm.position-absolute.top-0.end-0.m-2.rounded-circle(type='submit' title='Remove' onclick='return confirm("Remove from wishlist?")')
+                        i.fas.fa-times
+                    
+                    img.card-img-top(src='/' + item.product.image alt=item.product.productName style='height: 200px; object-fit: cover;')
+                  
+                  .card-body.d-flex.flex-column
+                    h5.card-title.mb-2 #{item.product.productName}
+                    
+                    p.text-muted.small.mb-2
+                      i.fas.fa-user.me-1
+                      | #{item.product.owner_name || 'Ufarm'}
+                    
+                    if item.product.rating
+                      .mb-2
+                        each star in [1,2,3,4,5]
+                          if star <= item.product.rating
+                            i.fas.fa-star.text-warning.small
+                          else
+                            i.far.fa-star.text-warning.small
+                    
+                    h4.text-success.mb-3 UGX #{item.product.price ? item.product.price.toLocaleString() : 0}
+                    
+                    .mt-auto.d-grid.gap-2
+                      form(action='/cart/add' method='post')
+                        input(type='hidden' name='productId' value=item.product._id)
+                        input(type='hidden' name='quantity' value='1')
+                        button.btn.btn-success.w-100(type='submit')
+                          i.fas.fa-cart-plus.me-2
+                          | Add to Cart
+                      a.btn.btn-outline-primary(href=`/product-detail/${item.product._id}`)
+                        i.fas.fa-eye.me-2
+                        | View Details
+      else
+        .text-center.py-5
+          i.fas.fa-heart-broken.fa-5x.text-muted.mb-4
+          h3 Your Wishlist is Empty
+          p.text-muted.mb-4 Start adding products you love!
+          a.btn.btn-success.btn-lg(href='/product')
+            i.fas.fa-shopping-basket.me-2
+            | Browse Products
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      // Remove from wishlist
+      document.querySelectorAll('.remove-wishlist').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (confirm('Remove this item from wishlist?')) {
+            const card = this.closest('.col-lg-3, .col-md-4, .col-sm-6, .col-12');
+            card.style.opacity = '0';
+            setTimeout(() => card.remove(), 300);
+            
+            // Show toast
+            const toast = document.createElement('div');
+            toast.className = 'alert alert-info position-fixed top-0 end-0 m-3';
+            toast.style.zIndex = '9999';
+            toast.textContent = 'Removed from wishlist';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+          }
+        });
+      });
+

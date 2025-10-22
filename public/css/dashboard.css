@@ -1,0 +1,322 @@
+/* Dashboard Styles */
+
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar ul li a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background-color: #198754;
+  color: white;
+}
+
+/* Stats Cards */
+.stat-card {
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.stat-card .card-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.dashboard-card .card-header {
+  border-radius: 10px 10px 0 0;
+  border: none;
+  font-weight: 600;
+}
+
+/* Product Cards in Dashboard */
+.product-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Table Styles */
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dashboard-table {
+  margin-bottom: 0;
+}
+
+.dashboard-table thead {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.dashboard-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-table tbody tr:hover {
+  background-color: rgba(25, 135, 84, 0.05);
+}
+
+/* Form Sections in Dashboard */
+.form-section {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Badge Enhancements */
+.badge.fs-6 {
+  font-size: 1rem !important;
+  padding: 0.5rem 1rem;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #198754;
+  border-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+  color: #198754;
+  border-bottom: 3px solid #198754;
+  background-color: transparent;
+}
+
+/* Quick Actions */
+.quick-action-btn {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.quick-action-btn:hover {
+  background-color: #198754;
+  color: white;
+  border-color: #198754;
+}
+
+.quick-action-btn i {
+  margin-right: 0.5rem;
+  width: 20px;
+}
+
+/* Activity Feed */
+.activity-item {
+  padding: 1rem;
+  border-left: 3px solid #198754;
+  margin-bottom: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 0 8px 8px 0;
+}
+
+.activity-item .time {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* Chart Container */
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin-bottom: 2rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+}
+
+/* Navbar for Dashboard */
+.navbar-dark.bg-success {
+  background: linear-gradient(135deg, #198754, #146c43) !important;
+}
+
+.navbar-dark.bg-dark {
+  background: linear-gradient(135deg, #212529, #343a40) !important;
+}
+
+/* Action Buttons Group */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* Status Indicators */
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.status-dot.active {
+  background-color: #28a745;
+}
+
+.status-dot.pending {
+  background-color: #ffc107;
+}
+
+.status-dot.inactive {
+  background-color: #dc3545;
+}
+
+/* Responsive Dashboard */
+@media (max-width: 992px) {
+  .sidebar {
+    position: static;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card h3 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-card .card-body {
+    padding: 1rem;
+  }
+  
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .action-buttons .btn {
+    min-width: auto;
+    flex: 1 1 100%;
+  }
+  
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .sidebar,
+  .navbar,
+  .btn,
+  .action-buttons {
+    display: none;
+  }
+  
+  .dashboard-card {
+    box-shadow: none;
+    border: 1px solid #dee2e6;
+  }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-overlay .spinner-border {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.4em;
+  color: #198754;
+}
+

@@ -1,0 +1,61 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title All Buyers - Agriculture Officer
+  body
+    include includes/navbar.pug
+
+    .container.my-4
+      include includes/back-button.pug
+      include includes/flash-messages.pug
+      
+      .d-flex.justify-content-between.align-items-center.mb-4
+        h2
+          i.fas.fa-users.me-2.text-info
+          | All Registered Buyers
+        a.btn.btn-primary(href='/OA')
+          i.fas.fa-home.me-2
+          | Back to Dashboard
+
+      .card.shadow-sm
+        .card-body
+          if buyers && buyers.length
+            .table-responsive
+              table.table.table-hover.table-striped
+                thead
+                  tr
+                    th #
+                    th Name
+                    th Phone
+                    th District
+                    th Total Orders
+                    th Registered On
+                    th Status
+                tbody
+                  each buyer, index in buyers
+                    tr
+                      td #{index + 1}
+                      td
+                        strong #{buyer.Name1}
+                      td #{buyer.phonenumber}
+                      td #{buyer.Ward1 || 'N/A'}
+                      td
+                        span.badge.bg-primary #{buyer.totalOrders || 0}
+                      td #{buyer.createdAt ? buyer.createdAt.toLocaleDateString() : 'N/A'}
+                      td
+                        span.badge(class=`${buyer.active ? 'bg-success' : 'bg-danger'}`) #{buyer.active ? 'Active' : 'Inactive'}
+          else
+            .text-center.py-5
+              i.fas.fa-users.fa-4x.text-muted.mb-3
+              h4.text-muted No buyers registered yet
+              p.text-muted Buyers will appear here once they register
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

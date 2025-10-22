@@ -1,0 +1,68 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title #{product.productName} - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      if success_msg
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+
+      .row
+        .col-lg-6
+          img.img-fluid.rounded.shadow(src='/' + product.image alt=product.productName)
+        
+        .col-lg-6
+          h1.mb-3 #{product.productName}
+          
+          if product.rating > 0
+            p.mb-2
+              each star in [1,2,3,4,5]
+                if star <= product.rating
+                  i.fas.fa-star.text-warning
+                else
+                  i.far.fa-star.text-warning
+              span.ms-2 (#{product.numReviews} reviews)
+          
+          p.text-muted
+            i.fas.fa-user.me-2
+            | Sold by: #{product.owner_name}
+          
+          h3.text-success.mb-3 UGX #{product.price.toLocaleString()}
+          
+          if product.description
+            p.lead #{product.description}
+          
+          .mb-3
+            strong Quantity Available: 
+            span #{product.quantity} #{product.unit || 'units'}
+          
+          if product.location
+            p
+              i.fas.fa-map-marker-alt.me-2
+              | #{product.location}
+          
+          if user
+            form(action='/cart/add' method='post')
+              input(type='hidden' name='productId' value=product._id)
+              .mb-3
+                label.form-label Quantity
+                input.form-control(type='number' name='quantity' value='1' min='1' max=product.quantity style='max-width: 150px;')
+              button.btn.btn-success.btn-lg(type='submit')
+                i.fas.fa-cart-plus.me-2
+                | Add to Cart
+          else
+            a.btn.btn-success.btn-lg(href='/login') Login to Buy
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

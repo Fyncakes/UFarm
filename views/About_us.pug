@@ -1,0 +1,144 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title About Us - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      include includes/back-button.pug
+      .text-center.mb-5
+        h1.display-4 About 
+          strong.text-success U
+          | farm
+        p.lead Connecting Farmers, Buyers, and Sellers
+
+      .row.mb-5
+        .col-lg-6.mb-4.mb-lg-0
+          h2.mb-3 Our Mission
+          p Ufarm is dedicated to bridging the gap between farmers and consumers, creating a sustainable and trustworthy agricultural marketplace. We believe in empowering local farmers and providing customers with fresh, high-quality produce directly from the source.
+          p Our platform ensures fair prices for farmers while offering consumers access to fresh, organic products at competitive rates.
+        .col-lg-6
+          img.img-fluid.rounded.shadow(src='/image/pexels-rajukhan-pathan-4840120.jpg' alt='Farm' style='max-height: 400px; object-fit: cover; width: 100%;')
+
+      .row.mb-5
+        .col-md-4.mb-4
+          .text-center.p-4
+            i.fas.fa-users.fa-4x.text-success.mb-3
+            h4 Community
+            p Building strong connections between farmers, buyers, and sellers
+        .col-md-4.mb-4
+          .text-center.p-4
+            i.fas.fa-certificate.fa-4x.text-success.mb-3
+            h4 Quality
+            p Verified farmers and products ensure the highest quality standards
+        .col-md-4.mb-4
+          .text-center.p-4
+            i.fas.fa-globe.fa-4x.text-success.mb-3
+            h4 Sustainability
+            p Promoting sustainable farming practices and local agriculture
+
+      .row.bg-light.p-5.rounded
+        .col-12
+          h2.text-center.mb-4 Our Values
+          .row
+            .col-md-3.mb-3
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | Transparency
+              p Open and honest communication in all transactions
+            .col-md-3.mb-3
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | Trust
+              p Building reliable relationships between all parties
+            .col-md-3.mb-3
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | Quality
+              p Maintaining high standards for all products
+            .col-md-3.mb-3
+              h5
+                i.fas.fa-check-circle.text-success.me-2
+                | Support
+              p Dedicated support for farmers and customers
+
+      // Testimonials Section
+      .mt-5
+        h2.text-center.mb-4
+          i.fas.fa-comments.text-success.me-2
+          | What Our Customers Say
+        
+        if testimonials && testimonials.length
+          .row.g-4.mb-5
+            each testimonial in testimonials
+              .col-md-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    .d-flex.justify-content-between.align-items-start.mb-3
+                      .rating
+                        each star in [1, 2, 3, 4, 5]
+                          if star <= testimonial.rating
+                            i.fas.fa-star.text-warning
+                          else
+                            i.far.fa-star.text-warning
+                      small.text-muted #{testimonial.createdAt ? testimonial.createdAt.toLocaleDateString() : ''}
+                    p.card-text.mb-3 "#{testimonial.comment}"
+                    .d-flex.align-items-center
+                      .bg-success.text-white.rounded-circle.d-flex.align-items-center.justify-content-center(style='width: 40px; height: 40px;')
+                        strong #{testimonial.userName ? testimonial.userName.charAt(0).toUpperCase() : 'U'}
+                      .ms-2
+                        strong #{testimonial.userName}
+        else
+          .alert.alert-info.text-center
+            i.fas.fa-info-circle.me-2
+            | Be the first to share your experience!
+
+        // Submit Testimonial Form
+        if user
+          .card.shadow-sm.mt-4
+            .card-header.bg-success.text-white
+              h5.mb-0
+                i.fas.fa-pen.me-2
+                | Share Your Experience
+            .card-body
+              form(action='/testimonial/submit' method='post')
+                .mb-3
+                  label.form-label Rating *
+                  .rating-input
+                    each star in [5, 4, 3, 2, 1]
+                      input(type='radio' id=`star${star}` name='rating' value=star required)
+                      label(for=`star${star}`) ⭐
+                
+                .mb-3
+                  label.form-label(for='comment') Your Feedback *
+                  textarea.form-control(id='comment' name='comment' rows='4' required maxlength='500' placeholder='Share your experience with Ufarm...')
+                  small.form-text.text-muted Maximum 500 characters
+                
+                button.btn.btn-success(type='submit')
+                  i.fas.fa-paper-plane.me-2
+                  | Submit Feedback
+        else
+          .alert.alert-warning.text-center.mt-4
+            i.fas.fa-sign-in-alt.me-2
+            | Please 
+            a.fw-bold(href='/login') login
+            |  to share your feedback
+
+      .text-center.mt-5
+        h3.mb-4 Join Our Community
+        a.btn.btn-success.btn-lg.me-3(href='/Register')
+          i.fas.fa-user-plus.me-2
+          | Sign Up
+        a.btn.btn-outline-success.btn-lg(href='/product')
+          i.fas.fa-shopping-basket.me-2
+          | Browse Products
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')

@@ -1,0 +1,240 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    link(rel='stylesheet' href='/css/profile.css')
+    title My Profile - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      include includes/back-button.pug
+      .row
+        // Sidebar
+        .col-md-3.mb-4
+          .card.shadow-sm.border-0
+            .card-body.text-center
+              if user && user.profileImage
+                img.profile-avatar.mb-3(src='/' + user.profileImage alt='Profile')
+              else
+                .profile-avatar-placeholder.mb-3
+                  i.fas.fa-user.fa-3x.text-muted
+              
+              h4.mb-1= user ? user.Name1 : 'Guest'
+              if user && user.role
+                p.badge.bg-success.mb-3= user.role
+              
+              if user && user.rating
+                .rating.mb-3
+                  each star in [1,2,3,4,5]
+                    if star <= user.rating
+                      i.fas.fa-star.text-warning
+                    else
+                      i.far.fa-star.text-warning
+                  p.small.text-muted.mt-1 #{user.rating}/5.0 Rating
+              
+              hr
+              
+              .d-grid.gap-2
+                a.btn.btn-outline-primary(href='#accountInfo')
+                  i.fas.fa-user-circle.me-2
+                  | Account Info
+                a.btn.btn-outline-success(href='/orders')
+                  i.fas.fa-shopping-bag.me-2
+                  | My Orders
+                a.btn.btn-outline-warning(href='/wishlist')
+                  i.fas.fa-heart.me-2
+                  | Wishlist
+                if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+                  a.btn.btn-outline-info(href='/UB')
+                    i.fas.fa-tractor.me-2
+                    | My Products
+                a.btn.btn-outline-danger(href='/logout')
+                  i.fas.fa-sign-out-alt.me-2
+                  | Logout
+
+        // Main Content
+        .col-md-9
+          // Account Information
+          #accountInfo.card.shadow-sm.border-0.mb-4
+            .card-header.bg-success.text-white
+              h5.mb-0
+                i.fas.fa-user-edit.me-2
+                | Account Information
+            .card-body
+              include includes/flash-messages.pug
+              
+              form#profileForm(method='POST' action='/profile/update' enctype='multipart/form-data')
+                .row.g-3
+                  .col-md-6
+                    label.form-label(for='Name1')
+                      i.fas.fa-user.me-1
+                      | Full Name
+                    input#Name1.form-control(type='text' name='Name1' value=user ? user.Name1 : '' disabled)
+                    small.text-muted Username cannot be changed
+                  
+                  .col-md-6
+                    label.form-label(for='email')
+                      i.fas.fa-envelope.me-1
+                      | Email
+                    input#email.form-control(type='email' name='email' value=user ? user.email : '')
+                  
+                  .col-md-6
+                    label.form-label(for='phonenumber')
+                      i.fas.fa-phone.me-1
+                      | Phone Number
+                    input#phonenumber.form-control(type='tel' name='phonenumber' value=user ? user.phonenumber : '' required)
+                  
+                  .col-md-6
+                    label.form-label(for='Gender1')
+                      i.fas.fa-venus-mars.me-1
+                      | Gender
+                    select#Gender1.form-select(name='Gender1')
+                      option(value='Male' selected=user && user.Gender1 === 'Male') Male
+                      option(value='Female' selected=user && user.Gender1 === 'Female') Female
+                      option(value='Other' selected=user && user.Gender1 === 'Other') Other
+                  
+                  .col-md-6
+                    label.form-label(for='Ward1')
+                      i.fas.fa-map-marker-alt.me-1
+                      | Ward/District
+                    input#Ward1.form-control(type='text' name='Ward1' value=user ? user.Ward1 : '')
+                  
+                  .col-md-6
+                    label.form-label(for='Nin1')
+                      i.fas.fa-id-card.me-1
+                      | National ID (NIN)
+                    input#Nin1.form-control(type='text' name='Nin1' value=user ? user.Nin1 : '')
+                  
+                  .col-md-4
+                    label.form-label(for='address')
+                      i.fas.fa-home.me-1
+                      | Address
+                    input#address.form-control(type='text' name='address' value=user ? user.address : '')
+                  
+                  .col-md-4
+                    label.form-label(for='district')
+                      i.fas.fa-map.me-1
+                      | District
+                    input#district.form-control(type='text' name='district' value=user ? user.district : '')
+                  
+                  .col-md-4
+                    label.form-label(for='village')
+                      i.fas.fa-map-pin.me-1
+                      | Village
+                    input#village.form-control(type='text' name='village' value=user ? user.village : '')
+                  
+                  if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+                    .col-md-6
+                      label.form-label(for='farmSize')
+                        i.fas.fa-ruler-combined.me-1
+                        | Farm Size (acres)
+                      input#farmSize.form-control(type='number' name='farmSize' value=user.farmSize || '' step='0.01')
+                    
+                    .col-md-6
+                      label.form-label(for='farmType')
+                        i.fas.fa-leaf.me-1
+                        | Farm Type
+                      select#farmType.form-select(name='farmType')
+                        option(value='') Select farm type
+                        option(value='crops' selected=user.farmType === 'crops') Crops
+                        option(value='livestock' selected=user.farmType === 'livestock') Livestock
+                        option(value='mixed' selected=user.farmType === 'mixed') Mixed
+                        option(value='poultry' selected=user.farmType === 'poultry') Poultry
+                        option(value='dairy' selected=user.farmType === 'dairy') Dairy
+                    
+                    .col-12
+                      label.form-label(for='farmLocation')
+                        i.fas.fa-map-marker-alt.me-1
+                        | Farm Location
+                      input#farmLocation.form-control(type='text' name='farmLocation' value=user.farmLocation || '')
+                  
+                  .col-12
+                    label.form-label(for='bio')
+                      i.fas.fa-info-circle.me-1
+                      | Bio
+                    textarea#bio.form-control(name='bio' rows='3' placeholder='Tell us about yourself')= user ? user.bio : ''
+                  
+                  .col-12
+                    label.form-label(for='profileImage')
+                      i.fas.fa-camera.me-1
+                      | Profile Picture
+                    input#profileImage.form-control(type='file' name='profileImage' accept='image/*')
+                  
+                  .col-12
+                    hr
+                    .d-flex.gap-2
+                      button.btn.btn-success.btn-lg.px-4(type='submit')
+                        i.fas.fa-save.me-2
+                        | Save Changes
+                      button.btn.btn-outline-secondary.btn-lg(type='reset')
+                        i.fas.fa-undo.me-2
+                        | Reset
+
+          // Statistics Card (for farmers)
+          if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+            .card.shadow-sm.border-0.mb-4
+              .card-header.bg-info.text-white
+                h5.mb-0
+                  i.fas.fa-chart-line.me-2
+                  | My Statistics
+              .card-body
+                .row.text-center
+                  .col-md-4
+                    .stat-card
+                      i.fas.fa-box-open.fa-3x.text-success.mb-2
+                      h3.mb-0= user.totalSales || 0
+                      p.text-muted Products Sold
+                  .col-md-4
+                    .stat-card
+                      i.fas.fa-money-bill-wave.fa-3x.text-warning.mb-2
+                      h3.mb-0 UGX #{user.totalOrders ? user.totalOrders.toLocaleString() : 0}
+                      p.text-muted Total Revenue
+                  .col-md-4
+                    .stat-card
+                      i.fas.fa-star.fa-3x.text-info.mb-2
+                      h3.mb-0 #{user.rating || 0}/5
+                      p.text-muted Average Rating
+
+          // Security Settings
+          .card.shadow-sm.border-0
+            .card-header.bg-warning.text-dark
+              h5.mb-0
+                i.fas.fa-lock.me-2
+                | Security Settings
+            .card-body
+              form#securityForm(method='POST' action='/profile/change-password')
+                .row.g-3
+                  .col-md-12
+                    label.form-label(for='currentPassword')
+                      i.fas.fa-key.me-1
+                      | Current Password
+                    input#currentPassword.form-control(type='password' name='currentPassword' required)
+                  
+                  .col-md-6
+                    label.form-label(for='newPassword')
+                      i.fas.fa-lock.me-1
+                      | New Password
+                    input#newPassword.form-control(type='password' name='newPassword' required minlength='6')
+                  
+                  .col-md-6
+                    label.form-label(for='confirmPassword')
+                      i.fas.fa-lock.me-1
+                      | Confirm Password
+                    input#confirmPassword.form-control(type='password' name='confirmPassword' required minlength='6')
+                  
+                  .col-12
+                    button.btn.btn-warning.btn-lg.px-4(type='submit')
+                      i.fas.fa-shield-alt.me-2
+                      | Update Password
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script(src='/js/profile.js')
+

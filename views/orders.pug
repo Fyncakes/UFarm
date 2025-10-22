@@ -1,0 +1,95 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title My Orders - Ufarm
+  body
+    include includes/navbar.pug
+
+    .container.my-5
+      include includes/back-button.pug
+      h1.mb-4
+        i.fas.fa-box.me-2
+        | My Orders
+
+      if success_msg
+        .alert.alert-success.alert-dismissible.fade.show(role='alert')
+          | #{success_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+      
+      if error_msg
+        .alert.alert-danger.alert-dismissible.fade.show(role='alert')
+          | #{error_msg}
+          button.btn-close(type='button' data-bs-dismiss='alert')
+
+      if orders && orders.length > 0
+        .row
+          each order in orders
+            .col-12.mb-4
+              .card.shadow-sm
+                .card-body
+                  .row
+                    .col-md-8
+                      h5.card-title.mb-3
+                        | Order ##{order.orderNumber}
+                        case order.orderStatus
+                          when 'pending'
+                            span.badge.bg-warning.text-dark.ms-2 Pending
+                          when 'confirmed'
+                            span.badge.bg-info.ms-2 Confirmed
+                          when 'processing'
+                            span.badge.bg-primary.ms-2 Processing
+                          when 'ready'
+                            span.badge.bg-success.ms-2 Ready
+                          when 'in_transit'
+                            span.badge.bg-primary.ms-2 In Transit
+                          when 'delivered'
+                            span.badge.bg-success.ms-2 Delivered
+                          when 'cancelled'
+                            span.badge.bg-danger.ms-2 Cancelled
+                      
+                      p.text-muted.mb-2
+                        i.fas.fa-calendar.me-2
+                        | #{new Date(order.createdAt).toLocaleDateString()}
+                      
+                      p.mb-2
+                        strong Total: 
+                        span.text-success UGX #{order.totalPrice.toLocaleString()}
+                      
+                      p.mb-0
+                        strong Items: 
+                        | #{order.items.length}
+                      
+                      if user.role !== 'user' && user.role !== 'buyer'
+                        p.mb-0
+                          strong Buyer: 
+                          | #{order.buyer_name} (#{order.buyer_phone})
+                    
+                    .col-md-4.text-md-end.mt-3.mt-md-0
+                      a.btn.btn-outline-primary.btn-sm.mb-2(href=`/order/${order._id}`)
+                        i.fas.fa-eye.me-1
+                        | View Details
+                      
+                      if order.orderStatus === 'pending' && (user.role === 'user' || user.role === 'buyer')
+                        form(action=`/order/${order._id}/cancel` method='post' style='display: inline;' onsubmit='return confirm("Are you sure you want to cancel this order?")')
+                          input(type='hidden' name='cancelReason' value='Cancelled by buyer')
+                          button.btn.btn-outline-danger.btn-sm.mb-2.w-100(type='submit')
+                            i.fas.fa-times.me-1
+                            | Cancel Order
+      else
+        .text-center.py-5
+          i.fas.fa-box-open.fa-5x.text-muted.mb-3
+          h3 No orders yet
+          p.text-muted Start shopping to create your first order
+          a.btn.btn-success.btn-lg(href='/product')
+            i.fas.fa-shopping-basket.me-2
+            | Browse Products
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+

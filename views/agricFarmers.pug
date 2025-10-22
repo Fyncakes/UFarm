@@ -1,0 +1,79 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/dashboard.css')
+    title All Farmers - Agriculture Officer
+  body
+    include includes/navbar.pug
+
+    .container.my-4
+      include includes/back-button.pug
+      include includes/flash-messages.pug
+      
+      .d-flex.justify-content-between.align-items-center.mb-4
+        h2
+          i.fas.fa-tractor.me-2.text-success
+          | All Registered Farmers
+        a.btn.btn-primary(href='/OA')
+          i.fas.fa-home.me-2
+          | Back to Dashboard
+
+      .card.shadow-sm
+        .card-body
+          if farmers && farmers.length
+            .table-responsive
+              table.table.table-hover.table-striped
+                thead
+                  tr
+                    th #
+                    th Name
+                    th Role
+                    th Phone
+                    th District
+                    th Registered By
+                    th Status
+                    th Actions
+                tbody
+                  each farmer, index in farmers
+                    tr
+                      td #{index + 1}
+                      td
+                        strong #{farmer.Name1}
+                      td
+                        span.badge(class=`${farmer.role === 'Farmer one' ? 'bg-primary' : 'bg-success'}`) #{farmer.role}
+                      td #{farmer.phonenumber}
+                      td #{farmer.Ward1 || 'N/A'}
+                      td 
+                        if farmer.registeredBy && farmer.registeredBy.Name1
+                          small.text-muted #{farmer.registeredBy.Name1}
+                        else
+                          small.text-muted Direct Registration
+                      td
+                        span.badge(class=`${farmer.verified ? 'bg-success' : 'bg-warning'}`) #{farmer.verified ? 'Verified' : 'Pending'}
+                      td
+                        .btn-group
+                          a.btn.btn-sm.btn-info(href=`/profile/${farmer._id}`)
+                            i.fas.fa-eye
+                          button.btn.btn-sm.btn-success(onclick=`verifyFarmer('${farmer._id}')`)
+                            i.fas.fa-check
+          else
+            .text-center.py-5
+              i.fas.fa-users.fa-4x.text-muted.mb-3
+              h4.text-muted No farmers registered yet
+              p.text-muted Farmers will appear here once they register
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      function verifyFarmer(farmerId) {
+        if (confirm('Verify this farmer?')) {
+          // Implement verification logic
+          window.location.href = `/OA/verify/${farmerId}`;
+        }
+      }
+

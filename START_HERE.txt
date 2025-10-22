@@ -1,0 +1,74 @@
+==========================================
+  UFARM - QUICK START GUIDE
+==========================================
+
+Welcome to Ufarm! Follow these steps to get started:
+
+STEP 1: INSTALL DEPENDENCIES
+-----------------------------
+Open your terminal/command prompt in this folder and run:
+  npm install
+
+STEP 2: SETUP ENVIRONMENT
+-------------------------
+Copy the .env.example file to .env:
+  Windows: copy .env.example .env
+  Mac/Linux: cp .env.example .env
+
+Edit .env and set a unique SESSION_SECRET
+
+STEP 3: START MONGODB
+----------------------
+Make sure MongoDB is running on your computer.
+  Windows: net start MongoDB
+  Mac: brew services start mongodb-community
+  Linux: sudo systemctl start mongod
+
+STEP 4: RUN THE APPLICATION
+----------------------------
+Development mode (recommended):
+  npm run dev
+
+Production mode:
+  npm start
+
+STEP 5: OPEN IN BROWSER
+------------------------
+Open your web browser and go to:
+  http://localhost:3000
+
+FIRST TIME SETUP
+----------------
+1. Register an account at /Register
+2. Choose your role (Buyer, Farmer, etc.)
+3. Start using Ufarm!
+
+NEED HELP?
+----------
+- Read README.md for detailed information
+- Check INSTALLATION.md for troubleshooting
+- Review the code comments for technical details
+
+FEATURES
+--------
+✓ User registration and authentication
+✓ Product listing and management
+✓ Shopping cart and checkout
+✓ Order tracking
+✓ Role-based dashboards
+✓ Product approval workflow
+✓ Categories and search
+✓ Mobile-friendly design
+
+TECH STACK
+----------
+- Node.js + Express
+- MongoDB + Mongoose
+- Pug Templates
+- Bootstrap 5
+- Passport.js Authentication
+
+==========================================
+Built with ❤️ for the agricultural community
+==========================================
+
