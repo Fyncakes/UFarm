@@ -1,39 +1,42 @@
 // Flash Messages Component - Enhanced with better styling and positioning
-.flash-messages-container(style='position: relative; z-index: 1050;')
+.flash-messages-container.mt-3.mb-3(style='position: relative; z-index: 1050;')
   if success_msg && success_msg.length > 0
-    .alert.alert-success.alert-dismissible.fade.show.auto-dismiss.shadow-sm(role='alert' style='border-left: 5px solid #198754; animation: slideInDown 0.5s ease-out;')
-      .d-flex.align-items-center
-        .flex-shrink-0
-          i.fas.fa-check-circle.fa-2x.me-3
+    .alert.alert-success.alert-dismissible.fade.show.auto-dismiss.shadow(role='alert')
+      .d-flex.align-items-start
+        .flex-shrink-0.me-3
+          i.fas.fa-check-circle.fa-2x.text-success
         .flex-grow-1
-          strong Success! 
-          | #{success_msg}
+          h5.alert-heading.mb-1
+            strong Success!
+          p.mb-0 #{success_msg}
       button.btn-close(type='button' data-bs-dismiss='alert' aria-label='Close')
 
   if error_msg && error_msg.length > 0
-    .alert.alert-danger.alert-dismissible.fade.show.auto-dismiss.shadow-sm(role='alert' style='border-left: 5px solid #dc3545; animation: slideInDown 0.5s ease-out;')
-      .d-flex.align-items-center
-        .flex-shrink-0
-          i.fas.fa-exclamation-circle.fa-2x.me-3
+    .alert.alert-danger.alert-dismissible.fade.show.auto-dismiss.shadow(role='alert')
+      .d-flex.align-items-start
+        .flex-shrink-0.me-3
+          i.fas.fa-exclamation-circle.fa-2x.text-danger
         .flex-grow-1
-          strong Error! 
-          | #{error_msg}
+          h5.alert-heading.mb-1
+            strong Error!
+          p.mb-0 #{error_msg}
       button.btn-close(type='button' data-bs-dismiss='alert' aria-label='Close')
 
   if error && error.length > 0
-    .alert.alert-danger.alert-dismissible.fade.show.auto-dismiss.shadow-sm(role='alert' style='border-left: 5px solid #dc3545; animation: slideInDown 0.5s ease-out;')
-      .d-flex.align-items-center
-        .flex-shrink-0
-          i.fas.fa-exclamation-triangle.fa-2x.me-3
+    .alert.alert-warning.alert-dismissible.fade.show.auto-dismiss.shadow(role='alert')
+      .d-flex.align-items-start
+        .flex-shrink-0.me-3
+          i.fas.fa-exclamation-triangle.fa-2x.text-warning
         .flex-grow-1
-          strong Warning! 
-          | #{error}
+          h5.alert-heading.mb-1
+            strong Warning!
+          p.mb-0 #{error}
       button.btn-close(type='button' data-bs-dismiss='alert' aria-label='Close')
 
 style.
   @keyframes slideInDown {
     from {
-      transform: translateY(-100%);
+      transform: translateY(-20px);
       opacity: 0;
     }
     to {
@@ -41,24 +44,64 @@ style.
       opacity: 1;
     }
   }
-  .alert {
-    font-size: 1rem;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1rem;
+  
+  .flash-messages-container {
+    max-width: 100%;
   }
-  .alert strong {
+  
+  .flash-messages-container .alert {
+    font-size: 1rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    animation: slideInDown 0.4s ease-out;
+    min-height: 60px;
+  }
+  
+  .flash-messages-container .alert-success {
+    background-color: #d1e7dd;
+    border-left: 5px solid #198754;
+    color: #0a3622;
+  }
+  
+  .flash-messages-container .alert-danger {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    color: #58151c;
+  }
+  
+  .flash-messages-container .alert-warning {
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+    color: #664d03;
+  }
+  
+  .flash-messages-container .alert .alert-heading {
+    font-size: 1.1rem;
     font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  
+  .flash-messages-container .alert p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .flash-messages-container .btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 
 script.
-  // Auto-dismiss flash messages after 5 seconds
+  // Auto-dismiss flash messages after 7 seconds
   document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.auto-dismiss');
     alerts.forEach(alert => {
       setTimeout(() => {
         const bsAlert = new bootstrap.Alert(alert);
         bsAlert.close();
-      }, 5000);
+      }, 7000);
     });
   });
-

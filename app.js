@@ -137,6 +137,11 @@ app.get("/join-requirements", (req, res) => {
 	res.render("joinRequirements");
 });
 
+// Uploads route - redirect to products page
+app.get("/uploads", (req, res) => {
+	res.redirect("/product");
+});
+
 // Feature pages routes
 app.get("/fresh-organic", (req, res) => {
 	res.render("freshOrganic");

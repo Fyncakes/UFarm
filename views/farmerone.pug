@@ -26,7 +26,7 @@ html(lang='en')
               hr.mb-3
               ul.list-unstyled.dashboard-nav
                 li.mb-2
-                  a.btn.btn-light.w-100.text-start(href='#register-farmer' onclick='document.getElementById("register-farmer").scrollIntoView({ behavior: "smooth" })')
+                  a.btn.btn-light.w-100.text-start(href='#register-farmer' onclick='showSection("register-farmer"); return false;')
                     i.fas.fa-user-plus.me-2.text-success
                     | Register Farmer
                 li.mb-2
@@ -87,8 +87,16 @@ html(lang='en')
                   h3.fw-bold #{stats ? stats.totalFarmers : 0}
                   p.text-muted.mb-0 Registered Farmers
 
-          // Register Farmer Form
-          #register-farmer.card.shadow-sm.mb-4
+          // Quick Action Button
+          .row.mb-4
+            .col-12
+              .d-grid
+                button.btn.btn-success.btn-lg(type='button' onclick='showSection("register-farmer")')
+                  i.fas.fa-user-plus.me-2
+                  | Register New Urban Farmer
+
+          // Register Farmer Form (Hidden by default)
+          #register-farmer.card.shadow-sm.mb-4(style='display: none;')
             .card-header.bg-success.text-white
               h5.mb-0
                 i.fas.fa-user-plus.me-2
@@ -157,6 +165,9 @@ html(lang='en')
                     button.btn.btn-success.me-2(type='submit')
                       i.fas.fa-user-plus.me-2
                       | Register Farmer
+                    button.btn.btn-secondary(type='button' onclick='hideSection("register-farmer")')
+                      i.fas.fa-times.me-2
+                      | Cancel
 
           // Products Review Section
           #products.card.shadow-sm.mb-4
@@ -261,4 +272,14 @@ html(lang='en')
           passwordIcon.classList.remove('fa-eye-slash');
           passwordIcon.classList.add('fa-eye');
         }
+      }
+      
+      function showSection(sectionId) {
+        document.getElementById(sectionId).style.display = 'block';
+        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      function hideSection(sectionId) {
+        document.getElementById(sectionId).style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }

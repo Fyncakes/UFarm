@@ -151,24 +151,6 @@ router.get("/OA/buyers", connectEnsureLogin.ensureLoggedIn(), async (req, res) =
 	}
 });
 
-// View all products for approval
-router.get("/OA/products", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
-	try {
-		if (req.user.role !== "Agriculture Officer") {
-			req.flash("error_msg", "Unauthorized access");
-			return res.redirect("/");
-		}
-
-		const products = await Product.find().populate("owner category").sort({ createdAt: -1 });
-
-		res.render("productsManagement", { products });
-	} catch (error) {
-		console.error(error);
-		req.flash("error_msg", "Error loading products");
-		res.redirect("/OA");
-	}
-});
-
 // Verify farmer
 router.post("/OA/farmer/:id/verify", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
 	try {
@@ -255,10 +237,18 @@ router.get("/OA/products", connectEnsureLogin.ensureLoggedIn(), async (req, res)
 		}
 
 		const products = await Upload.find().populate("owner").sort({ createdAt: -1 });
+		console.log(`Agriculture Officer viewing products. Total found: ${products.length}`);
+		if (products.length > 0) {
+			console.log("Sample product:", {
+				name: products[0].productName,
+				status: products[0].status,
+				owner: products[0].owner_name
+			});
+		}
 
 		res.render("agricProducts", { products });
 	} catch (error) {
-		console.error(error);
+		console.error("Error in /OA/products route:", error);
 		req.flash("error_msg", "Error loading products");
 		res.redirect("/OA");
 	}

@@ -78,11 +78,12 @@ html(lang='en')
                   h3.fw-bold #{stats ? stats.totalProducts : 0}
                   p.text-muted.mb-0 Total Products
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-clock.fa-3x.text-warning.mb-3
-                  h3.fw-bold #{stats ? stats.pendingProducts : 0}
-                  p.text-muted.mb-0 Pending Review
+              a.text-decoration-none(href='/OA/products')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-clock.fa-3x.text-warning.mb-3
+                    h3.fw-bold #{stats ? stats.pendingProducts : 0}
+                    p.text-muted.mb-0 Pending Review
 
           .row.mb-4
             .col-lg-3.col-md-6.col-sm-6.mb-3
@@ -109,6 +110,20 @@ html(lang='en')
                   i.fas.fa-user-tie.fa-3x.text-success.mb-3
                   h3.fw-bold #{stats ? stats.totalAgents : 0}
                   p.text-muted.mb-0 Farmer One Agents
+
+          // Quick Actions Section
+          if stats && stats.pendingProducts > 0
+            .row.mb-4
+              .col-12
+                .card.shadow-sm.border-warning.border-3
+                  .card-body.text-center.py-4
+                    i.fas.fa-exclamation-circle.fa-3x.text-warning.mb-3
+                    h4.mb-3 
+                      strong #{stats.pendingProducts} Product#{stats.pendingProducts > 1 ? 's' : ''} Waiting for Your Approval
+                    p.text-muted.mb-3 Review and approve products to make them available to buyers
+                    a.btn.btn-warning.btn-lg(href='/OA/products')
+                      i.fas.fa-clipboard-check.me-2
+                      | Review Pending Products Now
 
           // Register Farmer One Agent Form
           #registerAgentSection.card.shadow-sm.mb-4(style='display: none;')

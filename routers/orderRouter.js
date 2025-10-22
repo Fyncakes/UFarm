@@ -28,37 +28,90 @@ router.get("/checkout", connectEnsureLogin.ensureLoggedIn(), async (req, res) =>
 // Place order
 router.post("/order/place", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
 	try {
+		console.log("Order placement started for user:", req.user.Name1);
 		const { deliveryAddress, deliveryLocation, paymentMethod, notes } = req.body;
+		
+		console.log("Form data received:", { deliveryAddress, deliveryLocation, paymentMethod });
+		
 		const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
+		
+		console.log("Cart found:", cart ? `Yes, with ${cart.items.length} items` : "No");
 
 		if (!cart || cart.items.length === 0) {
+			console.log("Cart is empty");
 			req.flash("error_msg", "Your cart is empty");
 			return res.redirect("/cart");
 		}
 
 		// Validate product availability
-		for (const item of cart.items) {
+		console.log("Validating cart items...");
+		for (let i = 0; i < cart.items.length; i++) {
+			const item = cart.items[i];
+			console.log(`Item ${i + 1}:`, {
+				hasProduct: !!item.product,
+				productId: item.product ? item.product._id : null,
+				productName: item.productName
+			});
+			
+			// Check if product exists
+			if (!item.product) {
+				console.log("Product not populated for item:", item.productName);
+				req.flash("error_msg", "Some products in your cart are no longer available. Please refresh your cart.");
+				return res.redirect("/cart");
+			}
+			
 			const product = await Upload.findById(item.product._id);
-			if (!product || product.quantity < item.quantity) {
-				req.flash("error_msg", `${item.productName} is not available in requested quantity`);
+			if (!product) {
+				console.log("Product not found in database:", item.product._id);
+				req.flash("error_msg", `Product "${item.productName}" is no longer available`);
+				return res.redirect("/cart");
+			}
+			
+			console.log(`Product ${product.productName} - Available: ${product.quantity}, Requested: ${item.quantity}`);
+			
+			if (product.quantity < item.quantity) {
+				req.flash("error_msg", `${product.productName} only has ${product.quantity} units available`);
 				return res.redirect("/cart");
 			}
 		}
+		
+		console.log("All validations passed. Creating order...");
 
-		// Create order
-		const order = new Order({
-			buyer: req.user._id,
-			buyer_name: req.user.Name1,
-			buyer_phone: req.user.phonenumber,
-			items: cart.items.map((item) => ({
+		// Generate unique order number
+		const orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+		console.log("Generated order number:", orderNumber);
+
+		// Create order with proper seller information
+		const orderItems = await Promise.all(cart.items.map(async (item) => {
+			// Get fresh product data to ensure seller info is available
+			const product = await Upload.findById(item.product._id);
+			
+			const seller = item.seller || product.owner;
+			const seller_name = item.seller_name || product.owner_name;
+			
+			console.log("Mapping cart item:", {
+				productName: item.productName,
+				seller: seller,
+				seller_name: seller_name
+			});
+			
+			return {
 				product: item.product._id,
 				productName: item.productName,
 				price: item.price,
 				quantity: item.quantity,
 				image: item.image,
-				seller: item.seller,
-				seller_name: item.seller_name,
-			})),
+				seller: seller,
+				seller_name: seller_name,
+			};
+		}));
+
+		const order = new Order({
+			orderNumber,
+			buyer: req.user._id,
+			buyer_name: req.user.Name1,
+			buyer_phone: req.user.phonenumber || 'N/A',
+			items: orderItems,
 			totalPrice: cart.totalPrice,
 			deliveryAddress,
 			deliveryLocation,
@@ -123,11 +176,14 @@ router.post("/order/place", connectEnsureLogin.ensureLoggedIn(), async (req, res
 		// Don't fail the order if email fails
 	}
 
+	console.log("Order saved successfully! Order ID:", order._id);
 	req.flash("success_msg", "Order placed successfully");
 	res.redirect(`/order/${order._id}`);
 	} catch (error) {
-		console.error(error);
-		req.flash("error_msg", "Error placing order");
+		console.error("ERROR in order placement:");
+		console.error("Error message:", error.message);
+		console.error("Error stack:", error.stack);
+		req.flash("error_msg", `Error placing order: ${error.message}`);
 		res.redirect("/checkout");
 	}
 });
