@@ -13,14 +13,36 @@ const config = require("./config/db");
 // Initialize Express app
 const app = express();
 
-// Connect to MongoDB
+// Connect to MongoDB with improved settings for production
 mongoose
 	.connect(config.database, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
+		serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+		socketTimeoutMS: 45000, // 45 seconds socket timeout
 	})
-	.then(() => console.log("MongoDB connected successfully"))
-	.catch((err) => console.log("MongoDB connection error:", err));
+	.then(() => {
+		console.log("MongoDB connected successfully");
+		console.log("Database:", config.database.includes('mongodb+srv') ? 'MongoDB Atlas (Cloud)' : 'Local MongoDB');
+	})
+	.catch((err) => {
+		console.error("MongoDB connection error:", err);
+		console.error("Check your MONGODB_URI environment variable");
+		// Don't exit, let the app try to reconnect
+	});
+
+// Handle MongoDB connection events
+mongoose.connection.on('connected', () => {
+	console.log('Mongoose connected to DB');
+});
+
+mongoose.connection.on('error', (err) => {
+	console.error('Mongoose connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+	console.log('Mongoose disconnected');
+});
 
 // Import models
 const User = require("./models/User");
