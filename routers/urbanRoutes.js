@@ -1,24 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const multer = require("multer");
 const connectEnsureLogin = require('connect-ensure-login')
 const UploadProductModel = require("../models/Upload");
 const UserModel = require("../models/User");
-
-//.................................image upload....................................
-var storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "public/image");
-	},
-	filename: (req, file, cb) => {
-		cb(null, file.originalname);
-	},
-});
-
-//........................... instantiate variable upload to store multer functionality to upload image
-
-var upload = multer({ storage: storage });
+const { uploadProduct } = require("../config/cloudinary");
 
 // Dashboard
 router.get("/UB", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
@@ -99,23 +85,23 @@ router.delete("/delete-product/:id", connectEnsureLogin.ensureLoggedIn(), async(
 	}
 });
 
-router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), upload.single("image"), async(req, res) => {
+router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.single("image"), async(req, res) => {
 	req.session.user = req.user
 	console.log(req.session.user)
 
 	try {
-		const uploadProduct = new  UploadProductModel(req.body);
+		const newProduct = new  UploadProductModel(req.body);
 
-		// Fix image path: remove 'public/' and convert backslashes to forward slashes
-		uploadProduct.image = `image/${req.file.filename}`;
+		// Store Cloudinary URL
+		newProduct.image = req.file.path; // Cloudinary URL
 
-		uploadProduct.owner = req.session.user._id,
+		newProduct.owner = req.session.user._id,
 
-		uploadProduct.owner_name = req.session.user.Name1
+		newProduct.owner_name = req.session.user.Name1
 
-		console.log(uploadProduct)
+		console.log(newProduct)
 
-		await uploadProduct.save();
+		await newProduct.save();
 		
 		req.flash("success_msg", "Product uploaded successfully! It will be reviewed before appearing on the marketplace.");
 		res.redirect("/my-products");

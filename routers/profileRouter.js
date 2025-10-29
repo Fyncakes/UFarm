@@ -1,34 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
 const User = require("../models/User");
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "public/uploads/");
-	},
-	filename: function (req, file, cb) {
-		cb(null, "profile-" + Date.now() + path.extname(file.originalname));
-	},
-});
-
-const upload = multer({
-	storage: storage,
-	limits: { fileSize: 5000000 }, // 5MB
-	fileFilter: function (req, file, cb) {
-		const filetypes = /jpeg|jpg|png|gif/;
-		const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-		const mimetype = filetypes.test(file.mimetype);
-
-		if (mimetype && extname) {
-			return cb(null, true);
-		} else {
-			cb("Error: Images Only!");
-		}
-	},
-});
+const { uploadProfile } = require("../config/cloudinary");
 
 // Middleware to check if user is authenticated
 function ensureAuthenticated(req, res, next) {
@@ -56,7 +29,7 @@ router.get("/profile", ensureAuthenticated, async (req, res) => {
 });
 
 // POST Update Profile
-router.post("/profile/update", ensureAuthenticated, upload.single("profileImage"), async (req, res) => {
+router.post("/profile/update", ensureAuthenticated, uploadProfile.single("profileImage"), async (req, res) => {
 	try {
 		console.log("Profile update request:", req.body);
 		
@@ -79,9 +52,9 @@ router.post("/profile/update", ensureAuthenticated, upload.single("profileImage"
 			if (req.body.farmLocation) updateData.farmLocation = req.body.farmLocation;
 		}
 
-		// Add profile image if uploaded
+		// Add profile image if uploaded (Cloudinary URL)
 		if (req.file) {
-			updateData.profileImage = "uploads/" + req.file.filename;
+			updateData.profileImage = req.file.path;
 		}
 
 		// Remove undefined values
