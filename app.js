@@ -163,6 +163,11 @@ app.get("/about", async (req, res) => {
 	}
 });
 
+// Terms and Conditions route
+app.get("/terms", (req, res) => {
+	res.render("terms-and-conditions");
+});
+
 // Join Requirements route
 app.get("/join-requirements", (req, res) => {
 	res.render("joinRequirements");
