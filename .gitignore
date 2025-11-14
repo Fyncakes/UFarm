@@ -14,8 +14,18 @@ yarn-error.log*
 # Uploaded files
 public/uploads/*
 !public/uploads/.gitkeep
+
+# Static assets in public/image (allow video and key images)
 public/image/*
 !public/image/.gitkeep
+!public/image/Ufarmvideo.mp4
+!public/image/pexels-rajukhan-pathan-4840120.jpg
+!public/image/*.jpg
+!public/image/*.jpeg
+!public/image/*.png
+!public/image/*.webp
+!public/image/*.avif
+!public/image/*.mp4
 
 # OS files
 .DS_Store

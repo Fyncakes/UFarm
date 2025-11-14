@@ -61,7 +61,16 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+// Serve static files with proper MIME types (important for video files on Render)
+app.use(express.static(path.join(__dirname, "public"), {
+	maxAge: '1d', // Cache static files for 1 day
+	setHeaders: (res, filePath) => {
+		// Ensure video files are served with correct MIME type
+		if (filePath.endsWith('.mp4')) {
+			res.setHeader('Content-Type', 'video/mp4');
+		}
+	}
+}));
 app.use(methodOverride("_method"));
 
 // Session configuration

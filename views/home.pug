@@ -69,6 +69,8 @@ html(lang='en')
           source(src='/image/Ufarmvideo.mp4' type='video/mp4')
           | Your browser does not support the video tag.
         .video-overlay(style='background: linear-gradient(135deg, rgba(126, 217, 87, 0.5), rgba(92, 179, 45, 0.5));')
+        // Fallback background in case video fails to load
+        .video-fallback(style='display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%); z-index: 0;')
       
       .container.position-relative(style='z-index: 2;')
         .row.align-items-center.min-vh-70
@@ -252,3 +254,77 @@ html(lang='en')
           p &copy; 2024 Ufarm. All rights reserved.
 
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      // Ensure video plays - handle autoplay restrictions and loading errors
+      document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('heroVideo');
+        const fallback = document.querySelector('.video-fallback');
+        
+        if (!video) {
+          console.error('Video element not found');
+          if (fallback) fallback.style.display = 'block';
+          return;
+        }
+        
+        // Check if video source is accessible
+        video.addEventListener('loadstart', function() {
+          console.log('Video loading started...');
+        });
+        
+        // Handle video errors (404, network issues, etc.)
+        video.addEventListener('error', function(e) {
+          console.error('Video error:', e);
+          console.error('Video error code:', video.error ? video.error.code : 'unknown');
+          console.error('Video network state:', video.networkState);
+          console.error('Video ready state:', video.readyState);
+          
+          // Show fallback background
+          if (fallback) {
+            fallback.style.display = 'block';
+          }
+          const videoBackground = document.querySelector('.video-background');
+          if (videoBackground) {
+            videoBackground.style.background = 'linear-gradient(135deg, #7ed957 0%, #5cb85c 100%)';
+          }
+        });
+        
+        // Handle successful video load
+        video.addEventListener('loadeddata', function() {
+          console.log('Video data loaded successfully');
+          if (fallback) fallback.style.display = 'none';
+        });
+        
+        // Handle video can play
+        video.addEventListener('canplay', function() {
+          console.log('Video can play');
+          const playPromise = video.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log('Video is playing');
+            }).catch(error => {
+              console.log('Autoplay prevented, video will play on interaction');
+              
+              // Play video on any user interaction
+              const playVideo = () => {
+                video.play().catch(e => console.log('Video play error:', e));
+                document.removeEventListener('click', playVideo);
+                document.removeEventListener('touchstart', playVideo);
+                document.removeEventListener('scroll', playVideo);
+              };
+              
+              document.addEventListener('click', playVideo);
+              document.addEventListener('touchstart', playVideo);
+              document.addEventListener('scroll', playVideo);
+            });
+          }
+        });
+        
+        // Check if video source exists (after a short delay)
+        setTimeout(function() {
+          if (video.readyState === 0 && video.networkState === 3) {
+            console.error('Video failed to load - network error');
+            if (fallback) fallback.style.display = 'block';
+          }
+        }, 3000);
+      });
