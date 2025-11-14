@@ -173,6 +173,79 @@ app.get("/join-requirements", (req, res) => {
 	res.render("joinRequirements");
 });
 
+// Admin Registration Page
+app.get("/admin/register", (req, res) => {
+	res.render("admin-register");
+});
+
+// Admin Registration Handler
+app.post("/admin/register", async (req, res) => {
+	try {
+		const Registration = require("./models/User");
+		
+		// Validate that role is Agriculture Officer
+		if (req.body.role !== "Agriculture Officer") {
+			req.flash("error_msg", "Invalid role. Only Agriculture Officer accounts can be created here.");
+			return res.redirect("/admin/register");
+		}
+		
+		// Check if username already exists
+		const existingUser = await Registration.findOne({ Name1: req.body.Name1 });
+		if (existingUser) {
+			req.flash("error_msg", "Username already exists. Please choose a different username.");
+			return res.redirect("/admin/register");
+		}
+		
+		// Validate password confirmation
+		if (req.body.password !== req.body.confirmPassword) {
+			req.flash("error_msg", "Passwords do not match. Please try again.");
+			return res.redirect("/admin/register");
+		}
+		
+		// Create admin account
+		const adminData = {
+			Name1: req.body.Name1,
+			role: "Agriculture Officer",
+			email: req.body.email,
+			phonenumber: req.body.phonenumber,
+			Gender1: req.body.Gender1,
+			district: req.body.district,
+			address: req.body.address,
+			bio: req.body.bio,
+			verified: req.body.verified === 'on' || req.body.verified === true,
+			active: req.body.active === 'on' || req.body.active === true
+		};
+		
+		const admin = new Registration(adminData);
+		
+		console.log('Creating Agriculture Officer account:', req.body.Name1);
+		
+		// Register admin with password using passport-local-mongoose
+		await Registration.register(admin, req.body.password, (error) => {
+			if (error) {
+				console.error("Admin registration error:", error);
+				if (error.name === 'UserExistsError') {
+					req.flash("error_msg", "Username already exists. Please choose a different username.");
+				} else {
+					req.flash("error_msg", "Registration failed. Please try again.");
+				}
+				return res.redirect("/admin/register");
+			}
+			
+			req.flash("success_msg", `Agriculture Officer account "${req.body.Name1}" created successfully! You can now login.`);
+			res.redirect("/login");
+		});
+	} catch (error) {
+		console.error("Admin registration error:", error);
+		if (error.code === 11000) {
+			req.flash("error_msg", "Username already exists. Please choose a different username.");
+		} else {
+			req.flash("error_msg", "Registration failed. Please check your information and try again.");
+		}
+		res.redirect("/admin/register");
+	}
+});
+
 // Uploads route - redirect to products page
 app.get("/uploads", (req, res) => {
 	res.redirect("/product");

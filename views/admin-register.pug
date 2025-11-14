@@ -1,0 +1,208 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet' href='/css/main.css')
+    title Admin Registration - Ufarm
+    style.
+      .admin-register-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 2rem 0;
+      }
+      .admin-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        border: none;
+      }
+      .admin-header {
+        background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+      }
+      .form-control:focus, .form-select:focus {
+        border-color: #7ed957;
+        box-shadow: 0 0 0 0.2rem rgba(126, 217, 87, 0.25);
+      }
+      .btn-admin {
+        background: linear-gradient(135deg, #7ed957, #5cb32d);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem 2rem;
+      }
+      .btn-admin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(126, 217, 87, 0.4);
+        color: white;
+      }
+      .security-note {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+      }
+  body
+    include includes/navbar.pug
+
+    .admin-register-container
+      .container
+        .row.justify-content-center
+          .col-lg-8.col-md-10
+            .card.admin-card
+              .admin-header
+                i.fas.fa-user-shield.fa-3x.mb-3
+                h2.mb-2 Agriculture Officer Registration
+                p.mb-0 Create a new admin account for the Ufarm platform
+              
+              .card-body.p-5
+                include includes/flash-messages.pug
+                
+                .security-note
+                  i.fas.fa-exclamation-triangle.text-warning.me-2
+                  strong Security Notice:
+                  |  This page is for creating Agriculture Officer (admin) accounts. Only authorized personnel should use this page.
+                
+                form(action='/admin/register' method='post' id='adminRegisterForm')
+                  .row
+                    .col-md-6.mb-3
+                      label.form-label(for='Name1')
+                        i.fas.fa-user.me-1
+                        | Username *
+                      input#Name1.form-control(type='text' name='Name1' placeholder='Enter username' required)
+                      small.text-muted This will be used for login
+                    
+                    .col-md-6.mb-3
+                      label.form-label(for='email')
+                        i.fas.fa-envelope.me-1
+                        | Email Address *
+                      input#email.form-control(type='email' name='email' placeholder='admin@ufarm.com' required)
+                  
+                  .row
+                    .col-md-6.mb-3
+                      label.form-label(for='phonenumber')
+                        i.fas.fa-phone.me-1
+                        | Phone Number *
+                      input#phonenumber.form-control(type='tel' name='phonenumber' placeholder='+256700000000' required)
+                    
+                    .col-md-6.mb-3
+                      label.form-label(for='Gender1')
+                        i.fas.fa-venus-mars.me-1
+                        | Gender
+                      select#Gender1.form-select(name='Gender1')
+                        option(value='') Select Gender
+                        option(value='Male') Male
+                        option(value='Female') Female
+                        option(value='Other') Other
+                  
+                  .mb-3
+                    label.form-label(for='district')
+                      i.fas.fa-map-marker-alt.me-1
+                      | District *
+                    input#district.form-control(type='text' name='district' placeholder='e.g., Kampala' required)
+                  
+                  .mb-3
+                    label.form-label(for='address')
+                      i.fas.fa-home.me-1
+                      | Full Address
+                    input#address.form-control(type='text' name='address' placeholder='Street address, City' required)
+                  
+                  .row
+                    .col-md-6.mb-3
+                      label.form-label(for='password')
+                        i.fas.fa-lock.me-1
+                        | Password *
+                      .input-group
+                        input#password.form-control(type='password' name='password' placeholder='Minimum 6 characters' required minlength='6')
+                        button.btn.btn-outline-secondary(type='button' onclick='togglePassword("password")')
+                          i#password-icon.fas.fa-eye
+                      small.text-muted Minimum 6 characters
+                    
+                    .col-md-6.mb-3
+                      label.form-label(for='confirmPassword')
+                        i.fas.fa-lock.me-1
+                        | Confirm Password *
+                      .input-group
+                        input#confirmPassword.form-control(type='password' name='confirmPassword' placeholder='Re-enter password' required minlength='6')
+                        button.btn.btn-outline-secondary(type='button' onclick='togglePassword("confirmPassword")')
+                          i#confirmPassword-icon.fas.fa-eye
+                  
+                  .mb-3
+                    label.form-label(for='bio')
+                      i.fas.fa-info-circle.me-1
+                      | Bio/Description
+                    textarea#bio.form-control(name='bio' rows='3' placeholder='Brief description about the admin account')
+                  
+                  .mb-3.form-check
+                    input#verified.form-check-input(type='checkbox' name='verified' checked)
+                    label.form-check-label(for='verified')
+                      | Account Verified (Auto-verify admin accounts)
+                  
+                  .mb-3.form-check
+                    input#active.form-check-input(type='checkbox' name='active' checked)
+                    label.form-check-label(for='active')
+                      | Account Active
+                  
+                  input(type='hidden' name='role' value='Agriculture Officer')
+                  
+                  .d-grid.gap-2.d-md-flex.justify-content-md-end.mt-4
+                    a.btn.btn-outline-secondary(href='/')
+                      i.fas.fa-arrow-left.me-2
+                      | Cancel
+                    button.btn.btn-admin(type='submit')
+                      i.fas.fa-user-plus.me-2
+                      | Create Admin Account
+                
+                .mt-4.pt-4.border-top
+                  .text-center
+                    p.text-muted.mb-2
+                      | Already have an admin account?
+                      a.text-success.fw-bold.text-decoration-none.ms-2(href='/login') Login here
+                    p.small.text-muted.mt-3
+                      | Need help? Contact system administrator or check 
+                      a(href='/about') About Us
+                      |  page.
+
+    include includes/footer.pug
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const icon = document.getElementById(fieldId + '-icon');
+        
+        if (passwordField.type === 'password') {
+          passwordField.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          passwordField.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+      
+      // Password confirmation validation
+      document.getElementById('adminRegisterForm').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+          e.preventDefault();
+          alert('Passwords do not match! Please try again.');
+          return false;
+        }
+        
+        if (password.length < 6) {
+          e.preventDefault();
+          alert('Password must be at least 6 characters long!');
+          return false;
+        }
+      });
+
