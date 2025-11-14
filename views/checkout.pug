@@ -43,6 +43,12 @@ html(lang='en')
                   label.form-label(for='notes') Additional Notes
                   textarea.form-control(id='notes' name='notes' rows='2' placeholder='Any special instructions for delivery')
                 
+                .mb-3.form-check
+                  input#agreeTerms.form-check-input(type='checkbox' required)
+                  label.form-check-label(for='agreeTerms')
+                    | I agree to the 
+                    a(href='/terms' target='_blank') Terms and Conditions
+                
                 .d-grid.gap-2.d-md-flex.justify-content-md-end
                   a.btn.btn-outline-secondary(href='/cart')
                     i.fas.fa-arrow-left.me-2
