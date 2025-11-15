@@ -24,10 +24,10 @@ html(lang='en')
 
       // Filter buttons
       .btn-group.mb-4(role='group')
-        button.btn.btn-outline-secondary.active(type='button' onclick='filterProducts("all")') All
-        button.btn.btn-outline-warning(type='button' onclick='filterProducts("pending")') Pending
-        button.btn.btn-outline-success(type='button' onclick='filterProducts("approved")') Approved
-        button.btn.btn-outline-danger(type='button' onclick='filterProducts("rejected")') Rejected
+        a.btn.btn-outline-secondary(href='/OA/products' class=!filter || filter === 'all' ? 'active' : '') All
+        a.btn.btn-outline-warning(href='/OA/products?filter=pending' class=filter === 'pending' ? 'active' : '') Pending
+        a.btn.btn-outline-success(href='/OA/products?filter=approved' class=filter === 'approved' ? 'active' : '') Approved
+        a.btn.btn-outline-danger(href='/OA/products?filter=rejected' class=filter === 'rejected' ? 'active' : '') Rejected
 
       .row.g-4#productsList
         if products && products.length
@@ -54,7 +54,7 @@ html(lang='en')
                       button.btn.btn-sm.btn-success(type='submit')
                         i.fas.fa-check.me-1
                         | Approve
-                    button.btn.btn-sm.btn-danger(onclick=`rejectProduct('${product._id}')`)
+                    a.btn.btn-sm.btn-danger(href=`/OA/reject-product/${product._id}?filter=${filter || 'all'}` onclick='return confirm("Reject this product?")')
                       i.fas.fa-times.me-1
                       | Reject
                   else
@@ -88,9 +88,4 @@ html(lang='en')
         });
       }
       
-      function rejectProduct(productId) {
-        if (confirm('Reject this product?')) {
-          window.location.href = `/OA/reject-product/${productId}`;
-        }
-      }
 

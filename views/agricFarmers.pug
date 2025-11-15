@@ -56,10 +56,16 @@ html(lang='en')
                         span.badge(class=`${farmer.verified ? 'bg-success' : 'bg-warning'}`) #{farmer.verified ? 'Verified' : 'Pending'}
                       td
                         .btn-group
-                          a.btn.btn-sm.btn-info(href=`/profile/${farmer._id}`)
+                          a.btn.btn-sm.btn-info(href=`/profile/${farmer._id}` title='View Profile')
                             i.fas.fa-eye
-                          button.btn.btn-sm.btn-success(onclick=`verifyFarmer('${farmer._id}')`)
-                            i.fas.fa-check
+                          if !farmer.verified
+                            form(action=`/OA/farmer/${farmer._id}/verify` method='post' style='display: inline;')
+                              button.btn.btn-sm.btn-success(type='submit' title='Approve/Verify')
+                                i.fas.fa-check
+                          else
+                            form(action=`/OA/farmer/${farmer._id}/reject` method='post' style='display: inline;')
+                              button.btn.btn-sm.btn-warning(type='submit' title='Remove Verification' onclick='return confirm("Remove verification from this farmer?")')
+                                i.fas.fa-times
           else
             .text-center.py-5
               i.fas.fa-users.fa-4x.text-muted.mb-3

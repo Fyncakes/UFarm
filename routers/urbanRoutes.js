@@ -96,8 +96,8 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 		newProduct.image = req.file.path; // Cloudinary URL
 
 		newProduct.owner = req.session.user._id,
-
 		newProduct.owner_name = req.session.user.Name1
+		newProduct.status = 'pending'; // Always start as pending
 
 		console.log(newProduct)
 
@@ -109,6 +109,73 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 		req.flash("error_msg", "Product upload failed. Please try again.");
 		console.log(error);
 		res.redirect("/add-product");
+	}
+});
+
+// Edit Product Page
+router.get("/edit-product/:id", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
+	try {
+		const product = await UploadProductModel.findById(req.params.id);
+		
+		if (!product) {
+			req.flash("error_msg", "Product not found");
+			return res.redirect("/my-products");
+		}
+		
+		// Check if product belongs to user
+		if (product.owner_name !== req.session.user.Name1) {
+			req.flash("error_msg", "Unauthorized access");
+			return res.redirect("/my-products");
+		}
+		
+		res.render("editProduct", { product });
+	} catch (error) {
+		console.error(error);
+		req.flash("error_msg", "Error loading product");
+		res.redirect("/my-products");
+	}
+});
+
+// Update Product (with re-approval)
+router.post("/update-product/:id", connectEnsureLogin.ensureLoggedIn(), uploadProduct.single("image"), async(req, res) => {
+	try {
+		const product = await UploadProductModel.findById(req.params.id);
+		
+		if (!product) {
+			req.flash("error_msg", "Product not found");
+			return res.redirect("/my-products");
+		}
+		
+		// Check if product belongs to user
+		if (product.owner_name !== req.session.user.Name1) {
+			req.flash("error_msg", "Unauthorized access");
+			return res.redirect("/my-products");
+		}
+		
+		// Update product fields
+		product.productName = req.body.productName;
+		product.price = req.body.price;
+		product.quantity = req.body.quantity;
+		product.description = req.body.description;
+		product.direction = req.body.direction;
+		product.organic = req.body.organic === 'on';
+		
+		// Update image if new one uploaded
+		if (req.file) {
+			product.image = req.file.path;
+		}
+		
+		// IMPORTANT: Set status back to pending for re-approval
+		product.status = 'pending';
+		
+		await product.save();
+		
+		req.flash("success_msg", "Product updated successfully! It will be reviewed again before appearing on the marketplace.");
+		res.redirect("/my-products");
+	} catch (error) {
+		console.error(error);
+		req.flash("error_msg", "Error updating product");
+		res.redirect("/my-products");
 	}
 });
 

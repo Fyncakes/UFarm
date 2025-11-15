@@ -127,4 +127,90 @@ router.post("/FO", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
 	}
 });
 
+// Review Products (Farmer One)
+router.get("/FO/review-products", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+	try {
+		if (req.user.role !== "Farmer one") {
+			req.flash("error_msg", "Unauthorized access");
+			return res.redirect("/");
+		}
+
+		const Upload = require("../models/Upload");
+		const Registration = require("../models/User");
+		
+		// Get farmers registered by this agent
+		const myFarmers = await Registration.find({ registeredBy: req.user._id });
+		const farmerIds = myFarmers.map(f => f._id);
+		
+		// Get products from my farmers
+		const products = await Upload.find({ owner: { $in: farmerIds } })
+			.populate("owner")
+			.sort({ createdAt: -1 });
+		
+		res.render("agricProducts", { products, filter: 'all', isFarmerOne: true });
+	} catch (error) {
+		console.error(error);
+		req.flash("error_msg", "Error loading products");
+		res.redirect("/FO");
+	}
+});
+
+// My Farmers (Farmer One)
+router.get("/FO/my-farmers", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+	try {
+		if (req.user.role !== "Farmer one") {
+			req.flash("error_msg", "Unauthorized access");
+			return res.redirect("/");
+		}
+
+		const farmers = await Registration.find({ registeredBy: req.user._id })
+			.sort({ createdAt: -1 });
+		
+		res.render("farmersList", { farmers, isFarmerOne: true });
+	} catch (error) {
+		console.error(error);
+		req.flash("error_msg", "Error loading farmers");
+		res.redirect("/FO");
+	}
+});
+
+// View products with filters (Farmer One)
+router.get("/FO/products", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+	try {
+		if (req.user.role !== "Farmer one") {
+			req.flash("error_msg", "Unauthorized access");
+			return res.redirect("/");
+		}
+
+		const Upload = require("../models/Upload");
+		const Registration = require("../models/User");
+		
+		const filter = req.query.filter || 'all';
+		let query = {};
+		
+		// Get farmers registered by this agent
+		const myFarmers = await Registration.find({ registeredBy: req.user._id });
+		const farmerIds = myFarmers.map(f => f._id);
+		query.owner = { $in: farmerIds };
+		
+		if (filter === 'pending') {
+			query.status = 'pending';
+		} else if (filter === 'approved') {
+			query.status = 'approved';
+		} else if (filter === 'rejected') {
+			query.status = 'rejected';
+		}
+		
+		const products = await Upload.find(query)
+			.populate("owner")
+			.sort({ createdAt: -1 });
+		
+		res.render("agricProducts", { products, filter, isFarmerOne: true });
+	} catch (error) {
+		console.error(error);
+		req.flash("error_msg", "Error loading products");
+		res.redirect("/FO");
+	}
+});
+
 module.exports = router;

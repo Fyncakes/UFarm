@@ -36,7 +36,11 @@ html(lang='en')
                 li.mb-2
                   a.btn.btn-light.w-100.text-start(href='/OA/products')
                     i.fas.fa-box.me-2.text-warning
-                    | Products
+                    | Review Products
+                li.mb-2
+                  a.btn.btn-light.w-100.text-start(href='/OA/farmers')
+                    i.fas.fa-tractor.me-2.text-success
+                    | My Farmers
                 li.mb-2
                   a.btn.btn-light.w-100.text-start(href='/categories')
                     i.fas.fa-th-large.me-2.text-success
@@ -60,25 +64,28 @@ html(lang='en')
           // Statistics Cards
           .row.mb-4
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-tractor.fa-3x.text-primary.mb-3
-                  h3.fw-bold #{stats ? stats.totalFarmers : 0}
-                  p.text-muted.mb-0 Total Farmers
+              a.text-decoration-none(href='/OA/farmers')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-tractor.fa-3x.text-primary.mb-3
+                    h3.fw-bold #{stats ? stats.totalFarmers : 0}
+                    p.text-muted.mb-0 Total Farmers
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-users.fa-3x.text-success.mb-3
-                  h3.fw-bold #{stats ? stats.totalBuyers : 0}
-                  p.text-muted.mb-0 Total Buyers
+              a.text-decoration-none(href='/OA/buyers')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-users.fa-3x.text-success.mb-3
+                    h3.fw-bold #{stats ? stats.totalBuyers : 0}
+                    p.text-muted.mb-0 Total Buyers
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-box.fa-3x.text-info.mb-3
-                  h3.fw-bold #{stats ? stats.totalProducts : 0}
-                  p.text-muted.mb-0 Total Products
+              a.text-decoration-none(href='/OA/all-products')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-box.fa-3x.text-info.mb-3
+                    h3.fw-bold #{stats ? stats.totalProducts : 0}
+                    p.text-muted.mb-0 Total Products
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              a.text-decoration-none(href='/OA/products')
+              a.text-decoration-none(href='/OA/products?filter=pending')
                 .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
                   .card-body
                     i.fas.fa-clock.fa-3x.text-warning.mb-3
@@ -87,29 +94,33 @@ html(lang='en')
 
           .row.mb-4
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-check-circle.fa-3x.text-success.mb-3
-                  h3.fw-bold #{stats ? stats.approvedProducts : 0}
-                  p.text-muted.mb-0 Approved
+              a.text-decoration-none(href='/OA/products?filter=approved')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-check-circle.fa-3x.text-success.mb-3
+                    h3.fw-bold #{stats ? stats.approvedProducts : 0}
+                    p.text-muted.mb-0 Approved
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-shopping-bag.fa-3x.text-primary.mb-3
-                  h3.fw-bold #{stats ? stats.totalOrders : 0}
-                  p.text-muted.mb-0 Total Orders
+              a.text-decoration-none(href='/OA/orders')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-shopping-bag.fa-3x.text-primary.mb-3
+                    h3.fw-bold #{stats ? stats.totalOrders : 0}
+                    p.text-muted.mb-0 Total Orders
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-th-large.fa-3x.text-info.mb-3
-                  h3.fw-bold #{stats ? stats.totalCategories : 0}
-                  p.text-muted.mb-0 Categories
+              a.text-decoration-none(href='/categories')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-th-large.fa-3x.text-info.mb-3
+                    h3.fw-bold #{stats ? stats.totalCategories : 0}
+                    p.text-muted.mb-0 Categories
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-user-tie.fa-3x.text-success.mb-3
-                  h3.fw-bold #{stats ? stats.totalAgents : 0}
-                  p.text-muted.mb-0 Farmer One Agents
+              a.text-decoration-none(href='/OA/agents')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-user-tie.fa-3x.text-success.mb-3
+                    h3.fw-bold #{stats ? stats.totalAgents : 0}
+                    p.text-muted.mb-0 Farmer One Agents
 
           // Quick Actions Section
           if stats && stats.pendingProducts > 0

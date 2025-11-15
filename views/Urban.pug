@@ -54,29 +54,33 @@ html(lang='en')
           // Statistics Cards
           .row.mb-4
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-box.fa-3x.text-primary.mb-3
-                  h3.fw-bold #{stats ? stats.totalProducts : 0}
-                  p.text-muted.mb-0 Total Products
+              a.text-decoration-none(href='/my-products')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-box.fa-3x.text-primary.mb-3
+                    h3.fw-bold #{stats ? stats.totalProducts : 0}
+                    p.text-muted.mb-0 Total Products
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-check-circle.fa-3x.text-success.mb-3
-                  h3.fw-bold #{stats ? stats.approvedProducts : 0}
-                  p.text-muted.mb-0 Approved
+              a.text-decoration-none(href='/my-products?filter=approved')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-check-circle.fa-3x.text-success.mb-3
+                    h3.fw-bold #{stats ? stats.approvedProducts : 0}
+                    p.text-muted.mb-0 Approved
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-clock.fa-3x.text-warning.mb-3
-                  h3.fw-bold #{stats ? stats.pendingProducts : 0}
-                  p.text-muted.mb-0 Pending Review
+              a.text-decoration-none(href='/my-products?filter=pending')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-clock.fa-3x.text-warning.mb-3
+                    h3.fw-bold #{stats ? stats.pendingProducts : 0}
+                    p.text-muted.mb-0 Pending Review
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-times-circle.fa-3x.text-danger.mb-3
-                  h3.fw-bold #{stats ? stats.rejectedProducts : 0}
-                  p.text-muted.mb-0 Rejected
+              a.text-decoration-none(href='/my-products?filter=rejected')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-times-circle.fa-3x.text-danger.mb-3
+                    h3.fw-bold #{stats ? stats.rejectedProducts : 0}
+                    p.text-muted.mb-0 Rejected
 
           // Quick Actions
           .row.mb-4

@@ -30,11 +30,11 @@ html(lang='en')
                     i.fas.fa-user-plus.me-2.text-success
                     | Register Farmer
                 li.mb-2
-                  a.btn.btn-light.w-100.text-start(href='#products' onclick='document.getElementById("products").scrollIntoView({ behavior: "smooth" })')
+                  a.btn.btn-light.w-100.text-start(href='/FO/review-products')
                     i.fas.fa-box.me-2.text-primary
                     | Review Products
                 li.mb-2
-                  a.btn.btn-light.w-100.text-start(href='#farmers' onclick='document.getElementById("farmers").scrollIntoView({ behavior: "smooth" })')
+                  a.btn.btn-light.w-100.text-start(href='/FO/my-farmers')
                     i.fas.fa-users.me-2.text-info
                     | My Farmers
                 li.mb-2
@@ -63,29 +63,33 @@ html(lang='en')
           // Statistics Cards
           .row.mb-4
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-box.fa-3x.text-primary.mb-3
-                  h3.fw-bold #{stats ? stats.totalProducts : 0}
-                  p.text-muted.mb-0 Total Products
+              a.text-decoration-none(href='/FO/products')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-box.fa-3x.text-primary.mb-3
+                    h3.fw-bold #{stats ? stats.totalProducts : 0}
+                    p.text-muted.mb-0 Total Products
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-clock.fa-3x.text-warning.mb-3
-                  h3.fw-bold #{stats ? stats.pendingProducts : 0}
-                  p.text-muted.mb-0 Pending Review
+              a.text-decoration-none(href='/FO/products?filter=pending')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-clock.fa-3x.text-warning.mb-3
+                    h3.fw-bold #{stats ? stats.pendingProducts : 0}
+                    p.text-muted.mb-0 Pending Review
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-check-circle.fa-3x.text-success.mb-3
-                  h3.fw-bold #{stats ? stats.approvedProducts : 0}
-                  p.text-muted.mb-0 Approved
+              a.text-decoration-none(href='/FO/products?filter=approved')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;')
+                  .card-body
+                    i.fas.fa-check-circle.fa-3x.text-success.mb-3
+                    h3.fw-bold #{stats ? stats.approvedProducts : 0}
+                    p.text-muted.mb-0 Approved
             .col-lg-3.col-md-6.col-sm-6.mb-3
-              .card.text-center.shadow-sm.border-0.hover-lift
-                .card-body
-                  i.fas.fa-users.fa-3x.text-info.mb-3
-                  h3.fw-bold #{stats ? stats.totalFarmers : 0}
-                  p.text-muted.mb-0 Registered Farmers
+              a.text-decoration-none(href='#farmers')
+                .card.text-center.shadow-sm.border-0.hover-lift(style='cursor: pointer;' onclick='document.getElementById("farmers").scrollIntoView({ behavior: "smooth" })')
+                  .card-body
+                    i.fas.fa-users.fa-3x.text-info.mb-3
+                    h3.fw-bold #{stats ? stats.totalFarmers : 0}
+                    p.text-muted.mb-0 Registered Farmers
 
           // Quick Action Button
           .row.mb-4
