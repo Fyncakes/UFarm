@@ -28,7 +28,7 @@ html(lang='en')
           each product in products
             .col-lg-3.col-md-4.col-sm-6.mb-4
               .card.h-100.shadow-sm
-                img.card-img-top(src='/' + product.image alt=product.productName style='height: 200px; object-fit: cover;')
+                img.card-img-top(src=imageUrl(product.image) alt=product.productName style='height: 200px; object-fit: cover;')
                 .card-body.d-flex.flex-column
                   h5.card-title #{product.productName}
                   p.text-muted.small #{product.owner_name}

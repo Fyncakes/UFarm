@@ -56,7 +56,7 @@ html(lang='en')
                   each product in products
                     tr
                       td
-                        img.rounded(src='/' + product.image alt=product.productName style='width: 50px; height: 50px; object-fit: cover;')
+                        img.rounded(src=imageUrl(product.image) alt=product.productName style='width: 50px; height: 50px; object-fit: cover;')
                       td #{product.productName}
                       td #{product.owner_name}
                       td #{product.category ? product.category.name : 'N/A'}

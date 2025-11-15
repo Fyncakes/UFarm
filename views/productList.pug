@@ -92,7 +92,7 @@ html(lang='en')
                         i.far.fa-heart
                     
                     .product-image-container
-                      img.card-img-top.product-image(src='/' + listProduct.image alt=listProduct.productName loading='lazy')
+                      img.card-img-top.product-image(src=imageUrl(listProduct.image) alt=listProduct.productName loading='lazy')
                       .product-overlay
                         a.btn.btn-light.btn-sm(href=`/product-detail/${listProduct._id}`)
                           i.fas.fa-eye.me-1

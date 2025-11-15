@@ -18,7 +18,7 @@ html(lang='en')
 
       .row
         .col-lg-6
-          img.img-fluid.rounded.shadow(src='/' + product.image alt=product.productName)
+          img.img-fluid.rounded.shadow(src=imageUrl(product.image) alt=product.productName)
         
         .col-lg-6
           h1.mb-3 #{product.productName}

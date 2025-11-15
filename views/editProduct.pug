@@ -82,7 +82,7 @@ html(lang='en')
                     if product.image
                       .mt-3
                         p.small.text-muted Current Image:
-                        img(src='/' + product.image alt='Current product' style='max-width: 300px; max-height: 300px; border-radius: 8px; border: 2px solid #e0e0e0;')
+                        img(src=imageUrl(product.image) alt='Current product' style='max-width: 300px; max-height: 300px; border-radius: 8px; border: 2px solid #e0e0e0;')
                     
                     // New Image Preview
                     #imagePreview.mt-3(style='display: none;')

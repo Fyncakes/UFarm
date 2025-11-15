@@ -146,7 +146,7 @@ html(lang='en')
               .col-lg-3.col-md-4.col-sm-6
                 a.text-decoration-none(href=`/product-detail/${product._id}`)
                   .card.h-100.shadow-sm.product-card
-                    img.card-img-top(src='/' + product.image alt=product.productName style='height: 200px; object-fit: cover;')
+                    img.card-img-top(src=imageUrl(product.image) alt=product.productName style='height: 200px; object-fit: cover;')
                     .card-body
                       h6.card-title.text-dark #{product.productName}
                       p.text-muted.small.mb-1

@@ -76,7 +76,7 @@ html(lang='en')
                         i.fas.fa-times.me-1
                         | Rejected
                   
-                  img.card-img-top(src='/' + product.image alt=product.productName style='height: 200px; object-fit: cover;')
+                  img.card-img-top(src=imageUrl(product.image) alt=product.productName style='height: 200px; object-fit: cover;')
                 
                 .card-body.d-flex.flex-column
                   h5.card-title.mb-2= product.productName

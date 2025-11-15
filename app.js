@@ -96,6 +96,17 @@ app.use((req, res, next) => {
 	res.locals.success_msg = req.flash("success_msg");
 	res.locals.error_msg = req.flash("error_msg");
 	res.locals.error = req.flash("error");
+	
+	// Helper function to handle image paths (Cloudinary URLs or local paths)
+	res.locals.imageUrl = (imagePath) => {
+		if (!imagePath) return '/image/placeholder.jpg';
+		// If it's already a full URL (Cloudinary), return as-is
+		if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+			return imagePath;
+		}
+		// Otherwise, it's a local path, prepend '/'
+		return '/' + imagePath;
+	};
 	next();
 });
 

@@ -34,7 +34,7 @@ html(lang='en')
                 each item in cart.items
                   .row.cart-item.mb-3.pb-3.border-bottom
                     .col-md-2.col-3
-                      img.img-fluid.rounded(src='/' + item.image alt=item.productName)
+                      img.img-fluid.rounded(src=imageUrl(item.image) alt=item.productName)
                     .col-md-4.col-9
                       h5 #{item.productName}
                       p.text-muted.mb-1 Seller: #{item.seller_name}

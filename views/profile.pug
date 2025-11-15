@@ -20,7 +20,7 @@ html(lang='en')
           .card.shadow-sm.border-0
             .card-body.text-center
               if user && user.profileImage
-                img.profile-avatar.mb-3(src='/' + user.profileImage alt='Profile')
+                img.profile-avatar.mb-3(src=imageUrl(user.profileImage) alt='Profile')
               else
                 .profile-avatar-placeholder.mb-3
                   i.fas.fa-user.fa-3x.text-muted

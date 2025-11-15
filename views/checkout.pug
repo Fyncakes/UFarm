@@ -65,7 +65,7 @@ html(lang='en')
                 .order-items
                   each item in cart.items
                     .d-flex.mb-3.pb-3.border-bottom
-                      img.rounded(src='/' + item.image alt=item.productName style='width: 60px; height: 60px; object-fit: cover;')
+                      img.rounded(src=imageUrl(item.image) alt=item.productName style='width: 60px; height: 60px; object-fit: cover;')
                       .ms-3.flex-grow-1
                         h6.mb-1 #{item.productName}
                         p.text-muted.small.mb-0 Qty: #{item.quantity} × UGX #{item.price.toLocaleString()}

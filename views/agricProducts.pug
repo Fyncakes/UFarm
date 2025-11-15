@@ -34,7 +34,7 @@ html(lang='en')
           each product in products
             .col-md-4.product-item(data-status=product.status)
               .card.h-100.shadow-sm
-                img.card-img-top(src='/' + product.image alt=product.productName style='height: 200px; object-fit: cover;')
+                img.card-img-top(src=imageUrl(product.image) alt=product.productName style='height: 200px; object-fit: cover;')
                 .card-body
                   h5.card-title #{product.productName}
                   p.card-text

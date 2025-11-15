@@ -196,7 +196,7 @@ html(lang='en')
                       each product in products
                         tr
                           td
-                            img.rounded.shadow-sm(src='/' + product.image alt=product.productName style='width: 60px; height: 60px; object-fit: cover;')
+                            img.rounded.shadow-sm(src=imageUrl(product.image) alt=product.productName style='width: 60px; height: 60px; object-fit: cover;')
                           td
                             strong #{product.productName}
                             br

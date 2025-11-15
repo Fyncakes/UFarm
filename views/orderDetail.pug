@@ -61,7 +61,7 @@ html(lang='en')
               each item in order.items
                 .row.mb-3.pb-3.border-bottom
                   .col-md-2.col-3
-                    img.img-fluid.rounded(src='/' + item.image alt=item.productName)
+                    img.img-fluid.rounded(src=imageUrl(item.image) alt=item.productName)
                   .col-md-6.col-9
                     h6 #{item.productName}
                     p.text-muted.small.mb-1 Seller: #{item.seller_name}
