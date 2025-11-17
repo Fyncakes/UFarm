@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const UpdatingList = require("../models/Upload");
 const UserModel = require("../models/User");
 const connectEnsureLogin = require("connect-ensure-login");
+const { uploadProduct } = require("../config/cloudinary");
 
 router.get("/product", async (req, res) => {
 	try {
@@ -18,28 +19,35 @@ router.get("/product", async (req, res) => {
 	}
 });
 
-router.post("/uploadsList", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+// NOTE: This route uses Cloudinary for image storage (online), NOT local folder
+// Images are uploaded to Cloudinary and the URL is stored in MongoDB
+router.post("/uploadsList", connectEnsureLogin.ensureLoggedIn(), uploadProduct.single("image"), async (req, res) => {
 	req.session.user = req.user;
 	console.log(req.session.user);
 
-	// res.send('This works');
 	try {
-		const customerList = UpdatingList(req.body);
+		const customerList = new UpdatingList(req.body);
 
-		customerList.image = req.file.path;
-		// console.log('This is the uploaded', uploadProduct)
+		// Store Cloudinary URL (online storage) - NOT local folder
+		// req.file.path contains the Cloudinary URL (e.g., https://res.cloudinary.com/...)
+		if (req.file) {
+			customerList.image = req.file.path; // Cloudinary URL stored in MongoDB
+		}
 
-		(customerList.owner = req.session.user._id),
-			(customerList.owner_name = req.session.user.Name1);
+		customerList.owner = req.session.user._id;
+		customerList.owner_name = req.session.user.Name1;
+		customerList.status = 'pending'; // Set default status
 
-		console.log(customerList);
+		console.log('Product created with Cloudinary image:', customerList);
 
 		await customerList.save();
 
+		req.flash("success_msg", "Product uploaded successfully! It will be reviewed before appearing on the marketplace.");
 		res.redirect("/product");
 	} catch (error) {
-		res.status(400).send("you registration has failed");
-		console.log(error);
+		console.error("Product upload error:", error);
+		req.flash("error_msg", "Product upload failed. Please try again.");
+		res.redirect("/product");
 	}
 });
 

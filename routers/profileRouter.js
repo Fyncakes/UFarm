@@ -52,9 +52,11 @@ router.post("/profile/update", ensureAuthenticated, uploadProfile.single("profil
 			if (req.body.farmLocation) updateData.farmLocation = req.body.farmLocation;
 		}
 
-		// Add profile image if uploaded (Cloudinary URL)
+		// Add profile image if uploaded (Cloudinary URL - online storage, NOT local folder)
+		// req.file.path contains the Cloudinary URL (e.g., https://res.cloudinary.com/...)
+		// This URL is stored in MongoDB, not in the local public/image folder
 		if (req.file) {
-			updateData.profileImage = req.file.path;
+			updateData.profileImage = req.file.path; // Cloudinary URL stored in MongoDB
 		}
 
 		// Remove undefined values

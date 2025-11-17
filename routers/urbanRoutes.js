@@ -85,21 +85,30 @@ router.delete("/delete-product/:id", connectEnsureLogin.ensureLoggedIn(), async(
 	}
 });
 
+// NOTE: This route uses Cloudinary for image storage (online), NOT local folder
+// Images are uploaded to Cloudinary and the URL is stored in MongoDB
 router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.single("image"), async(req, res) => {
 	req.session.user = req.user
 	console.log(req.session.user)
 
 	try {
-		const newProduct = new  UploadProductModel(req.body);
+		if (!req.file) {
+			req.flash("error_msg", "Please upload a product image.");
+			return res.redirect("/add-product");
+		}
 
-		// Store Cloudinary URL
-		newProduct.image = req.file.path; // Cloudinary URL
+		const newProduct = new UploadProductModel(req.body);
 
-		newProduct.owner = req.session.user._id,
-		newProduct.owner_name = req.session.user.Name1
+		// Store Cloudinary URL (online storage) - NOT local folder
+		// req.file.path contains the Cloudinary URL (e.g., https://res.cloudinary.com/...)
+		// This URL is stored in MongoDB, not in the local public/image folder
+		newProduct.image = req.file.path; // Cloudinary URL stored in MongoDB
+
+		newProduct.owner = req.session.user._id;
+		newProduct.owner_name = req.session.user.Name1;
 		newProduct.status = 'pending'; // Always start as pending
 
-		console.log(newProduct)
+		console.log('Product created with Cloudinary image:', newProduct.image);
 
 		await newProduct.save();
 		
@@ -107,7 +116,7 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 		res.redirect("/my-products");
 	} catch (error) {
 		req.flash("error_msg", "Product upload failed. Please try again.");
-		console.log(error);
+		console.error("Product upload error:", error);
 		res.redirect("/add-product");
 	}
 });
@@ -160,9 +169,9 @@ router.post("/update-product/:id", connectEnsureLogin.ensureLoggedIn(), uploadPr
 		product.direction = req.body.direction;
 		product.organic = req.body.organic === 'on';
 		
-		// Update image if new one uploaded
+		// Update image if new one uploaded (Cloudinary URL - online storage, NOT local folder)
 		if (req.file) {
-			product.image = req.file.path;
+			product.image = req.file.path; // Cloudinary URL stored in MongoDB
 		}
 		
 		// IMPORTANT: Set status back to pending for re-approval

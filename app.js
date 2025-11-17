@@ -97,14 +97,16 @@ app.use((req, res, next) => {
 	res.locals.error_msg = req.flash("error_msg");
 	res.locals.error = req.flash("error");
 	
-	// Helper function to handle image paths (Cloudinary URLs or local paths)
+	// Helper function to handle image paths
+	// NOTE: User-uploaded images are stored in Cloudinary (online) and URLs are saved in MongoDB
+	// This function handles both Cloudinary URLs (user uploads) and local static images (demo/placeholder)
 	res.locals.imageUrl = (imagePath) => {
 		if (!imagePath) return '/image/placeholder.jpg';
-		// If it's already a full URL (Cloudinary), return as-is
+		// If it's already a full URL (Cloudinary - user uploaded images), return as-is
 		if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-			return imagePath;
+			return imagePath; // Cloudinary URL from MongoDB
 		}
-		// Otherwise, it's a local path, prepend '/'
+		// Otherwise, it's a local static image path (for demo/placeholder images only)
 		return '/' + imagePath;
 	};
 	next();
