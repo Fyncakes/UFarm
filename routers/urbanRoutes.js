@@ -59,8 +59,17 @@ router.get("/add-product", connectEnsureLogin.ensureLoggedIn(), async (req, res)
 // My Products Page
 router.get("/my-products", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
 	try {
-		const ufProduce = await UploadProductModel.find({owner_name: req.session.user.Name1});
-		res.render("myProducts", {ufproduces: ufProduce});
+		const filter = req.query.filter;
+		let query = { owner_name: req.session.user.Name1 };
+		
+		if (filter && filter !== 'all') {
+			query.status = filter;
+		}
+		
+		const ufProduce = await UploadProductModel.find(query)
+			.populate("category")
+			.sort({ createdAt: -1 });
+		res.render("myProducts", { ufproduces: ufProduce, filter });
 	} catch (error) {
 		console.error(error);
 		req.flash("error_msg", "Error loading products");
