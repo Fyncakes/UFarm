@@ -24,27 +24,34 @@ html(lang='en')
       include includes/flash-messages.pug
 
       // Wishlist Items
-      if wishlist && wishlist.length
+      if wishlist && wishlist.length > 0
         .row.g-4
           each item in wishlist
-            if item.product
+            if item && item.product && item.product.status === 'approved'
               .col-lg-3.col-md-4.col-sm-6.col-12
                 .card.h-100.shadow-sm.border-0.wishlist-card
                   .position-relative
-                    form(action=`/wishlist/remove/${item.product._id}` method='post' style='display: inline;')
-                      button.btn.btn-danger.btn-sm.position-absolute.top-0.end-0.m-2.rounded-circle(type='submit' title='Remove' onclick='return confirm("Remove from wishlist?")')
+                    form(action=`/wishlist/remove/${item.product._id}` method='post' style='display: inline; position: absolute; top: 0; right: 0; z-index: 2; margin: 0.5rem;')
+                      button.btn.btn-danger.btn-sm.rounded-circle(type='submit' style='width: 35px; height: 35px;' title='Remove from wishlist' onclick='return confirm("Remove from wishlist?")')
                         i.fas.fa-times
                     
-                    img.card-img-top(src=imageUrl(item.product.image) alt=item.product.productName style='height: 200px; object-fit: cover;')
+                    if item.product.organic
+                      .badge.bg-success.position-absolute.top-0.start-0.m-2(style='z-index: 2;')
+                        i.fas.fa-leaf.me-1
+                        | Organic
+                    
+                    a.text-decoration-none(href=`/product-detail/${item.product._id}`)
+                      img.card-img-top(src=imageUrl(item.product.image) alt=item.product.productName style='height: 200px; object-fit: cover;')
                   
                   .card-body.d-flex.flex-column
-                    h5.card-title.mb-2 #{item.product.productName}
+                    a.text-decoration-none.text-dark(href=`/product-detail/${item.product._id}`)
+                      h5.card-title.mb-2 #{item.product.productName || 'Product'}
                     
                     p.text-muted.small.mb-2
-                      i.fas.fa-user.me-1
+                      i.fas.fa-store.me-1
                       | #{item.product.owner_name || 'Ufarm'}
                     
-                    if item.product.rating
+                    if item.product.rating && item.product.rating > 0
                       .mb-2
                         each star in [1,2,3,4,5]
                           if star <= item.product.rating
@@ -54,13 +61,18 @@ html(lang='en')
                     
                     h4.text-success.mb-3 UGX #{item.product.price ? item.product.price.toLocaleString() : 0}
                     
+                    p.text-muted.small.mb-2
+                      i.fas.fa-box.me-1
+                      | #{item.product.quantity || 0} available
+                    
                     .mt-auto.d-grid.gap-2
-                      form(action='/cart/add' method='post')
-                        input(type='hidden' name='productId' value=item.product._id)
-                        input(type='hidden' name='quantity' value='1')
-                        button.btn.btn-success.w-100(type='submit')
-                          i.fas.fa-cart-plus.me-2
-                          | Add to Cart
+                      if user
+                        form(action='/cart/add' method='post')
+                          input(type='hidden' name='productId' value=item.product._id)
+                          input(type='hidden' name='quantity' value='1')
+                          button.btn.btn-success.w-100(type='submit')
+                            i.fas.fa-cart-plus.me-2
+                            | Add to Cart
                       a.btn.btn-outline-primary(href=`/product-detail/${item.product._id}`)
                         i.fas.fa-eye.me-2
                         | View Details

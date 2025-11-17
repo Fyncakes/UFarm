@@ -51,6 +51,12 @@ html(lang='en')
               | #{product.location}
           
           if user
+            .mb-3.d-flex.gap-2.align-items-center
+              form(action='/wishlist/add' method='post' style='display: inline;')
+                input(type='hidden' name='productId' value=product._id)
+                button.btn.btn-outline-danger.btn-lg(type='submit' title='Add to Wishlist')
+                  i.far.fa-heart.me-2
+                  | Add to Wishlist
             form(action='/cart/add' method='post')
               input(type='hidden' name='productId' value=product._id)
               .mb-3
@@ -60,6 +66,10 @@ html(lang='en')
                 i.fas.fa-cart-plus.me-2
                 | Add to Cart
           else
+            .mb-3
+              a.btn.btn-outline-danger.btn-lg(href='/login' title='Login to add to wishlist')
+                i.far.fa-heart.me-2
+                | Add to Wishlist
             a.btn.btn-success.btn-lg(href='/login') Login to Buy
 
     include includes/footer.pug

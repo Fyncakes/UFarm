@@ -17,21 +17,36 @@ router.get("/wishlist", ensureAuthenticated, async (req, res) => {
 	try {
 		let wishlist = await Wishlist.findOne({ user: req.user._id }).populate({
 			path: 'products.product',
-			model: 'Upload',
-			populate: { path: 'owner', model: 'Registration' }
+			model: 'Upload'
 		});
 
-		if (!wishlist) {
-			wishlist = { products: [] };
+		if (!wishlist || !wishlist.products || wishlist.products.length === 0) {
+			return res.render("wishlist", {
+				wishlist: [],
+				user: req.user
+			});
 		}
 
+		// Filter out any null products (deleted products) and only show approved products
+		const validItems = wishlist.products.filter(item => 
+			item.product !== null && 
+			item.product !== undefined &&
+			item.product.status === 'approved'
+		);
+
+		console.log(`Wishlist for user ${req.user.Name1}: ${validItems.length} items`);
+
 		res.render("wishlist", {
-			wishlist: wishlist.products || [],
+			wishlist: validItems,
+			user: req.user
 		});
 	} catch (error) {
-		console.error(error);
+		console.error("Wishlist error:", error);
 		req.flash("error_msg", "Error loading wishlist");
-		res.redirect("/");
+		res.render("wishlist", {
+			wishlist: [],
+			user: req.user
+		});
 	}
 });
 
@@ -40,11 +55,16 @@ router.post("/wishlist/add", ensureAuthenticated, async (req, res) => {
 	try {
 		const { productId } = req.body;
 
+		if (!productId) {
+			req.flash("error_msg", "Product ID is required");
+			return res.redirect("back");
+		}
+
 		// Check if product exists
 		const product = await Upload.findById(productId);
 		if (!product) {
 			req.flash("error_msg", "Product not found");
-			return res.redirect("/product");
+			return res.redirect("back");
 		}
 
 		// Find or create wishlist
@@ -58,12 +78,12 @@ router.post("/wishlist/add", ensureAuthenticated, async (req, res) => {
 
 		// Check if product already in wishlist
 		const exists = wishlist.products.some(
-			(item) => item.product.toString() === productId
+			(item) => item.product && item.product.toString() === productId.toString()
 		);
 
 		if (exists) {
-			req.flash("error_msg", "Product already in wishlist");
-			return res.redirect("/wishlist");
+			req.flash("info_msg", "Product already in wishlist");
+			return res.redirect("back");
 		}
 
 		// Add product to wishlist
@@ -71,11 +91,11 @@ router.post("/wishlist/add", ensureAuthenticated, async (req, res) => {
 		await wishlist.save();
 
 		req.flash("success_msg", "Product added to wishlist!");
-		res.redirect("/wishlist");
+		res.redirect("back");
 	} catch (error) {
-		console.error(error);
+		console.error("Add to wishlist error:", error);
 		req.flash("error_msg", "Error adding to wishlist");
-		res.redirect("/product");
+		res.redirect("back");
 	}
 });
 

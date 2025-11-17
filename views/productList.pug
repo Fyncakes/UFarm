@@ -88,8 +88,10 @@ html(lang='en')
                         i.fas.fa-leaf.me-1
                         | Organic
                     if user
-                      button.btn.btn-light.btn-sm.position-absolute.top-0.end-0.m-2.rounded-circle.wishlist-btn(style='z-index: 2; width: 40px; height: 40px;' title='Add to Wishlist')
-                        i.far.fa-heart
+                      form(action='/wishlist/add' method='post' style='display: inline; position: absolute; top: 0; right: 0; z-index: 2; margin: 0.5rem;')
+                        input(type='hidden' name='productId' value=listProduct._id)
+                        button.btn.btn-light.btn-sm.rounded-circle.wishlist-btn(type='submit' style='width: 40px; height: 40px; border: none;' title='Add to Wishlist' onclick='event.stopPropagation();')
+                          i.far.fa-heart
                     
                     .product-image-container
                       img.card-img-top.product-image(src=imageUrl(listProduct.image) alt=listProduct.productName loading='lazy')
