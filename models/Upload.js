@@ -11,6 +11,11 @@ const uploadSchema = new mongoose.Schema(
 			type: String,
 			trim: true,
 		},
+		category: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Category",
+			required: true,
+		},
 		price: {
 			type: Number,
 			required: true,
@@ -36,6 +41,10 @@ const uploadSchema = new mongoose.Schema(
 		},
 		direction: {
 			type: String,
+		},
+		organic: {
+			type: Boolean,
+			default: false,
 		},
 		status: {
 			type: String,

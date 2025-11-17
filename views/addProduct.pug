@@ -48,6 +48,19 @@ html(lang='en')
                     small.form-text.text-muted Available quantity in stock
                   
                   .col-md-6
+                    label.form-label(for='category')
+                      i.fas.fa-th-large.me-1
+                      | Product Category *
+                    select.form-select(id='category' name='category' required)
+                      option(value='' selected disabled) -- Select a Category --
+                      if categories && categories.length > 0
+                        each category in categories
+                          option(value=category._id) #{category.name}
+                      else
+                        option(value='' disabled) No categories available. Please contact admin.
+                    small.form-text.text-muted Choose the most appropriate category for your product
+                  
+                  .col-md-6
                     label.form-label(for='direction')
                       i.fas.fa-map-marker-alt.me-1
                       | Location/Direction
@@ -60,6 +73,13 @@ html(lang='en')
                       | Description
                     textarea.form-control(id='description' name='description' rows='4' placeholder='Describe your product, its features, quality, and benefits...')
                     small.form-text.text-muted Provide detailed information to help buyers
+                  
+                  .col-12
+                    .form-check.mb-3
+                      input.form-check-input(type='checkbox' id='organic' name='organic')
+                      label.form-check-label(for='organic')
+                        i.fas.fa-leaf.me-1.text-success
+                        | Organic Product
                   
                   .col-12
                     label.form-label(for='image')
@@ -195,9 +215,17 @@ html(lang='en')
       const form = document.querySelector('form');
       form.addEventListener('submit', function(e) {
         const file = imageInput.files[0];
+        const category = document.getElementById('category').value;
+        
         if (!file) {
           e.preventDefault();
           alert('Please select an image to upload.');
+          return false;
+        }
+        
+        if (!category) {
+          e.preventDefault();
+          alert('Please select a product category.');
           return false;
         }
         

@@ -44,8 +44,16 @@ router.get("/UB", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
 });
 
 // Add Product Page
-router.get("/add-product", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-	res.render("addProduct");
+router.get("/add-product", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
+	try {
+		const Category = require("../models/Category");
+		const categories = await Category.find({ active: true }).sort({ name: 1 });
+		res.render("addProduct", { categories });
+	} catch (error) {
+		console.error("Error loading categories:", error);
+		req.flash("error_msg", "Error loading categories. Please try again.");
+		res.redirect("/UB");
+	}
 });
 
 // My Products Page
@@ -97,6 +105,12 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 			return res.redirect("/add-product");
 		}
 
+		// Validate category
+		if (!req.body.category) {
+			req.flash("error_msg", "Please select a product category.");
+			return res.redirect("/add-product");
+		}
+
 		const newProduct = new UploadProductModel(req.body);
 
 		// Store Cloudinary URL (online storage) - NOT local folder
@@ -107,6 +121,7 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 		newProduct.owner = req.session.user._id;
 		newProduct.owner_name = req.session.user.Name1;
 		newProduct.status = 'pending'; // Always start as pending
+		newProduct.organic = req.body.organic === 'on' || req.body.organic === true;
 
 		console.log('Product created with Cloudinary image:', newProduct.image);
 
@@ -161,13 +176,20 @@ router.post("/update-product/:id", connectEnsureLogin.ensureLoggedIn(), uploadPr
 			return res.redirect("/my-products");
 		}
 		
+		// Validate category
+		if (!req.body.category) {
+			req.flash("error_msg", "Please select a product category.");
+			return res.redirect(`/edit-product/${req.params.id}`);
+		}
+
 		// Update product fields
 		product.productName = req.body.productName;
+		product.category = req.body.category;
 		product.price = req.body.price;
 		product.quantity = req.body.quantity;
 		product.description = req.body.description;
 		product.direction = req.body.direction;
-		product.organic = req.body.organic === 'on';
+		product.organic = req.body.organic === 'on' || req.body.organic === true;
 		
 		// Update image if new one uploaded (Cloudinary URL - online storage, NOT local folder)
 		if (req.file) {

@@ -51,6 +51,19 @@ html(lang='en')
                     small.form-text.text-muted Available quantity in stock
                   
                   .col-md-6
+                    label.form-label(for='category')
+                      i.fas.fa-th-large.me-1
+                      | Product Category *
+                    select.form-select(id='category' name='category' required)
+                      option(value='' disabled) -- Select a Category --
+                      if categories && categories.length > 0
+                        each category in categories
+                          option(value=category._id selected=(product.category && product.category._id && product.category._id.toString() === category._id.toString())) #{category.name}
+                      else
+                        option(value='' disabled) No categories available. Please contact admin.
+                    small.form-text.text-muted Choose the most appropriate category for your product
+                  
+                  .col-md-6
                     label.form-label(for='direction')
                       i.fas.fa-map-marker-alt.me-1
                       | Location/Direction

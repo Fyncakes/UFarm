@@ -9,7 +9,9 @@ const { uploadProduct } = require("../config/cloudinary");
 router.get("/product", async (req, res) => {
 	try {
 		// Only show approved products to customers
-		const listProduct = await UpdatingList.find({ status: 'approved' }).populate("owner");
+		const listProduct = await UpdatingList.find({ status: 'approved' })
+			.populate("owner")
+			.populate("category");
 		console.log(`Product page - showing ${listProduct.length} approved products`);
 		res.render("productList", { listProducts: listProduct });
 	} catch (error) {
@@ -54,7 +56,9 @@ router.post("/uploadsList", connectEnsureLogin.ensureLoggedIn(), uploadProduct.s
 // View product details
 router.get("/product-detail/:id", async (req, res) => {
 	try {
-		const product = await UpdatingList.findById(req.params.id).populate("owner");
+		const product = await UpdatingList.findById(req.params.id)
+			.populate("owner")
+			.populate("category");
 		if (!product) {
 			req.flash("error_msg", "Product not found");
 			return res.redirect("/product");
