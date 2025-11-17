@@ -164,7 +164,27 @@ html(lang='en')
                     label.form-label(for='profileImage')
                       i.fas.fa-camera.me-1
                       | Profile Picture
-                    input#profileImage.form-control(type='file' name='profileImage' accept='image/*')
+                    .image-upload-container
+                      input#profileImage.form-control(type='file' name='profileImage' accept='image/*' capture='user')
+                      small.form-text.text-muted 
+                        | Upload a profile picture (JPG, PNG, max 5MB). 
+                        | You can take a photo directly from your phone camera or choose from gallery.
+                      #fileInfo.mt-2(style='display: none;')
+                        small.text-muted
+                          i.fas.fa-file-image.me-1
+                          span#fileName
+                          |  (
+                          span#fileSize
+                          | )
+                      // Image Preview
+                      #imagePreview.mt-3(style='display: none;')
+                        .preview-wrapper(style='position: relative; display: inline-block;')
+                          img#preview(src='' alt='Preview' style='max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid #28a745; box-shadow: 0 2px 8px rgba(0,0,0,0.1); object-fit: cover;')
+                          button.btn.btn-sm.btn-danger.position-absolute.top-0.end-0.m-2(type='button' id='removeImage' style='display: none;' title='Remove image')
+                            i.fas.fa-times
+                        p.small.text-success.mt-2.mb-0
+                          i.fas.fa-check-circle.me-1
+                          | Profile picture preview ready. Submit form to upload.
                   
                   .col-12
                     hr
