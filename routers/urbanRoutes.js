@@ -47,7 +47,36 @@ router.get("/UB", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
 router.get("/add-product", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
 	try {
 		const Category = require("../models/Category");
-		const categories = await Category.find({ active: true }).sort({ name: 1 });
+		let categories = await Category.find({ active: true }).sort({ name: 1 });
+		
+		// If no categories exist, seed default categories
+		if (!categories || categories.length === 0) {
+			console.log("No categories found. Seeding default categories...");
+			const defaultCategories = [
+				{ name: "Seedlings", description: "Young plants and seedlings", icon: "fa-seedling", active: true },
+				{ name: "Machinery", description: "Farm machinery and equipment", icon: "fa-tractor", active: true },
+				{ name: "Plants", description: "Mature plants and trees", icon: "fa-leaf", active: true },
+				{ name: "Organic Fertilizers", description: "Natural fertilizers", icon: "fa-recycle", active: true },
+				{ name: "Farm Tools", description: "Hand tools and equipment", icon: "fa-tools", active: true },
+				{ name: "Fresh Produce", description: "Fresh fruits and vegetables", icon: "fa-apple-alt", active: true },
+				{ name: "Livestock & Poultry", description: "Animals and poultry", icon: "fa-dog", active: true },
+				{ name: "Herbs & Spices", description: "Fresh and dried herbs", icon: "fa-pepper-hot", active: true },
+				{ name: "Others", description: "Other farming products", icon: "fa-box", active: true }
+			];
+			
+			for (const catData of defaultCategories) {
+				const existing = await Category.findOne({ name: catData.name });
+				if (!existing) {
+					const category = new Category(catData);
+					await category.save();
+				}
+			}
+			
+			// Reload categories
+			categories = await Category.find({ active: true }).sort({ name: 1 });
+			console.log(`Seeded ${categories.length} categories`);
+		}
+		
 		res.render("addProduct", { categories });
 	} catch (error) {
 		console.error("Error loading categories:", error);
@@ -149,7 +178,39 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 router.get("/edit-product/:id", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
 	try {
 		const Category = require("../models/Category");
-		const product = await UploadProductModel.findById(req.params.id).populate('category');
+		const Upload = require("../models/Upload");
+		
+		let categories = await Category.find({ active: true }).sort({ name: 1 });
+		
+		// If no categories exist, seed default categories
+		if (!categories || categories.length === 0) {
+			console.log("No categories found. Seeding default categories...");
+			const defaultCategories = [
+				{ name: "Seedlings", description: "Young plants and seedlings", icon: "fa-seedling", active: true },
+				{ name: "Machinery", description: "Farm machinery and equipment", icon: "fa-tractor", active: true },
+				{ name: "Plants", description: "Mature plants and trees", icon: "fa-leaf", active: true },
+				{ name: "Organic Fertilizers", description: "Natural fertilizers", icon: "fa-recycle", active: true },
+				{ name: "Farm Tools", description: "Hand tools and equipment", icon: "fa-tools", active: true },
+				{ name: "Fresh Produce", description: "Fresh fruits and vegetables", icon: "fa-apple-alt", active: true },
+				{ name: "Livestock & Poultry", description: "Animals and poultry", icon: "fa-dog", active: true },
+				{ name: "Herbs & Spices", description: "Fresh and dried herbs", icon: "fa-pepper-hot", active: true },
+				{ name: "Others", description: "Other farming products", icon: "fa-box", active: true }
+			];
+			
+			for (const catData of defaultCategories) {
+				const existing = await Category.findOne({ name: catData.name });
+				if (!existing) {
+					const category = new Category(catData);
+					await category.save();
+				}
+			}
+			
+			categories = await Category.find({ active: true }).sort({ name: 1 });
+		}
+		
+		const product = await Upload.findById(req.params.id)
+			.populate('category')
+			.populate('owner');
 		
 		if (!product) {
 			req.flash("error_msg", "Product not found");
@@ -157,17 +218,14 @@ router.get("/edit-product/:id", connectEnsureLogin.ensureLoggedIn(), async(req, 
 		}
 		
 		// Check if product belongs to user
-		if (product.owner_name !== req.session.user.Name1) {
-			req.flash("error_msg", "Unauthorized access");
+		if (product.owner._id.toString() !== req.user._id.toString()) {
+			req.flash("error_msg", "You can only edit your own products");
 			return res.redirect("/my-products");
 		}
 		
-		// Fetch categories for dropdown
-		const categories = await Category.find({ active: true }).sort({ name: 1 });
-		
 		res.render("editProduct", { product, categories });
 	} catch (error) {
-		console.error(error);
+		console.error("Error loading edit product page:", error);
 		req.flash("error_msg", "Error loading product");
 		res.redirect("/my-products");
 	}

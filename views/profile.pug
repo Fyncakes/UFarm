@@ -92,44 +92,66 @@ html(lang='en')
               
               if isOwnProfile
                 form#profileForm(method='POST' action='/profile/update' enctype='multipart/form-data')
-                  .row.g-2
-                    .col-md-6
-                      label.form-label(for='Name1') Full Name
+                  .row
+                    .col-md-6.mb-3
+                      label.form-label(for='Name1')
+                        i.fas.fa-user.me-1
+                        | Full Name
                       input#Name1.form-control(type='text' name='Name1' value=user ? user.Name1 : '' disabled)
                       small.text-muted Username cannot be changed
-                    .col-md-6
-                      label.form-label(for='email') Email
+                    .col-md-6.mb-3
+                      label.form-label(for='email')
+                        i.fas.fa-envelope.me-1
+                        | Email
                       input#email.form-control(type='email' name='email' value=user ? user.email : '')
-                    .col-md-6
-                      label.form-label(for='phonenumber') Phone Number *
+                    .col-md-6.mb-3
+                      label.form-label(for='phonenumber')
+                        i.fas.fa-phone.me-1
+                        | Phone Number *
                       input#phonenumber.form-control(type='tel' name='phonenumber' value=user ? user.phonenumber : '' required)
-                    .col-md-6
-                      label.form-label(for='Gender1') Gender
+                    .col-md-6.mb-3
+                      label.form-label(for='Gender1')
+                        i.fas.fa-venus-mars.me-1
+                        | Gender
                       select#Gender1.form-select(name='Gender1')
                         option(value='Male' selected=user && user.Gender1 === 'Male') Male
                         option(value='Female' selected=user && user.Gender1 === 'Female') Female
                         option(value='Other' selected=user && user.Gender1 === 'Other') Other
-                    .col-md-6
-                      label.form-label(for='Ward1') Ward/District
+                    .col-md-6.mb-3
+                      label.form-label(for='Ward1')
+                        i.fas.fa-map-marker-alt.me-1
+                        | Ward/District
                       input#Ward1.form-control(type='text' name='Ward1' value=user ? user.Ward1 : '')
-                    .col-md-6
-                      label.form-label(for='Nin1') National ID (NIN)
+                    .col-md-6.mb-3
+                      label.form-label(for='Nin1')
+                        i.fas.fa-id-card.me-1
+                        | National ID (NIN)
                       input#Nin1.form-control(type='text' name='Nin1' value=user ? user.Nin1 : '')
-                    .col-md-4
-                      label.form-label(for='address') Address
+                    .col-md-4.mb-3
+                      label.form-label(for='address')
+                        i.fas.fa-home.me-1
+                        | Address
                       input#address.form-control(type='text' name='address' value=user ? user.address : '')
-                    .col-md-4
-                      label.form-label(for='district') District
+                    .col-md-4.mb-3
+                      label.form-label(for='district')
+                        i.fas.fa-map.me-1
+                        | District
                       input#district.form-control(type='text' name='district' value=user ? user.district : '')
-                    .col-md-4
-                      label.form-label(for='village') Village
+                    .col-md-4.mb-3
+                      label.form-label(for='village')
+                        i.fas.fa-map-pin.me-1
+                        | Village
                       input#village.form-control(type='text' name='village' value=user ? user.village : '')
                     if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
-                      .col-md-4
-                        label.form-label(for='farmSize') Farm Size (acres)
+                      .col-md-4.mb-3
+                        label.form-label(for='farmSize')
+                          i.fas.fa-ruler-combined.me-1
+                          | Farm Size (acres)
                         input#farmSize.form-control(type='number' name='farmSize' value=user.farmSize || '' step='0.01')
-                      .col-md-4
-                        label.form-label(for='farmType') Farm Type
+                      .col-md-4.mb-3
+                        label.form-label(for='farmType')
+                          i.fas.fa-leaf.me-1
+                          | Farm Type
                         select#farmType.form-select(name='farmType')
                           option(value='') Select farm type
                           option(value='crops' selected=user.farmType === 'crops') Crops
@@ -137,19 +159,25 @@ html(lang='en')
                           option(value='mixed' selected=user.farmType === 'mixed') Mixed
                           option(value='poultry' selected=user.farmType === 'poultry') Poultry
                           option(value='dairy' selected=user.farmType === 'dairy') Dairy
-                      .col-md-4
-                        label.form-label(for='farmLocation') Farm Location
+                      .col-md-4.mb-3
+                        label.form-label(for='farmLocation')
+                          i.fas.fa-map-marker-alt.me-1
+                          | Farm Location
                         input#farmLocation.form-control(type='text' name='farmLocation' value=user.farmLocation || '')
-                    .col-12
-                      label.form-label(for='bio') Bio
+                    .col-12.mb-3
+                      label.form-label(for='bio')
+                        i.fas.fa-info-circle.me-1
+                        | Bio
                       textarea#bio.form-control(name='bio' rows='2' placeholder='Tell us about yourself')= user ? user.bio : ''
-                    .col-12
-                      label.form-label(for='profileImage') Profile Picture
+                    .col-12.mb-3
+                      label.form-label(for='profileImage')
+                        i.fas.fa-camera.me-1
+                        | Profile Picture
                       input#profileImage.form-control(type='file' name='profileImage' accept='image/*' capture='user')
                       small.text-muted Upload a profile picture (JPG, PNG, max 5MB)
                       #imagePreview.mt-2(style='display: none;')
                         img#preview(src='' alt='Preview' style='max-width: 150px; max-height: 150px; border-radius: 50%; border: 2px solid #28a745;')
-                    .col-12.mt-3
+                    .col-12
                       button.btn.btn-success(type='submit')
                         i.fas.fa-save.me-2
                         | Save Changes
