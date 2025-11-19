@@ -8,12 +8,16 @@ html(lang='en')
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
     link(rel='stylesheet' href='/css/main.css')
     link(rel='stylesheet' href='/css/profile.css')
-    title My Profile - Ufarm
+    title= isOwnProfile ? 'My Profile - Ufarm' : (user ? `${user.Name1}'s Profile - Ufarm` : 'Profile - Ufarm')
   body
     include includes/navbar.pug
 
     .container.my-5
       include includes/back-button.pug
+      if !isOwnProfile && user
+        .alert.alert-info.mb-4
+          i.fas.fa-info-circle.me-2
+          | You are viewing #{user.Name1}'s profile
       .row
         // Sidebar
         .col-md-3.mb-4
@@ -28,6 +32,10 @@ html(lang='en')
               h4.mb-1= user ? user.Name1 : 'Guest'
               if user && user.role
                 p.badge.bg-success.mb-3= user.role
+              if user && user.verified
+                p.badge.bg-primary.mb-2
+                  i.fas.fa-check-circle.me-1
+                  | Verified
               
               if user && user.rating
                 .rating.mb-3
@@ -40,23 +48,36 @@ html(lang='en')
               
               hr
               
-              .d-grid.gap-2
-                a.btn.btn-outline-primary(href='#accountInfo')
-                  i.fas.fa-user-circle.me-2
-                  | Account Info
-                a.btn.btn-outline-success(href='/orders')
-                  i.fas.fa-shopping-bag.me-2
-                  | My Orders
-                a.btn.btn-outline-warning(href='/wishlist')
-                  i.fas.fa-heart.me-2
-                  | Wishlist
-                if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
-                  a.btn.btn-outline-info(href='/UB')
-                    i.fas.fa-tractor.me-2
-                    | My Products
-                a.btn.btn-outline-danger(href='/logout')
-                  i.fas.fa-sign-out-alt.me-2
-                  | Logout
+              if isOwnProfile
+                .d-grid.gap-2
+                  a.btn.btn-outline-primary(href='#accountInfo')
+                    i.fas.fa-user-circle.me-2
+                    | Account Info
+                  a.btn.btn-outline-success(href='/orders')
+                    i.fas.fa-shopping-bag.me-2
+                    | My Orders
+                  a.btn.btn-outline-warning(href='/wishlist')
+                    i.fas.fa-heart.me-2
+                    | Wishlist
+                  if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+                    a.btn.btn-outline-info(href='/UB')
+                      i.fas.fa-tractor.me-2
+                      | My Products
+                  a.btn.btn-outline-danger(href='/logout')
+                    i.fas.fa-sign-out-alt.me-2
+                    | Logout
+              else
+                .d-grid.gap-2
+                  a.btn.btn-outline-primary(href='#accountInfo')
+                    i.fas.fa-user-circle.me-2
+                    | View Profile
+                  if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+                    a.btn.btn-outline-info(href=`/product?farmer=${user._id}`)
+                      i.fas.fa-seedling.me-2
+                      | View Products
+                  a.btn.btn-outline-secondary(href='/profile')
+                    i.fas.fa-user.me-2
+                    | My Profile
 
         // Main Content
         .col-md-9
@@ -69,14 +90,15 @@ html(lang='en')
             .card-body
               include includes/flash-messages.pug
               
-              form#profileForm(method='POST' action='/profile/update' enctype='multipart/form-data')
-                .row.g-3
-                  .col-md-6
-                    label.form-label(for='Name1')
-                      i.fas.fa-user.me-1
-                      | Full Name
-                    input#Name1.form-control(type='text' name='Name1' value=user ? user.Name1 : '' disabled)
-                    small.text-muted Username cannot be changed
+              if isOwnProfile
+                form#profileForm(method='POST' action='/profile/update' enctype='multipart/form-data')
+                  .row.g-3
+                    .col-md-6
+                      label.form-label(for='Name1')
+                        i.fas.fa-user.me-1
+                        | Full Name
+                      input#Name1.form-control(type='text' name='Name1' value=user ? user.Name1 : '' disabled)
+                      small.text-muted Username cannot be changed
                   
                   .col-md-6
                     label.form-label(for='email')
@@ -186,15 +208,96 @@ html(lang='en')
                           i.fas.fa-check-circle.me-1
                           | Profile picture preview ready. Submit form to upload.
                   
+                    .col-12
+                      hr
+                      .d-flex.gap-2
+                        button.btn.btn-success.btn-lg.px-4(type='submit')
+                          i.fas.fa-save.me-2
+                          | Save Changes
+                        button.btn.btn-outline-secondary.btn-lg(type='reset')
+                          i.fas.fa-undo.me-2
+                          | Reset
+              else
+                // Read-only view for other users
+                .row.g-3
+                  .col-md-6
+                    label.form-label
+                      i.fas.fa-user.me-1
+                      | Full Name
+                    p.form-control-plaintext.border-bottom.pb-2= user ? user.Name1 : 'N/A'
+                  
+                  .col-md-6
+                    label.form-label
+                      i.fas.fa-envelope.me-1
+                      | Email
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.email ? user.email : 'Not provided'
+                  
+                  .col-md-6
+                    label.form-label
+                      i.fas.fa-phone.me-1
+                      | Phone Number
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.phonenumber ? user.phonenumber : 'Not provided'
+                  
+                  .col-md-6
+                    label.form-label
+                      i.fas.fa-venus-mars.me-1
+                      | Gender
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.Gender1 ? user.Gender1 : 'Not specified'
+                  
+                  .col-md-6
+                    label.form-label
+                      i.fas.fa-map-marker-alt.me-1
+                      | Ward/District
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.Ward1 ? user.Ward1 : 'Not provided'
+                  
+                  .col-md-6
+                    label.form-label
+                      i.fas.fa-id-card.me-1
+                      | National ID (NIN)
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.Nin1 ? user.Nin1 : 'Not provided'
+                  
+                  .col-md-4
+                    label.form-label
+                      i.fas.fa-home.me-1
+                      | Address
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.address ? user.address : 'Not provided'
+                  
+                  .col-md-4
+                    label.form-label
+                      i.fas.fa-map.me-1
+                      | District
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.district ? user.district : 'Not provided'
+                  
+                  .col-md-4
+                    label.form-label
+                      i.fas.fa-map-pin.me-1
+                      | Village
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.village ? user.village : 'Not provided'
+                  
+                  if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+                    .col-md-6
+                      label.form-label
+                        i.fas.fa-ruler-combined.me-1
+                        | Farm Size (acres)
+                      p.form-control-plaintext.border-bottom.pb-2= user.farmSize ? `${user.farmSize} acres` : 'Not provided'
+                    
+                    .col-md-6
+                      label.form-label
+                        i.fas.fa-leaf.me-1
+                        | Farm Type
+                      p.form-control-plaintext.border-bottom.pb-2= user.farmType ? user.farmType.charAt(0).toUpperCase() + user.farmType.slice(1) : 'Not provided'
+                    
+                    .col-12
+                      label.form-label
+                        i.fas.fa-map-marker-alt.me-1
+                        | Farm Location
+                      p.form-control-plaintext.border-bottom.pb-2= user.farmLocation ? user.farmLocation : 'Not provided'
+                  
                   .col-12
-                    hr
-                    .d-flex.gap-2
-                      button.btn.btn-success.btn-lg.px-4(type='submit')
-                        i.fas.fa-save.me-2
-                        | Save Changes
-                      button.btn.btn-outline-secondary.btn-lg(type='reset')
-                        i.fas.fa-undo.me-2
-                        | Reset
+                    label.form-label
+                      i.fas.fa-info-circle.me-1
+                      | Bio
+                    p.form-control-plaintext.border-bottom.pb-2= user && user.bio ? user.bio : 'No bio available'
 
           // Statistics Card (for farmers)
           if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
@@ -221,14 +324,15 @@ html(lang='en')
                       h3.mb-0 #{user.rating || 0}/5
                       p.text-muted Average Rating
 
-          // Security Settings
-          .card.shadow-sm.border-0
-            .card-header.bg-warning.text-dark
-              h5.mb-0
-                i.fas.fa-lock.me-2
-                | Security Settings
-            .card-body
-              form#securityForm(method='POST' action='/profile/change-password')
+          // Security Settings (only for own profile)
+          if isOwnProfile
+            .card.shadow-sm.border-0
+              .card-header.bg-warning.text-dark
+                h5.mb-0
+                  i.fas.fa-lock.me-2
+                  | Security Settings
+              .card-body
+                form#securityForm(method='POST' action='/profile/change-password')
                 .row.g-3
                   .col-md-12
                     label.form-label(for='currentPassword')

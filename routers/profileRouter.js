@@ -12,17 +12,64 @@ function ensureAuthenticated(req, res, next) {
 	res.redirect("/login");
 }
 
-// GET Profile Page
+// GET Profile Page (own profile)
 router.get("/profile", ensureAuthenticated, async (req, res) => {
 	try {
 		const user = await User.findById(req.user._id);
+		if (!user) {
+			req.flash("error_msg", "User not found");
+			return res.redirect("/");
+		}
 		res.render("profile", {
 			user: user,
 			success_msg: req.flash("success_msg"),
 			error_msg: req.flash("error_msg"),
+			isOwnProfile: true
 		});
 	} catch (error) {
 		console.error(error);
+		req.flash("error_msg", "Error loading profile");
+		res.redirect("/");
+	}
+});
+
+// GET Profile Page by ID (view other user's profile)
+router.get("/profile/:id", ensureAuthenticated, async (req, res) => {
+	try {
+		const profileUserId = req.params.id;
+		
+		// Check if it's the user's own profile
+		if (profileUserId === req.user._id.toString()) {
+			return res.redirect("/profile");
+		}
+		
+		const profileUser = await User.findById(profileUserId)
+			.select('-hash -salt -__v');
+		
+		if (!profileUser) {
+			req.flash("error_msg", "Profile not found");
+			return res.status(404).render("404");
+		}
+		
+		// Check if user is active
+		if (profileUser.active === false) {
+			req.flash("error_msg", "This profile is not available");
+			return res.redirect("/");
+		}
+		
+		res.render("profile", {
+			user: profileUser,
+			currentUser: req.user,
+			success_msg: req.flash("success_msg"),
+			error_msg: req.flash("error_msg"),
+			isOwnProfile: false
+		});
+	} catch (error) {
+		console.error("Error loading profile by ID:", error);
+		if (error.name === 'CastError') {
+			req.flash("error_msg", "Invalid profile ID");
+			return res.status(404).render("404");
+		}
 		req.flash("error_msg", "Error loading profile");
 		res.redirect("/");
 	}
