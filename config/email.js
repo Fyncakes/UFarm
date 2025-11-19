@@ -1,12 +1,16 @@
 const nodemailer = require("nodemailer");
 
-// Create transporter
+// Create transporter with timeout settings to prevent hanging
 const transporter = nodemailer.createTransport({
 	service: process.env.EMAIL_SERVICE || "gmail",
 	auth: {
 		user: process.env.EMAIL_USER || "your-email@gmail.com",
 		pass: process.env.EMAIL_PASSWORD || "your-app-password",
 	},
+	// Add connection timeout to prevent hanging
+	connectionTimeout: 5000, // 5 seconds
+	greetingTimeout: 5000,
+	socketTimeout: 5000,
 });
 
 // Email templates
