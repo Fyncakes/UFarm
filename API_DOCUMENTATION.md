@@ -459,15 +459,103 @@ Most endpoints require authentication using **Passport.js** with `connectEnsureL
 
 ---
 
-## Future API Enhancements
+## REST API (v1) - NEW! ✅
 
-To convert this to a full REST API, you could:
+A full REST API is now available at `/api/v1` with JWT authentication and standardized JSON responses.
 
-1. **Add JSON response option** - Accept `Accept: application/json` header
-2. **Create `/api/v1` routes** - Separate API routes from web routes
-3. **Add API authentication** - JWT tokens for API access
-4. **Standardize JSON responses** - Consistent format for all endpoints
-5. **Add API versioning** - Support multiple API versions
+### Base URL
+- **Development:** `http://localhost:3000/api/v1`
+- **Production:** `https://ufarm-oig6.onrender.com/api/v1`
+
+### Authentication
+All protected endpoints require a JWT token in the Authorization header:
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+### Response Format
+All API responses follow a consistent format:
+
+**Success:**
+```json
+{
+  "success": true,
+  "message": "Operation successful",
+  "data": { ... },
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**Error:**
+```json
+{
+  "success": false,
+  "message": "Error message",
+  "errors": { ... },
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
+
+### API Endpoints
+
+#### Authentication
+- **POST** `/api/v1/auth/login` - Login and get JWT token
+- **POST** `/api/v1/auth/register` - Register new user (buyer only)
+- **GET** `/api/v1/auth/me` - Get current user profile (requires auth)
+
+#### Products
+- **GET** `/api/v1/products` - List all approved products (public)
+  - Query params: `category`, `search`, `minPrice`, `maxPrice`, `page`, `limit`, `sort`, `order`
+- **GET** `/api/v1/products/:id` - Get single product (public)
+- **POST** `/api/v1/products` - Create product (Urban Farmer, requires auth)
+- **PUT** `/api/v1/products/:id` - Update product (Owner, requires auth)
+- **DELETE** `/api/v1/products/:id` - Delete product (Owner, requires auth)
+
+#### Cart
+- **GET** `/api/v1/cart` - Get user's cart (requires auth)
+- **POST** `/api/v1/cart/add` - Add product to cart (requires auth)
+- **PUT** `/api/v1/cart/update/:itemId` - Update cart item (requires auth)
+- **DELETE** `/api/v1/cart/remove/:itemId` - Remove item from cart (requires auth)
+- **DELETE** `/api/v1/cart/clear` - Clear entire cart (requires auth)
+
+#### Orders
+- **GET** `/api/v1/orders` - Get user's orders (requires auth)
+  - Query params: `page`, `limit`, `status`
+- **GET** `/api/v1/orders/:id` - Get single order (requires auth)
+- **POST** `/api/v1/orders` - Place new order (requires auth)
+- **PUT** `/api/v1/orders/:id/cancel` - Cancel order (Buyer, requires auth)
+
+#### Categories
+- **GET** `/api/v1/categories` - List all active categories (public)
+- **GET** `/api/v1/categories/:id` - Get single category (public)
+- **GET** `/api/v1/categories/:id/products` - Get products in category (public)
+
+#### API Info
+- **GET** `/api/v1` - Get API information and available endpoints
+
+### Example Usage
+
+**Login:**
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "test123"}'
+```
+
+**Get Products:**
+```bash
+curl http://localhost:3000/api/v1/products
+```
+
+**Add to Cart (with token):**
+```bash
+curl -X POST http://localhost:3000/api/v1/cart/add \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"productId": "PRODUCT_ID", "quantity": 2}'
+```
+
+See `API_TEST_GUIDE.md` for comprehensive testing instructions.
 
 ---
 

@@ -293,6 +293,10 @@ app.use(profileRoutes);
 app.use(wishlistRoutes);
 app.use(testimonialRoutes);
 
+// API Routes (v1)
+const apiV1Routes = require("./routers/api/v1/index");
+app.use("/api/v1", apiV1Routes);
+
 // 404 handler
 app.use((req, res) => {
 	res.status(404).render("404");

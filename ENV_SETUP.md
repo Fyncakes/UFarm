@@ -7,6 +7,10 @@ Create a `.env` file in the root directory with the following variables:
 database=mongodb://localhost:27017/UFarm
 secret=your-session-secret-key-here
 
+# JWT Configuration (for REST API)
+JWT_SECRET=your-jwt-secret-key-change-in-production
+JWT_EXPIRES_IN=7d
+
 # Email Configuration (Optional - for notifications)
 # If not configured, email notifications will be skipped
 EMAIL_SERVICE=gmail
