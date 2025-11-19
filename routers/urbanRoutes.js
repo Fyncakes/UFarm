@@ -53,15 +53,15 @@ router.get("/add-product", connectEnsureLogin.ensureLoggedIn(), async (req, res)
 		if (!categories || categories.length === 0) {
 			console.log("No categories found. Seeding default categories...");
 			const defaultCategories = [
-				{ name: "Seedlings", description: "Young plants and seedlings", icon: "fa-seedling", active: true },
+				{ name: "Seedlings", description: "Young plants and seedlings ready for planting", icon: "fa-seedling", active: true },
 				{ name: "Machinery", description: "Farm machinery and equipment", icon: "fa-tractor", active: true },
 				{ name: "Plants", description: "Mature plants and trees", icon: "fa-leaf", active: true },
-				{ name: "Organic Fertilizers", description: "Natural fertilizers", icon: "fa-recycle", active: true },
-				{ name: "Farm Tools", description: "Hand tools and equipment", icon: "fa-tools", active: true },
-				{ name: "Fresh Produce", description: "Fresh fruits and vegetables", icon: "fa-apple-alt", active: true },
-				{ name: "Livestock & Poultry", description: "Animals and poultry", icon: "fa-dog", active: true },
-				{ name: "Herbs & Spices", description: "Fresh and dried herbs", icon: "fa-pepper-hot", active: true },
-				{ name: "Others", description: "Other farming products", icon: "fa-box", active: true }
+				{ name: "Organic Fertilizers", description: "Natural and organic fertilizers for crops", icon: "fa-recycle", active: true },
+				{ name: "Farm Tools", description: "Hand tools and equipment for farming", icon: "fa-tools", active: true },
+				{ name: "Fresh Produce", description: "Fresh fruits, vegetables, and farm produce", icon: "fa-apple-alt", active: true },
+				{ name: "Livestock & Poultry", description: "Animals, livestock, and poultry products", icon: "fa-dog", active: true },
+				{ name: "Herbs & Spices", description: "Fresh and dried herbs and spices", icon: "fa-pepper-hot", active: true },
+				{ name: "Others", description: "General category for other farming products", icon: "fa-box", active: true }
 			];
 			
 			for (const catData of defaultCategories) {
@@ -186,15 +186,15 @@ router.get("/edit-product/:id", connectEnsureLogin.ensureLoggedIn(), async(req, 
 		if (!categories || categories.length === 0) {
 			console.log("No categories found. Seeding default categories...");
 			const defaultCategories = [
-				{ name: "Seedlings", description: "Young plants and seedlings", icon: "fa-seedling", active: true },
+				{ name: "Seedlings", description: "Young plants and seedlings ready for planting", icon: "fa-seedling", active: true },
 				{ name: "Machinery", description: "Farm machinery and equipment", icon: "fa-tractor", active: true },
 				{ name: "Plants", description: "Mature plants and trees", icon: "fa-leaf", active: true },
-				{ name: "Organic Fertilizers", description: "Natural fertilizers", icon: "fa-recycle", active: true },
-				{ name: "Farm Tools", description: "Hand tools and equipment", icon: "fa-tools", active: true },
-				{ name: "Fresh Produce", description: "Fresh fruits and vegetables", icon: "fa-apple-alt", active: true },
-				{ name: "Livestock & Poultry", description: "Animals and poultry", icon: "fa-dog", active: true },
-				{ name: "Herbs & Spices", description: "Fresh and dried herbs", icon: "fa-pepper-hot", active: true },
-				{ name: "Others", description: "Other farming products", icon: "fa-box", active: true }
+				{ name: "Organic Fertilizers", description: "Natural and organic fertilizers for crops", icon: "fa-recycle", active: true },
+				{ name: "Farm Tools", description: "Hand tools and equipment for farming", icon: "fa-tools", active: true },
+				{ name: "Fresh Produce", description: "Fresh fruits, vegetables, and farm produce", icon: "fa-apple-alt", active: true },
+				{ name: "Livestock & Poultry", description: "Animals, livestock, and poultry products", icon: "fa-dog", active: true },
+				{ name: "Herbs & Spices", description: "Fresh and dried herbs and spices", icon: "fa-pepper-hot", active: true },
+				{ name: "Others", description: "General category for other farming products", icon: "fa-box", active: true }
 			];
 			
 			for (const catData of defaultCategories) {
