@@ -127,6 +127,7 @@ const categoryRoutes = require("./routers/categoryRouter");
 const profileRoutes = require("./routers/profileRouter");
 const wishlistRoutes = require("./routers/wishlistRouter");
 const testimonialRoutes = require("./routers/testimonialRouter");
+const passwordResetRoutes = require("./routers/passwordResetRouter");
 
 // Home route
 app.get("/", async (req, res) => {
@@ -292,6 +293,7 @@ app.use(categoryRoutes);
 app.use(profileRoutes);
 app.use(wishlistRoutes);
 app.use(testimonialRoutes);
+app.use(passwordResetRoutes);
 
 // API Routes (v1)
 const apiV1Routes = require("./routers/api/v1/index");

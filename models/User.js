@@ -132,6 +132,13 @@ const userSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		// Password reset fields
+		resetPasswordToken: {
+			type: String,
+		},
+		resetPasswordExpires: {
+			type: Date,
+		},
 	},
 	{
 		timestamps: true,
