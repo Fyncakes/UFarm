@@ -250,6 +250,108 @@ const emailTemplates = {
 			</html>
 		`,
 	}),
+
+	// Password Reset Email
+	passwordReset: (userName, resetLink) => ({
+		subject: "Password Reset Request - Ufarm",
+		html: `
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<style>
+					body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+					.container { max-width: 600px; margin: 0 auto; padding: 20px; }
+					.header { background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+					.content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+					.button { display: inline-block; background: #7ed957; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+					.footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+					.warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+				</style>
+			</head>
+			<body>
+				<div class="container">
+					<div class="header">
+						<h1>🔐 Password Reset Request</h1>
+					</div>
+					<div class="content">
+						<h2>Hello ${userName}!</h2>
+						<p>We received a request to reset your password for your Ufarm account.</p>
+						
+						<p>Click the button below to reset your password:</p>
+						
+						<div style="text-align: center;">
+							<a href="${resetLink}" class="button">Reset Password</a>
+						</div>
+						
+						<p>Or copy and paste this link into your browser:</p>
+						<p style="word-break: break-all; color: #7ed957;">${resetLink}</p>
+						
+						<div class="warning">
+							<strong>⚠️ Important:</strong>
+							<ul style="margin: 10px 0; padding-left: 20px;">
+								<li>This link will expire in 1 hour</li>
+								<li>If you didn't request this, please ignore this email</li>
+								<li>Your password will remain unchanged if you don't click the link</li>
+							</ul>
+						</div>
+						
+						<p style="margin-top: 30px;">If you have any concerns, please contact our support team.</p>
+					</div>
+					<div class="footer">
+						<p>&copy; 2024 Ufarm. All rights reserved.</p>
+						<p>Connecting farmers, buyers, and sellers for sustainable agriculture</p>
+					</div>
+				</div>
+			</body>
+			</html>
+		`,
+	}),
+
+	// Password Reset Success Email
+	passwordResetSuccess: (userName) => ({
+		subject: "Password Reset Successful - Ufarm",
+		html: `
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<style>
+					body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+					.container { max-width: 600px; margin: 0 auto; padding: 20px; }
+					.header { background: linear-gradient(135deg, #7ed957 0%, #5cb85c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+					.content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+					.button { display: inline-block; background: #7ed957; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+					.footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+					.success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; }
+				</style>
+			</head>
+			<body>
+				<div class="container">
+					<div class="header">
+						<h1>✅ Password Reset Successful</h1>
+					</div>
+					<div class="content">
+						<h2>Hello ${userName}!</h2>
+						
+						<div class="success">
+							<strong>✓ Your password has been successfully reset!</strong>
+						</div>
+						
+						<p>Your account password has been changed. You can now log in with your new password.</p>
+						
+						<div style="text-align: center;">
+							<a href="http://localhost:3000/login" class="button">Login Now</a>
+						</div>
+						
+						<p style="margin-top: 30px;"><strong>Security Tip:</strong> If you didn't make this change, please contact our support team immediately.</p>
+					</div>
+					<div class="footer">
+						<p>&copy; 2024 Ufarm. All rights reserved.</p>
+					</div>
+				</div>
+			</body>
+			</html>
+		`,
+	}),
 };
 
 // Send email function
