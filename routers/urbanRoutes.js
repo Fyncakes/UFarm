@@ -148,7 +148,8 @@ router.post("/uploads", connectEnsureLogin.ensureLoggedIn(), uploadProduct.singl
 // Edit Product Page
 router.get("/edit-product/:id", connectEnsureLogin.ensureLoggedIn(), async(req, res) => {
 	try {
-		const product = await UploadProductModel.findById(req.params.id);
+		const Category = require("../models/Category");
+		const product = await UploadProductModel.findById(req.params.id).populate('category');
 		
 		if (!product) {
 			req.flash("error_msg", "Product not found");
@@ -161,7 +162,10 @@ router.get("/edit-product/:id", connectEnsureLogin.ensureLoggedIn(), async(req, 
 			return res.redirect("/my-products");
 		}
 		
-		res.render("editProduct", { product });
+		// Fetch categories for dropdown
+		const categories = await Category.find({ active: true }).sort({ name: 1 });
+		
+		res.render("editProduct", { product, categories });
 	} catch (error) {
 		console.error(error);
 		req.flash("error_msg", "Error loading product");

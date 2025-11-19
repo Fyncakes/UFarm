@@ -92,131 +92,70 @@ html(lang='en')
               
               if isOwnProfile
                 form#profileForm(method='POST' action='/profile/update' enctype='multipart/form-data')
-                  .row.g-3
+                  .row.g-2
                     .col-md-6
-                      label.form-label(for='Name1')
-                        i.fas.fa-user.me-1
-                        | Full Name
+                      label.form-label(for='Name1') Full Name
                       input#Name1.form-control(type='text' name='Name1' value=user ? user.Name1 : '' disabled)
                       small.text-muted Username cannot be changed
-                  
-                  .col-md-6
-                    label.form-label(for='email')
-                      i.fas.fa-envelope.me-1
-                      | Email
-                    input#email.form-control(type='email' name='email' value=user ? user.email : '')
-                  
-                  .col-md-6
-                    label.form-label(for='phonenumber')
-                      i.fas.fa-phone.me-1
-                      | Phone Number
-                    input#phonenumber.form-control(type='tel' name='phonenumber' value=user ? user.phonenumber : '' required)
-                  
-                  .col-md-6
-                    label.form-label(for='Gender1')
-                      i.fas.fa-venus-mars.me-1
-                      | Gender
-                    select#Gender1.form-select(name='Gender1')
-                      option(value='Male' selected=user && user.Gender1 === 'Male') Male
-                      option(value='Female' selected=user && user.Gender1 === 'Female') Female
-                      option(value='Other' selected=user && user.Gender1 === 'Other') Other
-                  
-                  .col-md-6
-                    label.form-label(for='Ward1')
-                      i.fas.fa-map-marker-alt.me-1
-                      | Ward/District
-                    input#Ward1.form-control(type='text' name='Ward1' value=user ? user.Ward1 : '')
-                  
-                  .col-md-6
-                    label.form-label(for='Nin1')
-                      i.fas.fa-id-card.me-1
-                      | National ID (NIN)
-                    input#Nin1.form-control(type='text' name='Nin1' value=user ? user.Nin1 : '')
-                  
-                  .col-md-4
-                    label.form-label(for='address')
-                      i.fas.fa-home.me-1
-                      | Address
-                    input#address.form-control(type='text' name='address' value=user ? user.address : '')
-                  
-                  .col-md-4
-                    label.form-label(for='district')
-                      i.fas.fa-map.me-1
-                      | District
-                    input#district.form-control(type='text' name='district' value=user ? user.district : '')
-                  
-                  .col-md-4
-                    label.form-label(for='village')
-                      i.fas.fa-map-pin.me-1
-                      | Village
-                    input#village.form-control(type='text' name='village' value=user ? user.village : '')
-                  
-                  if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
                     .col-md-6
-                      label.form-label(for='farmSize')
-                        i.fas.fa-ruler-combined.me-1
-                        | Farm Size (acres)
-                      input#farmSize.form-control(type='number' name='farmSize' value=user.farmSize || '' step='0.01')
-                    
+                      label.form-label(for='email') Email
+                      input#email.form-control(type='email' name='email' value=user ? user.email : '')
                     .col-md-6
-                      label.form-label(for='farmType')
-                        i.fas.fa-leaf.me-1
-                        | Farm Type
-                      select#farmType.form-select(name='farmType')
-                        option(value='') Select farm type
-                        option(value='crops' selected=user.farmType === 'crops') Crops
-                        option(value='livestock' selected=user.farmType === 'livestock') Livestock
-                        option(value='mixed' selected=user.farmType === 'mixed') Mixed
-                        option(value='poultry' selected=user.farmType === 'poultry') Poultry
-                        option(value='dairy' selected=user.farmType === 'dairy') Dairy
-                    
+                      label.form-label(for='phonenumber') Phone Number *
+                      input#phonenumber.form-control(type='tel' name='phonenumber' value=user ? user.phonenumber : '' required)
+                    .col-md-6
+                      label.form-label(for='Gender1') Gender
+                      select#Gender1.form-select(name='Gender1')
+                        option(value='Male' selected=user && user.Gender1 === 'Male') Male
+                        option(value='Female' selected=user && user.Gender1 === 'Female') Female
+                        option(value='Other' selected=user && user.Gender1 === 'Other') Other
+                    .col-md-6
+                      label.form-label(for='Ward1') Ward/District
+                      input#Ward1.form-control(type='text' name='Ward1' value=user ? user.Ward1 : '')
+                    .col-md-6
+                      label.form-label(for='Nin1') National ID (NIN)
+                      input#Nin1.form-control(type='text' name='Nin1' value=user ? user.Nin1 : '')
+                    .col-md-4
+                      label.form-label(for='address') Address
+                      input#address.form-control(type='text' name='address' value=user ? user.address : '')
+                    .col-md-4
+                      label.form-label(for='district') District
+                      input#district.form-control(type='text' name='district' value=user ? user.district : '')
+                    .col-md-4
+                      label.form-label(for='village') Village
+                      input#village.form-control(type='text' name='village' value=user ? user.village : '')
+                    if user && (user.role === 'Urban farmer' || user.role === 'Farmer one')
+                      .col-md-4
+                        label.form-label(for='farmSize') Farm Size (acres)
+                        input#farmSize.form-control(type='number' name='farmSize' value=user.farmSize || '' step='0.01')
+                      .col-md-4
+                        label.form-label(for='farmType') Farm Type
+                        select#farmType.form-select(name='farmType')
+                          option(value='') Select farm type
+                          option(value='crops' selected=user.farmType === 'crops') Crops
+                          option(value='livestock' selected=user.farmType === 'livestock') Livestock
+                          option(value='mixed' selected=user.farmType === 'mixed') Mixed
+                          option(value='poultry' selected=user.farmType === 'poultry') Poultry
+                          option(value='dairy' selected=user.farmType === 'dairy') Dairy
+                      .col-md-4
+                        label.form-label(for='farmLocation') Farm Location
+                        input#farmLocation.form-control(type='text' name='farmLocation' value=user.farmLocation || '')
                     .col-12
-                      label.form-label(for='farmLocation')
-                        i.fas.fa-map-marker-alt.me-1
-                        | Farm Location
-                      input#farmLocation.form-control(type='text' name='farmLocation' value=user.farmLocation || '')
-                  
-                  .col-12
-                    label.form-label(for='bio')
-                      i.fas.fa-info-circle.me-1
-                      | Bio
-                    textarea#bio.form-control(name='bio' rows='3' placeholder='Tell us about yourself')= user ? user.bio : ''
-                  
-                  .col-12
-                    label.form-label(for='profileImage')
-                      i.fas.fa-camera.me-1
-                      | Profile Picture
-                    .image-upload-container
+                      label.form-label(for='bio') Bio
+                      textarea#bio.form-control(name='bio' rows='2' placeholder='Tell us about yourself')= user ? user.bio : ''
+                    .col-12
+                      label.form-label(for='profileImage') Profile Picture
                       input#profileImage.form-control(type='file' name='profileImage' accept='image/*' capture='user')
-                      small.form-text.text-muted 
-                        | Upload a profile picture (JPG, PNG, max 5MB). 
-                        | You can take a photo directly from your phone camera or choose from gallery.
-                      #fileInfo.mt-2(style='display: none;')
-                        small.text-muted
-                          i.fas.fa-file-image.me-1
-                          span#fileName
-                          |  (
-                          span#fileSize
-                          | )
-                      // Image Preview
-                      #imagePreview.mt-3(style='display: none;')
-                        .preview-wrapper(style='position: relative; display: inline-block;')
-                          img#preview(src='' alt='Preview' style='max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid #28a745; box-shadow: 0 2px 8px rgba(0,0,0,0.1); object-fit: cover;')
-                          button.btn.btn-sm.btn-danger.position-absolute.top-0.end-0.m-2(type='button' id='removeImage' style='display: none;' title='Remove image')
-                            i.fas.fa-times
-                        p.small.text-success.mt-2.mb-0
-                          i.fas.fa-check-circle.me-1
-                          | Profile picture preview ready. Submit form to upload.
-                  
-                    .col-12
-                      hr
-                      .d-flex.gap-2
-                        button.btn.btn-success.btn-lg.px-4(type='submit')
-                          i.fas.fa-save.me-2
-                          | Save Changes
-                        button.btn.btn-outline-secondary.btn-lg(type='reset')
-                          i.fas.fa-undo.me-2
-                          | Reset
+                      small.text-muted Upload a profile picture (JPG, PNG, max 5MB)
+                      #imagePreview.mt-2(style='display: none;')
+                        img#preview(src='' alt='Preview' style='max-width: 150px; max-height: 150px; border-radius: 50%; border: 2px solid #28a745;')
+                    .col-12.mt-3
+                      button.btn.btn-success(type='submit')
+                        i.fas.fa-save.me-2
+                        | Save Changes
+                      button.btn.btn-outline-secondary.ms-2(type='reset')
+                        i.fas.fa-undo.me-2
+                        | Reset
               else
                 // Read-only view for other users
                 .row.g-3
