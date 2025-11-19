@@ -36,8 +36,24 @@ html(lang='en')
                   label.form-label(for='paymentMethod') Payment Method *
                   select.form-select(id='paymentMethod' name='paymentMethod' required)
                     option(value='cash_on_delivery') Cash on Delivery
-                    option(value='mobile_money') Mobile Money
+                    option(value='mtn_mobile_money') MTN Mobile Money
+                    option(value='airtel_mobile_money') Airtel Mobile Money
                     option(value='bank_transfer') Bank Transfer
+                
+                // Mobile Money Details (shown when MTN or Airtel is selected)
+                #mobileMoneyDetails.mb-3(style='display: none;')
+                  .card.bg-light.border
+                    .card-body
+                      h6.mb-3
+                        i.fas.fa-mobile-alt.me-2.text-primary
+                        | Mobile Money Details
+                      .mb-3
+                        label.form-label(for='mobileMoneyPhone') Mobile Money Phone Number *
+                        input.form-control(type='tel' id='mobileMoneyPhone' name='mobileMoneyPhone' placeholder='e.g., 0751082492' pattern='[0-9]{9,10}')
+                        small.form-text.text-muted Enter your MTN or Airtel mobile money number
+                      .alert.alert-info.mb-0
+                        i.fas.fa-info-circle.me-2
+                        | You will receive a payment request on your phone. Please complete the payment to confirm your order.
                 
                 .mb-3
                   label.form-label(for='notes') Additional Notes
@@ -83,4 +99,52 @@ html(lang='en')
     include includes/footer.pug
 
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js')
+    script.
+      // Show/hide mobile money details based on payment method
+      const paymentMethod = document.getElementById('paymentMethod');
+      const mobileMoneyDetails = document.getElementById('mobileMoneyDetails');
+      const mobileMoneyPhone = document.getElementById('mobileMoneyPhone');
+      
+      paymentMethod.addEventListener('change', function() {
+        const selectedMethod = this.value;
+        if (selectedMethod === 'mtn_mobile_money' || selectedMethod === 'airtel_mobile_money') {
+          mobileMoneyDetails.style.display = 'block';
+          mobileMoneyPhone.required = true;
+        } else {
+          mobileMoneyDetails.style.display = 'none';
+          mobileMoneyPhone.required = false;
+          mobileMoneyPhone.value = '';
+        }
+      });
+      
+      // Form validation
+      const checkoutForm = document.getElementById('checkoutForm');
+      checkoutForm.addEventListener('submit', function(e) {
+        const selectedMethod = paymentMethod.value;
+        const phoneValue = mobileMoneyPhone.value.trim();
+        
+        // Validate mobile money phone number if mobile money is selected
+        if ((selectedMethod === 'mtn_mobile_money' || selectedMethod === 'airtel_mobile_money')) {
+          if (!phoneValue) {
+            e.preventDefault();
+            alert('Please enter your mobile money phone number.');
+            mobileMoneyPhone.focus();
+            return false;
+          }
+          
+          // Validate phone number format (Uganda: 9-10 digits)
+          const phoneRegex = /^[0-9]{9,10}$/;
+          if (!phoneRegex.test(phoneValue)) {
+            e.preventDefault();
+            alert('Please enter a valid mobile money phone number (9-10 digits).');
+            mobileMoneyPhone.focus();
+            return false;
+          }
+        }
+        
+        // Show loading state
+        const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+      });
 

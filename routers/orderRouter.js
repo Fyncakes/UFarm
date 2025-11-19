@@ -29,9 +29,15 @@ router.get("/checkout", connectEnsureLogin.ensureLoggedIn(), async (req, res) =>
 router.post("/order/place", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
 	try {
 		console.log("Order placement started for user:", req.user.Name1);
-		const { deliveryAddress, deliveryLocation, paymentMethod, notes } = req.body;
+		const { deliveryAddress, deliveryLocation, paymentMethod, mobileMoneyPhone, notes } = req.body;
 		
-		console.log("Form data received:", { deliveryAddress, deliveryLocation, paymentMethod });
+		console.log("Form data received:", { deliveryAddress, deliveryLocation, paymentMethod, mobileMoneyPhone });
+		
+		// Validate mobile money phone number if mobile money is selected
+		if ((paymentMethod === 'mtn_mobile_money' || paymentMethod === 'airtel_mobile_money') && !mobileMoneyPhone) {
+			req.flash("error_msg", "Please enter your mobile money phone number.");
+			return res.redirect("/checkout");
+		}
 		
 		const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
 		
@@ -116,7 +122,10 @@ router.post("/order/place", connectEnsureLogin.ensureLoggedIn(), async (req, res
 			deliveryAddress,
 			deliveryLocation,
 			paymentMethod,
+			mobileMoneyPhone: mobileMoneyPhone || undefined,
 			notes,
+			// Set payment status based on payment method
+			paymentStatus: (paymentMethod === 'mtn_mobile_money' || paymentMethod === 'airtel_mobile_money') ? 'pending' : 'pending',
 		});
 
 	await order.save();

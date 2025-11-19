@@ -70,8 +70,12 @@ const orderSchema = new mongoose.Schema(
 		},
 		paymentMethod: {
 			type: String,
-			enum: ["cash_on_delivery", "mobile_money", "bank_transfer"],
+			enum: ["cash_on_delivery", "mtn_mobile_money", "airtel_mobile_money", "bank_transfer"],
 			default: "cash_on_delivery",
+		},
+		mobileMoneyPhone: {
+			type: String,
+			trim: true,
 		},
 		paymentStatus: {
 			type: String,
