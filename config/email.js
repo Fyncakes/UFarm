@@ -354,13 +354,15 @@ const emailTemplates = {
 	}),
 };
 
-// Send email function
+// Send email function with timeout
 async function sendEmail(to, template) {
 	try {
 		// Skip if email is not configured
 		if (
 			!process.env.EMAIL_USER ||
-			process.env.EMAIL_USER === "your-email@gmail.com"
+			process.env.EMAIL_USER === "your-email@gmail.com" ||
+			!process.env.EMAIL_PASSWORD ||
+			process.env.EMAIL_PASSWORD === "your-app-password"
 		) {
 			console.log("Email not configured. Skipping email to:", to);
 			console.log("Subject:", template.subject);
@@ -374,12 +376,18 @@ async function sendEmail(to, template) {
 			html: template.html,
 		};
 
-		const info = await transporter.sendMail(mailOptions);
+		// Add timeout to prevent hanging
+		const emailPromise = transporter.sendMail(mailOptions);
+		const timeoutPromise = new Promise((_, reject) => {
+			setTimeout(() => reject(new Error("Email sending timeout")), 10000); // 10 second timeout
+		});
+
+		const info = await Promise.race([emailPromise, timeoutPromise]);
 		console.log("Email sent:", info.messageId);
 		return { success: true, messageId: info.messageId };
 	} catch (error) {
-		console.error("Email sending error:", error);
-		return { success: false, error: error.message };
+		console.error("Email sending error:", error.message || error);
+		return { success: false, error: error.message || "Email sending failed" };
 	}
 }
 

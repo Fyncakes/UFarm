@@ -41,20 +41,24 @@ router.post("/forgot-password", async (req, res) => {
 		// Create reset link
 		const resetLink = `${req.protocol}://${req.get("host")}/reset-password/${resetToken}`;
 
-		// Send email
-		const emailTemplate = emailTemplates.passwordReset(user.Name1, resetLink);
-		const emailResult = await sendEmail(user.email, emailTemplate);
-
-		if (emailResult.success) {
-			req.flash("success_msg", "Password reset link has been sent to your email. Please check your inbox.");
-		} else {
-			// If email fails, still show success message (security)
-			// But log the error
-			console.error("Failed to send password reset email:", emailResult.error);
-			req.flash("success_msg", "If an account with that email exists, we've sent password reset instructions.");
-		}
-
+		// Send response immediately (don't wait for email)
+		req.flash("success_msg", "If an account with that email exists, we've sent password reset instructions. Please check your inbox.");
 		res.redirect("/forgot-password");
+
+		// Send email asynchronously (non-blocking)
+		// Don't await - let it run in background
+		const emailTemplate = emailTemplates.passwordReset(user.Name1, resetLink);
+		sendEmail(user.email, emailTemplate)
+			.then((emailResult) => {
+				if (emailResult.success) {
+					console.log("Password reset email sent successfully to:", user.email);
+				} else {
+					console.error("Failed to send password reset email:", emailResult.error || emailResult.message);
+				}
+			})
+			.catch((error) => {
+				console.error("Error sending password reset email:", error);
+			});
 	} catch (error) {
 		console.error("Forgot password error:", error);
 		req.flash("error_msg", "An error occurred. Please try again later.");
@@ -135,12 +139,23 @@ router.post("/reset-password/:token", async (req, res) => {
 		user.resetPasswordExpires = undefined;
 		await user.save();
 
-		// Send confirmation email
-		const emailTemplate = emailTemplates.passwordResetSuccess(user.Name1);
-		await sendEmail(user.email, emailTemplate);
-
+		// Send response immediately
 		req.flash("success_msg", "Your password has been reset successfully! You can now login with your new password.");
 		res.redirect("/login");
+
+		// Send confirmation email asynchronously (non-blocking)
+		const emailTemplate = emailTemplates.passwordResetSuccess(user.Name1);
+		sendEmail(user.email, emailTemplate)
+			.then((emailResult) => {
+				if (emailResult.success) {
+					console.log("Password reset success email sent to:", user.email);
+				} else {
+					console.error("Failed to send password reset success email:", emailResult.error || emailResult.message);
+				}
+			})
+			.catch((error) => {
+				console.error("Error sending password reset success email:", error);
+			});
 	} catch (error) {
 		console.error("Password reset error:", error);
 		req.flash("error_msg", "An error occurred while resetting your password. Please try again.");
