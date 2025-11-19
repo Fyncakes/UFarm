@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connectEnsureLogin = require("connect-ensure-login");
 const Category = require("../models/Category");
-const Product = require("../models/Product");
+const Upload = require("../models/Upload");
 
 // View all categories
 router.get("/categories", async (req, res) => {
@@ -26,10 +26,14 @@ router.get("/category/:slug", async (req, res) => {
 			return res.redirect("/categories");
 		}
 
-		const products = await Product.find({
+		// Get only approved products for this category
+		const products = await Upload.find({
 			category: category._id,
 			status: "approved",
-		}).populate("owner");
+		})
+			.populate("owner", "Name1 email phonenumber")
+			.populate("category", "name slug icon")
+			.sort({ createdAt: -1 });
 
 		res.render("categoryProducts", { category, products });
 	} catch (error) {
@@ -108,7 +112,7 @@ router.post("/category/:id/delete", connectEnsureLogin.ensureLoggedIn(), async (
 		}
 
 		// Check if category has products
-		const productsCount = await Product.countDocuments({ category: category._id });
+		const productsCount = await Upload.countDocuments({ category: category._id });
 		if (productsCount > 0) {
 			req.flash("error_msg", "Cannot delete category with products");
 			return res.redirect("/OA");
